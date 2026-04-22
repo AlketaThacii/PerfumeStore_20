@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,30 +7,3 @@
     <link rel="stylesheet" href="/PerfumeStore_20/assets/css/style.css">
 </head>
 <body>
-
-
-<header class="header">
-    <div class="container">
-
-```
-    <h2 class="logo">Maison De Parfum</h2>
-
-
-    <nav class="navigation">
-        <a href="/index.php">Home</a>
-        <a href="/pages/products.php">Shop</a>
-        <a href="/pages/about.php">About Us</a>
-
-        <div class="dropdown">
-            <span class="dropbtn">Register ▾</span>
-            <div class="dropdown-content">
-                <a href="/login.php">Log In</a>
-                <a href="#">Sign Up</a>
-            </div>
-        </div>
-    </nav>
- 
-</div>
-```
-
-</header>
