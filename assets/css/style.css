@@ -12,7 +12,43 @@ html, body {
     flex-direction: column;
     font-family: Arial, sans-serif;
 }
+body {
+    background-color: #ffffff;
+    color: #000;
+}
+body.dark {
+    background-color: #121212;
+    color: #ffffff;
+}
 
+body.dark .header {
+    background-color: #000;
+}
+body.dark .footer {
+    background-color: #000;
+    color: white;
+}
+
+body.dark a {
+    color: #ddd;
+}
+.theme-btn {
+    position: fixed;
+    top: 33px;
+    right: 20px;
+    background: #d4af37;
+    color: black;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1000;
+}
+
+.theme-btn:hover {
+    background: gold;
+}
 main {
     flex: 1;
 }
@@ -22,7 +58,7 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 30px 100px;
+    padding: 39px 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -130,11 +166,15 @@ header {
 .dropdown:hover .dropdown-content {
     display: block;
 }
-
+.footer {
+    background-color: black;
+    padding-bottom: 20px;
+}
 .container1 {
     max-width: 100%;
     margin: auto;
     border-top: 2px solid #fff;
+    min-height: auto;
 }
 .row {
     display: flex;
@@ -146,12 +186,6 @@ header {
     flex: 1;
     max-width: 260px;
     padding: 0 10px;
-}
-.footer {
-    background-color: black;
-    padding-top: 70px;
-    padding-bottom: 20px;
-    min-height: 450px; 
 }
 .footer h3 {
     margin: 0;

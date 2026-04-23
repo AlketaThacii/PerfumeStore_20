@@ -7,3 +7,5 @@
     <link rel="stylesheet" href="/PerfumeStore_20/assets/css/style.css">
 </head>
 <body>
+
+<button id="theme-toggle" class="theme-btn">🌙</button>

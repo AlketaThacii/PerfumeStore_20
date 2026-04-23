@@ -1,8 +1,7 @@
 <footer class="footer">
     <div class="container1">
         <div class="row">
-
-            <!-- LOCATIONS -->
+          
             <div class="footer-col">
                 <h4>Locations</h4>
                 <ul>
@@ -13,7 +12,6 @@
                 </ul>
             </div>
 
-            <!-- CONTACT -->
             <div class="footer-col">
                 <h4>Contact Us</h4>
                 <ul>
@@ -23,7 +21,6 @@
                 </ul>
             </div>
 
-            <!-- ABOUT -->
             <div class="footer-col1">
                 <h4>Maison De Parfum</h4>
                 <ul>
@@ -36,6 +33,6 @@
         <h3>© <?php echo date("Y"); ?>, Maison De Parfum | All rights reserved</h3>
     </div>
 </footer>
-
+<script src="/PerfumeStore_20/assets/js/script.js"></script>
 </body>
 </html>
