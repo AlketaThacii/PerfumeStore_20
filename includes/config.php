@@ -31,3 +31,11 @@ function sortProducts(&$products, $order) {
         }
     });
 }
+
+function filterProducts($products, $category) {
+    if($category == "all") return $products;
+
+    return array_filter($products, function($p) use ($category) {
+        return $p->getCategory() == $category;
+    });
+}
