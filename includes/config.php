@@ -22,3 +22,12 @@ $products = [
     new Product(15, "Tom Ford Black Orchid", 155, "unisex")
 ];
 
+function sortProducts(&$products, $order) {
+    usort($products, function($a, $b) use ($order) {
+        if ($order == "asc") {
+            return $a->getPrice() - $b->getPrice();
+        } else {
+            return $b->getPrice() - $a->getPrice();
+        }
+    });
+}
