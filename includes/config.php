@@ -1,5 +1,5 @@
 <?php
-require_once("../classes/Product.php");
+require_once("../classes/Products.php");
 
 $products = [
     new Product(1, "Dior Sauvage", 120, "men"),
@@ -22,14 +22,19 @@ $products = [
     new Product(15, "Tom Ford Black Orchid", 155, "unisex")
 ];
 
-function sortProducts(&$products, $order) {
+function sortProducts($products, $order) {
+
     usort($products, function($a, $b) use ($order) {
-        if ($order == "asc") {
-            return $a->getPrice() - $b->getPrice();
-        } else {
-            return $b->getPrice() - $a->getPrice();
-        }
+
+        $priceA = (float)$a->getPrice();
+        $priceB = (float)$b->getPrice();
+
+        return ($order === "asc")
+            ? $priceA <=> $priceB
+            : $priceB <=> $priceA;
     });
+
+    return $products;
 }
 
 function filterProducts($products, $category) {
