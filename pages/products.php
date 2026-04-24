@@ -40,7 +40,7 @@ if ($order) {
 
 </div>
 
-<div class="container">
+<div class="container3">
 
 <?php if (!empty($filteredProducts)): ?>
 
@@ -56,7 +56,7 @@ if ($order) {
             <p class="category">
                 <?= strtoupper($product->getCategory()); ?>
             </p>
-   // nese qmimi i produktit eshte me i madh se 150, shfaq "Premium" ne te kundert "Standard"
+   
             <?php if ((float)$product->getPrice() > 150): ?>
                 <p style="color:red;">Premium</p>
             <?php else: ?>
