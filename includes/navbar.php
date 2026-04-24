@@ -15,6 +15,7 @@
                     <a href="#">Sign Up</a>
                 </div>
             </div>
+            <a href="cart.php">Cart (<?php echo count($_SESSION['cart'] ?? []); ?>)</a>
         </nav>
 
     </div>

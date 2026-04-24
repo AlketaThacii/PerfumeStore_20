@@ -37,7 +37,11 @@ function renderProductCard($p)
             <span class="badge"><?php echo $badge; ?></span>
         <?php endif; ?>
 
-        <button class="btn-cart">Add to Cart</button>
+        <form class="add-to-cart-form">
+            <input type="hidden" name="name" value="<?php echo $p['name']; ?>">
+            <input type="hidden" name="price" value="<?php echo $p['price']; ?>">
+            <button type="submit" name="add_to_cart" class="btn-cart">Add to Cart</button>
+        </form>
     </div>
 <?php
 }
@@ -59,7 +63,7 @@ $featured = array_slice($products, 0, 3);
     <section class="hero">
         <h1>Maison De Parfum</h1>
         <p>Discover luxury fragrances for every personality</p>
-        <a href="#products" class="btn">Shop Now</a>
+        <a href="pages/products.php" class="btn">Shop Now</a>
     </section>
 
     <section class="featured">
