@@ -166,6 +166,33 @@ header {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+.hero {
+    padding: 160px 20px 60px;
+    text-align: center;
+    background: linear-gradient(to right, #000, #222);
+    color: white;
+}
+.hero .btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #d4af37;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.featured {
+    text-align: center;
+    padding: 40px;
+}
+.featured-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+
 .shop {
     padding: 140px 40px;
     text-align: center;
@@ -190,31 +217,45 @@ header {
     background: #fff;
     border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
+
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.02);
 }
+
 .card img {
     width: 100%;
-    height: 200px;
+    height: 220px;
     object-fit: cover;
     border-radius: 10px;
+    transition: 0.3s;
 }
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
 .price {
     color: #d4af37;
     font-weight: bold;
 }
 .badge {
-    display: inline-block;
-    margin-top: 10px;
-    background: black;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #d4af37;
+    color: black;
+    padding: 5px 12px;
+    border-radius: 20px;
     font-size: 12px;
+    font-weight: bold;
 }
+
+
 body.dark .card {
     background: #1e1e1e;
     color: white;

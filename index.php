@@ -3,62 +3,111 @@ include("includes/header.php");
 include("includes/navbar.php");
 
 $products = [
-    ["name"=>"Dior Sauvage","price"=>120,"type"=>"Men","img"=>"dior.jpg"],
-    ["name"=>"Tom Ford Noir","price"=>160,"type"=>"Women","img"=>"chanel.jpg"],
-    ["name"=>"Bleu de Chanel","price"=>140,"type"=>"Men","img"=>"armani.jpg"],
-    ["name"=>"YSL Libre","price"=>130,"type"=>"Women","img"=>"ysl.jpg"],
-    ["name"=>"Versace Eros","price"=>100,"type"=>"Men","img"=>"versace.jpg"],
-    ["name"=>"Gucci Bloom","price"=>125,"type"=>"Women","img"=>"gucci.jpg"]
+    ["name" => "Dior Sauvage", "price" => 120, "type" => "Men", "img" => "dior.jpg"],
+    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "chanel.jpg"],
+    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "armani.jpg"],
+    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "ysl.jpg"],
+    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "versace.jpg"],
+    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "gucci.jpg"]
 ];
 
-function formatPrice($price){
+function formatPrice($price)
+{
     return number_format($price, 2) . " €";
 }
 
-function getBadge($price){
-    if($price >= 150) return "Premium";
-    if($price <= 115) return "Sale";
+function getBadge($price)
+{
+    if ($price >= 150) return "Premium";
+    if ($price <= 115) return "Sale";
     return "";
 }
 
+function renderProductCard($p)
+{
+    $badge = getBadge($p['price']);
+?>
+    <div class="card">
+        <img src="/PerfumeStore_20/assets/images/<?php echo $p['img']; ?>" alt="">
+        <h3><?php echo $p['name']; ?></h3>
+        <p class="type"><?php echo $p['type']; ?></p>
+        <p class="price"><?php echo formatPrice($p['price']); ?></p>
+
+        <?php if ($badge): ?>
+            <span class="badge"><?php echo $badge; ?></span>
+        <?php endif; ?>
+
+        <button class="btn-cart">Add to Cart</button>
+    </div>
+<?php
+}
+
+function renderSectionTitle($title)
+{
+    echo "<h2>$title</h2>";
+}
 $type = $_GET['type'] ?? "All";
 
-$filtered = array_filter($products, function($p) use ($type){
+$filtered = array_filter($products, function ($p) use ($type) {
     return $type === "All" || $p['type'] === $type;
 });
+
+$featured = array_slice($products, 0, 3);
 ?>
 
 <main class="shop">
+    <section class="hero">
+        <h1>Maison De Parfum</h1>
+        <p>Discover luxury fragrances for every personality</p>
+        <a href="#products" class="btn">Shop Now</a>
+    </section>
 
-    <h1>Maison De Parfum</h1>
-    <p class="subtitle">Luxury fragrances for every style</p>
+    <section class="featured">
+        <?php renderSectionTitle("Featured Products"); ?>
+        <div class="grid">
+            <?php foreach ($featured as $p) renderProductCard($p); ?>
+        </div>
+    </section>
 
-    <div class="filter">
-        <a href="?type=All">All</a>
-        <a href="?type=Men">Men</a>
-        <a href="?type=Women">Women</a>
-    </div>
-    
-    <div class="grid">
+    <section id="products">
+        <?php renderSectionTitle("Our Collection"); ?>
 
-        <?php foreach($filtered as $p): ?>
-            <div class="card">
+        <div class="filter">
+            <?php
+            $types = ["All", "Men", "Women"];
+            foreach ($types as $t) {
+                echo "<a href='?type=$t'>$t</a>";
+            }
+            ?>
+        </div>
 
-                <img src="/PerfumeStore_20/assets/images/<?php echo $p['img']; ?>" alt="">
+        <div class="grid">
+            <?php foreach ($filtered as $p) renderProductCard($p); ?>
+        </div>
+    </section>
 
-                <h3><?php echo $p['name']; ?></h3>
-                <p class="type"><?php echo $p['type']; ?></p>
-                <p class="price"><?php echo formatPrice($p['price']); ?></p>
+    <section class="why">
+        <?php renderSectionTitle("Why Choose Us"); ?>
 
-                <?php $badge = getBadge($p['price']); ?>
-                <?php if($badge): ?>
-                    <span class="badge"><?php echo $badge; ?></span>
-                <?php endif; ?>
+        <?php
+        $whyItems = [
+            ["title" => "Original Products", "desc" => "100% authentic perfumes."],
+            ["title" => "Fast Delivery", "desc" => "Quick worldwide shipping."],
+            ["title" => "Best Prices", "desc" => "Luxury at good prices."]
+        ];
+        ?>
 
-            </div>
-        <?php endforeach; ?>
+        <div class="why-grid">
+            <?php foreach ($whyItems as $item): ?>
+                <div class="why-box">
+                    <h3><?php echo $item['title']; ?></h3>
+                    <p><?php echo $item['desc']; ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
 
-    </div>
+
 
 </main>
 
