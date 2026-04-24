@@ -15,6 +15,7 @@ if (!empty($_SESSION['cart'])) {
             <a href="/PerfumeStore_20/index.php">Home</a>
             <a href="/PerfumeStore_20/pages/products.php">Shop</a>
             <a href="/PerfumeStore_20/pages/about.php">About Us</a>
+            <a href="/PerfumeStore_20/pages/visitus.php">Visit Us</a>
 
             <div class="dropdown">
                 <span class="dropbtn">Register ▾</span>
