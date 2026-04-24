@@ -106,6 +106,30 @@ $featured = array_slice($products, 0, 3);
             <?php endforeach; ?>
         </div>
     </section>
+    <section class="newsletter">
+        <?php renderSectionTitle("Join Our Newsletter"); ?>
+        <p>Get updates about new perfumes</p>
+
+        <form method="POST">
+            <input type="email" name="email" placeholder="Enter your email">
+            <button type="submit">Subscribe</button>
+        </form>
+
+        <?php
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $email = $_POST['email'] ?? '';
+            if ($email) {
+                echo "<p style='color:green;'>Subscribed successfully!</p>";
+            }
+        }
+        ?>
+    </section>
+    <section class="about">
+        <?php renderSectionTitle("About Us"); ?>
+        <p>
+            Maison De Parfum is your destination for premium fragrances.
+        </p>
+    </section>
 
 
 
