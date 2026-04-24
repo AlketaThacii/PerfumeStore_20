@@ -2,7 +2,7 @@
 $count = 0;
 if (!empty($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $item) {
-        $count += $item['qty'] ?? 1;
+        $count += $item['qty'];
     }
 }
 ?>

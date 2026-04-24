@@ -32,6 +32,7 @@
 
         <h3>© <?php echo date("Y"); ?>, Maison De Parfum | All rights reserved</h3>
     </div>
+    <div id="toast" class="toast"></div>
 </footer>
 <script src="/PerfumeStore_20/assets/js/script.js"></script>
 </body>
