@@ -33,6 +33,6 @@
         <h3>© <?php echo date("Y"); ?>, Maison De Parfum | All rights reserved</h3>
     </div>
 </footer>
-<script src="/PERFUMESTORE_20/assets/js/script.js"></script>
+<script src="/PerfumeStore_20/assets/js/script.js"></script>
 </body>
 </html>

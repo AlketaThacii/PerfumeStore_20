@@ -38,10 +38,11 @@ function renderProductCard($p)
         <?php endif; ?>
 
         <form class="add-to-cart-form">
-            <input type="hidden" name="name" value="<?php echo $p['name']; ?>">
-            <input type="hidden" name="price" value="<?php echo $p['price']; ?>">
-            <button type="submit" name="add_to_cart" class="btn-cart">Add to Cart</button>
-        </form>
+    <input type="hidden" name="name" value="<?php echo $p['name']; ?>">
+    <input type="hidden" name="price" value="<?php echo $p['price']; ?>">
+
+    <button type="submit" class="btn-cart">Add to Cart</button>
+</form>
     </div>
 <?php
 }
