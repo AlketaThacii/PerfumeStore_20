@@ -17,7 +17,7 @@ body {
     color: #000;
 }
 body.dark {
-    background-color: #121212;
+    background-color: black;
     color: #ffffff;
 }
 
@@ -166,6 +166,60 @@ header {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+.shop {
+    padding: 140px 40px;
+    text-align: center;
+}
+.subtitle {
+    color: gray;
+    margin-bottom: 20px;
+}
+.filter a {
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #d4af37;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+.card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.price {
+    color: #d4af37;
+    font-weight: bold;
+}
+.badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+body.dark .card {
+    background: #1e1e1e;
+    color: white;
+}
+
 .footer {
     background-color: black;
     padding-bottom: 20px;
