@@ -1,7 +1,7 @@
 
 <?php include '../includes/header.php'; ?>
 <?php include '../includes/navbar.php'; ?>
-
+<main>
 <section class="about">
     <div class="about-container">
 
@@ -42,5 +42,6 @@
 
     </div>
 </section>
+</main>
 
 <?php include '../includes/footer.php'; ?>
