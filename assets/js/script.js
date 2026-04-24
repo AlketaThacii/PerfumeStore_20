@@ -21,3 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".add-to-cart-form").forEach(form => {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch("add_to_cart.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                document.getElementById("cart-count").innerText = data.count;
+            });
+        });
+    });
+});
