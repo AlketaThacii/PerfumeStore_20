@@ -57,8 +57,10 @@ $featured = array_slice($products, 0, 3);
     <section class="hero">
         <h1>Maison De Parfum</h1>
         <p>Discover luxury fragrances for every personality</p>
-        <a href="pages/products.php" class="btn">Shop Now</a>
-        <a href="pages/visitus.php" class="btn">Discover</a>
+        <div class="hero-buttons">
+            <a href="pages/products.php" class="btn primary">Shop Now</a>
+            <a href="pages/visitus.php" class="btn primary">Discover</a>
+        </div>
     </section>
 
     <section class="featured">
@@ -80,9 +82,9 @@ $featured = array_slice($products, 0, 3);
             ?>
         </div>
 
-        <div class="grid">
-            <?php foreach ($filtered as $p) renderProductCard($p, false); ?>
-                </div>
+        <div class="grid-index">
+            <?php foreach ($filtered as $p) renderProductCard($p); ?>
+        </div>
     </section>
 
     <section class="why">
@@ -104,6 +106,61 @@ $featured = array_slice($products, 0, 3);
                 </div>
             <?php endforeach; ?>
         </div>
+    </section>
+    <section class="testimonials">
+        <?php renderSectionTitle("What Our Customers Say"); ?>
+
+        <?php
+        $reviews = [
+            [
+                "name" => "Shqipe Shala",
+                "text" => "Fast delivery and quality products, value for money.",
+                "img" => "user1.jpg",
+                "rating" => 5
+            ],
+            [
+                "name" => "Besnik Gashi",
+                "text" => "Amazing perfumes! I will definitely shop again.",
+                "img" => "user2.jpg",
+                "rating" => 4
+            ],
+            [
+                "name" => "Aferdita Berisha",
+                "text" => "Best perfume store! Highly recommended.",
+                "img" => "user3.jpg",
+                "rating" => 5
+            ]
+        ];
+
+        function renderStars($rating)
+        {
+            for ($i = 1; $i <= 5; $i++) {
+                if ($i <= $rating) {
+                    echo "★";
+                } else {
+                    echo "☆";
+                }
+            }
+        }
+        ?>
+
+        <div class="testimonials-grid">
+            <?php foreach ($reviews as $r): ?>
+                <div class="testimonial-card">
+
+                    <img src="/PerfumeStore_20/assets/images/<?php echo $r['img']; ?>" alt="">
+
+                    <h3><?php echo $r['name']; ?></h3>
+                    <p class="review-text"><?php echo $r['text']; ?></p>
+
+                    <div class="stars">
+                        <?php renderStars($r['rating']); ?>
+                    </div>
+
+                </div>
+            <?php endforeach; ?>
+        </div>
+
     </section>
     <section class="newsletter">
         <?php renderSectionTitle("Join Our Newsletter"); ?>
