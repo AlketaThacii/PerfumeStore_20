@@ -16,13 +16,6 @@ body {
   background: radial-gradient(circle at top, #111 0%, var(--bg) 55%);
 }
 
-/* ================= HEADER FIX ================= */
-/* Header qëndron gjithmonë sipër */
-header {
-  position: fixed;
-  z-index: 9999;
-}
-
 /* Leaflet mos me dal mbi header */
 .leaflet-pane,
 .leaflet-top,
