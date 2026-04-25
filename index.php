@@ -92,6 +92,50 @@ $featured = array_slice($products, 0, 3);
             <?php foreach ($filtered as $p) renderProductCard($p); ?>
         </div>
     </section>
+    <?php
+    $title = "CREATED WITH PURPOSE";
+
+    $paragraphs = [
+        "A refined luxury experience crafted with passion and elegance. Maison de Parfum is a contemporary fragrance house dedicated to refinement, authenticity, and the art of modern perfumery.",
+
+    ];
+
+    $images = [
+        ["src" => "assets/images/perfume.webp", "class" => "img-top"],
+        ["src" => "assets/images/img-12.jpg", "class" => "img-middle"],
+        ["src" => "assets/images/perfumee.jpg", "class" => "img-bottom"]
+    ];
+    ?>
+
+    <section class="about-home">
+        <div class="about-home-container">
+
+            <!-- LEFT -->
+            <div class="about-home-text">
+                <h2><?= $title ?></h2>
+
+                <?php foreach ($paragraphs as $i => $p): ?>
+                    <p class="<?= $i == 0 ? 'about-home-lead' : '' ?>">
+                        <?= $p ?>
+                    </p>
+                <?php endforeach; ?>
+
+                <p class="about-home-quote">
+                    "Perfume is the art that makes memory speak."
+                </p>
+
+                <a href="pages/about.php" class="about-home-btn">Read More</a>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="about-home-images">
+                <?php foreach ($images as $img): ?>
+                    <img src="<?= $img['src']; ?>" class="about-home-img <?= $img['class']; ?>">
+                <?php endforeach; ?>
+            </div>
+
+        </div>
+    </section>
 
     <section class="why">
         <?php renderSectionTitle("Why Choose Us"); ?>
@@ -185,12 +229,6 @@ $featured = array_slice($products, 0, 3);
             }
         }
         ?>
-    </section>
-    <section class="about">
-        <?php renderSectionTitle("About Us"); ?>
-        <p>
-            Maison De Parfum is your destination for premium fragrances.
-        </p>
     </section>
 
 
