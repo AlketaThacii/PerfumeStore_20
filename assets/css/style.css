@@ -652,20 +652,8 @@ body.dark .card {
 .submit-order-btn:hover {
     background: #f0c94d;
 }
-.add-to-cart-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #d4af37;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-}
 
-.add-to-cart-btn:hover {
-    background: #f0c94d;
-}
+
 
 .qty {
     margin-top: 10px;
