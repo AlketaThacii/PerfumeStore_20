@@ -56,7 +56,6 @@ echo '<main class="shop">';
                         echo '<button type="button" onclick="changeQty(\''.$cleanId.'\', 1, '.$rawPrice.')">+</button>';
                     echo '</div>';
 
-                    
                 echo '</div>';
             }
         } else {
