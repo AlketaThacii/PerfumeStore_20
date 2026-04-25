@@ -1,0 +1,40 @@
+.order-result-page {
+    padding: 180px 20px 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.order-result-card {
+    width: 100%;
+    max-width: 700px;
+    background: #111;
+    color: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.order-result-card h2 {
+    margin-bottom: 20px;
+    color: #d4af37;
+}
+
+.order-result-card p {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.order-result-card .error {
+    color: #ff6b6b;
+}
+
+.order-result-card .btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #d4af37;
+    color: black;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
