@@ -32,7 +32,7 @@ h1 {
     text-shadow: 0 0 10px gold;
 }
 
-.container3 {
+.container {
     display: flex;
     flex-wrap: wrap;
     gap: 25px;

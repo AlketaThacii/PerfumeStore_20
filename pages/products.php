@@ -17,12 +17,14 @@ if ($order) {
 <!DOCTYPE html>
 <html>
 <head>
+    
     <title>Maison de Sucre</title>
 
   <link rel ="stylesheet" href="../assets/css/products.css">
 </head>
 
 <body>
+    
 <h1>Maison de Sucre</h1>
 <div class="controls">
 
@@ -40,7 +42,7 @@ if ($order) {
 
 </div>
 
-<div class="container3">
+<div class="container">
 
 <?php if (!empty($filteredProducts)): ?>
 
@@ -77,3 +79,4 @@ if ($order) {
 
 </body>
 </html>
+<?php include '../includes/footer.php'; ?>
