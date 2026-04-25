@@ -110,19 +110,19 @@ $featured = array_slice($products, 0, 3);
             [
                 "name" => "Shqipe Shala",
                 "text" => "Fast delivery and quality products, value for money.",
-                "img" => "user1.jpg",
+                "img" => "person7.jpg",
                 "rating" => 5
             ],
             [
                 "name" => "Besnik Gashi",
                 "text" => "Amazing perfumes! I will definitely shop again.",
-                "img" => "user2.jpg",
+                "img" => "person1.jpg",
                 "rating" => 4
             ],
             [
                 "name" => "Aferdita Berisha",
                 "text" => "Best perfume store! Highly recommended.",
-                "img" => "user3.jpg",
+                "img" => "person9.jpg",
                 "rating" => 5
             ]
         ];

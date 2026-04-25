@@ -256,8 +256,9 @@ header {
 
 /*Pjesa Why Choose Us*/
 .why{
-    margin-top: 30px;
-}.why-grid {
+    margin-top: 100px;
+}
+.why-grid {
     display: flex;
     justify-content: center;
     gap: 30px;
