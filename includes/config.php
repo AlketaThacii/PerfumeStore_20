@@ -9,7 +9,7 @@ $products = [
     new Product(5, "Tom Ford Noir", 160, "men"),
     
 
-    new Product(6, "Chanel No.5", 150, "women"),
+    new Product(6, "Versace", 150, "women"),
     new Product(7, "YSL Libre", 130, "women"),
     new Product(8, "Gucci Bloom", 125, "women"),
     new Product(9, "Dior J'adore", 145, "women"),
