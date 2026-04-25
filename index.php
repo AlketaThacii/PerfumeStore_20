@@ -53,7 +53,7 @@ $filtered = array_filter($products, function ($p) use ($type) {
 $featured = array_slice($products, 0, 3);
 ?>
 
-<main class="shop">
+<main class="main1">
     <section class="hero">
         <h1>Maison De Parfum</h1>
         <p>Discover luxury fragrances for every personality</p>
