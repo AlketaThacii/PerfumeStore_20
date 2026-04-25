@@ -24,7 +24,10 @@ $aboutCards = [
     ]
 ];
 ?>
+<link rel ="stylesheet" href="../assets/css/about.css">
+
 <main>
+
 <section class="about">
     <div class="about-container">
 
