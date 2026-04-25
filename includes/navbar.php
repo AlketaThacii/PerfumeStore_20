@@ -1,14 +1,3 @@
-<?php
-session_start();
-
-$count = 0;
-if (!empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $item) {
-        $count += $item['qty'];
-    }
-}
-?>
-
 <header class="header">
     <div class="container">
 
@@ -26,9 +15,7 @@ if (!empty($_SESSION['cart'])) {
                 <a href="/PerfumeStore_20/login.php">Log In</a>
             <?php endif; ?>
 
-            <a href="/PerfumeStore_20/pages/cart.php">
-                🛒 Cart (<span id="cart-count"><?php echo $count; ?></span>)
-            </a>
+            
         </nav>
 
     </div>

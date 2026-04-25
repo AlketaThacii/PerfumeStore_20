@@ -36,13 +36,6 @@ function renderProductCard($p)
         <?php if ($badge): ?>
             <span class="badge"><?php echo $badge; ?></span>
         <?php endif; ?>
-
-        <form class="add-to-cart-form">
-    <input type="hidden" name="name" value="<?php echo $p['name']; ?>">
-    <input type="hidden" name="price" value="<?php echo $p['price']; ?>">
-
-    <button type="submit" class="btn-cart">Add to Cart</button>
-</form>
     </div>
 <?php
 }
@@ -70,7 +63,7 @@ $featured = array_slice($products, 0, 3);
     <section class="featured">
         <?php renderSectionTitle("Featured Products"); ?>
         <div class="grid">
-            <?php foreach ($featured as $p) renderProductCard($p); ?>
+            <?php foreach ($featured as $p) renderProductCard($p, false); ?>
         </div>
     </section>
 
@@ -87,8 +80,8 @@ $featured = array_slice($products, 0, 3);
         </div>
 
         <div class="grid">
-            <?php foreach ($filtered as $p) renderProductCard($p); ?>
-        </div>
+            <?php foreach ($filtered as $p) renderProductCard($p, false); ?>
+                </div>
     </section>
 
     <section class="why">
