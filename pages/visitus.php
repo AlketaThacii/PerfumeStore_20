@@ -3,6 +3,7 @@ include '../includes/header.php';
 include '../includes/navbar.php';
 ?>
 
+<link rel="stylesheet" href="../assets/css/visitUs.css">
 
 <div class="visit-container">
   <main class="grid">
@@ -34,7 +35,6 @@ include '../includes/navbar.php';
     </section>
   </main>
 </div>
-
 
 
 <?php
