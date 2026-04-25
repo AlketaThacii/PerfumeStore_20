@@ -3,12 +3,12 @@ include("includes/header.php");
 include("includes/navbar.php");
 
 $products = [
-    ["name" => "Dior Sauvage", "price" => 120, "type" => "Men", "img" => "dior.jpg"],
-    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "chanel.jpg"],
-    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "armani.jpg"],
-    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "ysl.jpg"],
-    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "versace.jpg"],
-    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "gucci.jpg"]
+    ["name" => "cqua di Gio", "price" => 110, "type" => "Men", "img" => "image4.webp"],
+    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "image2.avif"],
+    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "image12.jpg"],
+    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "image44.avif"],
+    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "image14.avif"],
+    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "image7.jpg"]
 ];
 
 function formatPrice($price)
@@ -19,7 +19,7 @@ function formatPrice($price)
 function getBadge($price)
 {
     if ($price >= 150) return "Premium";
-    if ($price <= 115) return "Sale";
+    if ($price < 110) return "Sale";
     return "";
 }
 
@@ -63,15 +63,10 @@ $featured = array_slice($products, 0, 3);
         </div>
     </section>
 
-    <section class="featured">
-        <?php renderSectionTitle("Featured Products"); ?>
-        <div class="grid">
-            <?php foreach ($featured as $p) renderProductCard($p, false); ?>
-        </div>
-    </section>
+
 
     <section id="products">
-        <?php renderSectionTitle("Our Collection"); ?>
+        <?php renderSectionTitle("Top Picks"); ?>
 
         <div class="filter">
             <?php
