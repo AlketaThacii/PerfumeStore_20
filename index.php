@@ -82,7 +82,7 @@ $featured = array_slice($products, 0, 3);
             ?>
         </div>
 
-        <div class="grid">
+        <div class="grid-index">
             <?php foreach ($filtered as $p) renderProductCard($p); ?>
         </div>
     </section>
