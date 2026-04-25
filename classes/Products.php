@@ -4,12 +4,14 @@ class Product {
     private $name;
     private $price;
     private $category;
+    
 
     public function __construct($id, $name, $price, $category) {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->category = $category;
+        
     }
 
     public function getId() { return $this->id; }
@@ -20,4 +22,4 @@ class Product {
     public function setPrice($price) { $this->price=$price;}
     public function getCategory() { return $this->category; }
     public function setCategory($category) { $this->category=$category;}
-}
+   }    
