@@ -571,57 +571,160 @@ body.dark .card {
 
 
 .categories {
-    width: 100%;
+    width: 150%;
     text-align: center;
-    min-height: 100vh;
+    margin-bottom: 20px;
 }
 
-/* Use .grid instead of .container for the card layout */
+
 .grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
     justify-content: center;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 25px;
+    width: 100%;
 }
+
 
 .card {
-    background: linear-gradient(145deg, #1a1a1a, #111);
-    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: #111;
+    border: 1px solid rgba(212, 175, 55, 0.3);
     padding: 20px;
     border-radius: 15px;
-    width: 240px;
+    width: 280px;
     text-align: center;
-    /* This handles your smooth transitions */
-    transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-    position: relative;
-    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.3);
+
+.order-sidebar {
+    width: 100%;
+    max-width: 500px; 
+    margin-top: 20px;
+}
+
+.order-card {
+    background: #0a0a0a;
     border: 1px solid #d4af37;
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
 }
 
-.price {
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
     color: #d4af37;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
-.badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 8px;
+    box-sizing: border-box; 
+}
+
+
+.submit-order-btn {
+    width: 100%;
+    padding: 15px;
     background: #d4af37;
     color: black;
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 11px;
     font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.submit-order-btn:hover {
+    background: #f0c94d;
+}
+.add-to-cart-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #d4af37;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-to-cart-btn:hover {
+    background: #f0c94d;
+}
+
+.qty {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+
+.qty-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.qty-control button {
+    width: 34px;
+    height: 34px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    background: #111;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.2s ease;
+}
+
+.qty-control button:hover {
+    background: #d4af37;
+    color: #000;
+    transform: scale(1.05);
+}
+
+.qty-control button:active {
+    transform: scale(0.95);
+}
+
+
+.qty-control span {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
 }
