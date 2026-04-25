@@ -1,7 +1,5 @@
-<?php
-include '../includes/header.php';
-include '../includes/navbar.php';
-?>
+<?php include '../includes/header.php'; ?>
+<?php include '../includes/navbar.php'; ?>
 
 <link rel="stylesheet" href="../assets/css/visitUs.css">
 
