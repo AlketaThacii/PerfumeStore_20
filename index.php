@@ -55,12 +55,23 @@ $featured = array_slice($products, 0, 3);
 
 <main class="main1">
     <section class="hero">
-        <h1>Maison De Parfum</h1>
-        <p>Discover luxury fragrances for every personality</p>
-        <div class="hero-buttons">
-            <a href="pages/products.php" class="btn primary">Shop Now</a>
-            <a href="pages/visitus.php" class="btn primary">Discover</a>
+
+        <video autoplay muted loop class="hero-video">
+            <source src="assets/video/video1.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <h1>The Art of Fragrance</h1>
+            <p class="hero-subtitle">Inspired by elegance. Created with passion.</p>
+            <p class="hero-desc">Each fragrance tells a story of character, depth, and modern luxury.</p>
+
+
+            <div class="hero-buttons">
+                <a href="pages/products.php" class="btn primary">Shop Now</a>
+                <a href="pages/visitus.php" class="btn primary">Discover</a>
+            </div>
         </div>
+
     </section>
 
 
