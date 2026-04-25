@@ -57,8 +57,10 @@ $featured = array_slice($products, 0, 3);
     <section class="hero">
         <h1>Maison De Parfum</h1>
         <p>Discover luxury fragrances for every personality</p>
-        <a href="pages/products.php" class="btn">Shop Now</a>
-        <a href="pages/visitus.php" class="btn">Discover</a>
+        <div class="hero-buttons">
+    <a href="pages/products.php" class="btn primary">Shop Now</a>
+    <a href="pages/visitus.php" class="btn primary">Discover</a>
+</div>
     </section>
 
     <section class="featured">
