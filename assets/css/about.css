@@ -161,3 +161,38 @@ body.dark .welcome-message {
         max-width: 360px;
     }
 }
+
+body:not(.dark) .about {
+    background: #f9f9f9;
+    color: #000;
+}
+body:not(.dark) .about-container h1 {
+    color: #000;
+}
+body:not(.dark) .about-container > p {
+    color: #444;
+}
+body:not(.dark) .about-card,
+body:not(.dark) .about-stat-card {
+    background: #ffffff;
+    color: #000;
+    border: 1px solid #eee;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+body:not(.dark) .about-card:hover {
+    background: #d4af37;
+    color: #000;
+}
+body:not(.dark) .about-card p {
+    color: #444;
+}
+body:not(.dark) .about-stat-card p {
+    color: #444;
+}
+body:not(.dark) .about-stat-card h2 {
+    color: #d4af37;
+}
+body:not(.dark) .about-divider::before,
+body:not(.dark) .about-divider::after {
+    background: linear-gradient(to right, transparent, #d4af37, transparent);
+}

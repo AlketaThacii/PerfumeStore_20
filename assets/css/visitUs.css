@@ -217,3 +217,43 @@ body {
     font-size: 27px;
   }
 }
+
+
+body:not(.dark) {
+  background: #f9f9f9;
+  color: #000;
+}
+body:not(.dark) .visit-card {
+  background: #ffffff;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+body:not(.dark) .visit-card h2 {
+  color: #000;
+}
+body:not(.dark) .visit-card p {
+  color: #444;
+}
+body:not(.dark) .visit-detail {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  color: #000;
+}
+body:not(.dark) .visit-detail strong {
+  color: #d4af37;
+}
+body:not(.dark) .visit-btn {
+  color: #000;
+  border: 1px solid #d4af37;
+}
+body:not(.dark) .visit-btn:hover {
+  background: #d4af37;
+  color: #000;
+}
+body:not(.dark) .visit-map {
+  border: 1px solid #ddd;
+}
+body:not(.dark) .leaflet-control-zoom a {
+  background: #fff !important;
+  color: #000 !important;
+}

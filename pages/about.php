@@ -22,7 +22,7 @@ $aboutCards = [
 ];
 ?>
 
-<link rel="stylesheet" href="../assets/css/about.css">
+<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/about.css">
 
 <main>
     <section class="about">
