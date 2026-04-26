@@ -4,7 +4,7 @@ include '../includes/navbar.php';
 ?>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="../assets/css/visitUs.css">
+<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/visitUs.css">
 
 <div class="visit-showroom">
   <main class="visit-grid">

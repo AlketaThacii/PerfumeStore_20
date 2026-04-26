@@ -1,1 +1,74 @@
-# PerfumeStore_20
+Maison De Parfum – Aplikacion Web për Dyqan Parfumesh
+Përshkrimi
+
+Maison De Parfum është një aplikacion web i ndërtuar me PHP që simulon një dyqan online parfumesh. Përdoruesit mund të shfletojnë produkte, t’i filtrojnë dhe rendisin ato, si dhe të kryejnë porosi të thjeshta.
+
+Ky projekt demonstron konceptet bazë të zhvillimit web:
+
+PHP (logjika në server)
+HTML/CSS (dizajni)
+JavaScript (interaktiviteti)
+Session & Cookies
+
+Struktura e Projektit:
+index.php
+login.php
+logout.php
+pages/
+    products.php
+    about.php
+    visitUs.php
+includes/
+    header.php
+    navbar.php
+    footer.php
+    config.php
+assets/
+    css/
+    js/
+    images/
+
+Funksionalitetet
+Homepage (index.php) - Faqja kryesore e aplikacionit, përfshin navigimin dhe strukturën bazë, mbështet light mode dhe dark mode
+
+Produktet (products.php) - Shfaq të gjitha produktet në mënyrë dinamike, filtrim sipas kategorisë: Meshkuj; Femra; Unisex. Renditje sipas çmimit: Në rritje; Në zbritje 
+Karakteristika:
+Kartela produktesh
+Badge “PREMIUM” për produkte të shtrenjta
+Kontroll i sasisë (+ / -)
+Llogaritje e totalit në kohë reale (JavaScript)
+
+Login (login.php) - Autentikim i thjeshtë me përdorues të paracaktuar, ruajtje e të dhënave në session: username; role (admin/user). Mesazh gabimi në rast të kredencialeve të pasakta
+
+About Us (about.php) - Informacion për biznesin. Përmban: Misionin, arsye pse të zgjidhet kompania, statistika me animacion, shfaq mesazh personal nëse ekziston cookie (email)
+
+Visit Us (visitUs.php) - Shfaq lokacionin e dyqanit. Përfshin: Adresën, Orarin e punës, Numrin e telefonit, Buton për navigim në Google Maps, Hartë interaktive (Leaflet.js)
+
+Logout (logout.php) - Mbyll session-in e përdoruesit, ridrejton në faqen kryesore
+
+Dizajni
+Përdoren disa skedarë CSS:
+style.css – stili kryesor
+about.css – faqja About
+login.css – forma e login-it
+visitUs.css – faqja e lokacionit
+
+Mbështet:
+Light Mode
+Dark Mode
+
+Teknologjitë:
+PHP
+HTML5
+CSS3
+JavaScript
+Leaflet.js
+
+Kredencialet për Testim
+Admin:
+username: admin
+password: 123
+
+User:
+username: user
+password: 123

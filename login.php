@@ -1,4 +1,5 @@
 <?php 
+session_start(); 
 include 'includes/header.php'; 
 include 'includes/navbar.php'; 
 
@@ -35,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<link rel="stylesheet" href="/PerfumeStore_20/assets/css/login.css">
+<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/login.css">
 <main class="login-page">
     <div class="login-box">
 

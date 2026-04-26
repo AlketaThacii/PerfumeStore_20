@@ -215,20 +215,13 @@ $featured = array_slice($products, 0, 3);
     <section class="newsletter">
         <?php renderSectionTitle("Join Our Newsletter"); ?>
         <p>Get updates about new perfumes</p>
-
-        <form method="POST">
-            <input type="email" name="email" placeholder="Enter your email">
+        <form method="POST" action="pages/newsletter.php">
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email">
             <button type="submit">Subscribe</button>
         </form>
-
-        <?php
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $email = $_POST['email'] ?? '';
-            if ($email) {
-                echo "<p style='color:green;'>Subscribed successfully!</p>";
-            }
-        }
-        ?>
     </section>
 
 
