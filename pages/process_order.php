@@ -1,10 +1,5 @@
 <?php
 session_start();
-include("../includes/header.php");
-echo '<link rel="stylesheet" href="../assets/css/style.css">';
-echo '<link rel="stylesheet" href="../assets/css/process_order.css">';
-include("../includes/navbar.php");
-
 $email = trim($_POST['email'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
 $address = trim($_POST['address'] ?? '');
@@ -24,9 +19,16 @@ if (!preg_match("/^[0-9]{9,12}$/", $phone)) {
  if ($emailError === "" && $phoneError === "") {
         $_SESSION['order_email'] = $email;
         $_SESSION['order_phone'] = $phone;
+
+        setcookie("user_email", $email, time() + (86400 * 7), "/");
+
         $success = true;
     }
 }
+include("../includes/header.php");
+echo '<link rel="stylesheet" href="../assets/css/style.css">';
+echo '<link rel="stylesheet" href="../assets/css/process_order.css">';
+include("../includes/navbar.php");
 ?>
 <main class="order-result-page">
     <div class="order-result-card">

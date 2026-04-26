@@ -19,6 +19,16 @@
     line-height: 1.7;
     margin-bottom: 30px;
 }
+.welcome-message {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #d4af37;
+    background: rgba(212, 175, 55, 0.12);
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
 
 .about-grid {
     display: flex;
@@ -62,6 +72,10 @@ body.dark .about-container p {
 body.dark .about-card {
     background: #1e1e1e;
     color: white;
+}
+body.dark .welcome-message {
+    color: #d4af37;
+    background: rgba(212, 175, 55, 0.18);
 }
 
 body.dark .about-card:hover {
