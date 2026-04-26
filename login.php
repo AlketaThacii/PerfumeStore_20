@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    $error = "Username ose password gabim!";
+    $error = "Username or password is incorrect!";
 }
 ?>
 
