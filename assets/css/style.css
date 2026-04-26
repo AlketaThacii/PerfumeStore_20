@@ -49,7 +49,7 @@ body.dark a {
 .theme-btn:hover {
     background: gold;
 }
-main {
+.main1 {
     flex: 1;
 }
 .container {
@@ -58,7 +58,7 @@ main {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 39px 100px;
+    padding: 40px 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -542,6 +542,7 @@ body.dark .card {
     color: white;
 }
 
+
 /*Pjesa e footerit*/
 .footer {
     margin-top: auto;
@@ -665,8 +666,31 @@ body.dark .card {
     }
 }
 
+body:not(.dark) .container1 {
+    border-top: 2px solid #000; 
+}
+
+body:not(.dark) .footer-col h4,
+body:not(.dark) .footer-col1 h4 {
+    color: #000;
+}
+
+body:not(.dark) .footer-col ul li a,
+body:not(.dark) .footer-col1 ul li a {
+    color: #444;
+}
+
+body:not(.dark) .footer-col ul li a:hover,
+body:not(.dark) .footer-col1 ul li a:hover {
+    color: #d4af37;
+}
+
+body:not(.dark) .footer h3 {
+    color: #555;
+}
 
 
+/*Pjesa e products.php*/
 
 .shop {
   display: flex;
@@ -834,4 +858,63 @@ body.dark .card {
     font-weight: bold;
     min-width: 20px;
     text-align: center;
+}
+
+.main1 .card {
+    background: #fff;
+}
+
+body.dark .main1 .card {
+    background: #1a1a1a;
+}
+body.dark .why-box {
+    background: #1e1e1e;
+}
+
+body.dark .newsletter {
+    background: #000;
+}
+body.dark .navigation a {
+    color: #ddd;
+}
+
+body.dark .logo {
+    color: white;
+}
+body:not(.dark) .shop .card {
+    background: #ffffff;
+    color: #000;
+    border: 1px solid #eee;
+}
+
+body:not(.dark) .shop .order-card {
+    background: #fff;
+    color: #000;
+}
+/* ===== PRODUCTS PAGE FIX ===== */
+
+body.dark .shop {
+    background: #0a0a0a;
+}
+
+body.dark .shop .card {
+    background: #1a1a1a !important;
+    color: #fff !important;
+    border: 1px solid #333;
+}
+
+body.dark .shop .price {
+    color: #d4af37;
+}
+
+body.dark .shop .order-card {
+    background: #111;
+    border: 1px solid #d4af37;
+}
+
+body.dark .shop input,
+body.dark .shop textarea {
+    background: #1a1a1a;
+    color: white;
+    border: 1px solid #333;
 }
