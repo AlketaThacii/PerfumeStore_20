@@ -15,7 +15,7 @@ echo '<link rel="stylesheet" href="../assets/css/style.css" >';
 include("../includes/navbar.php");
 
 echo '<main class="shop">';
-
+echo '<div class ="left-side">';
     echo '<div class="filter" style="margin-bottom: 30px;">';
         echo '<strong>Category:</strong> ';
         echo "<a href='?category=all&sort=$order'>All</a> | ";
@@ -27,6 +27,7 @@ echo '<main class="shop">';
         echo " <a href='?category=$category&sort=asc'>Price ↑</a> | ";
         echo " <a href='?category=$category&sort=desc'>Price ↓</a>";
     echo '</div>';
+    
 
     echo '<div class="grid">';
         
@@ -45,6 +46,9 @@ echo '<main class="shop">';
                     if ($isPremium) {
                         echo '<span class="badge">PREMIUM</span>';
                     }
+                    $image = $product->getImage();
+
+                   echo "<img src='$image' alt='$name' class='product-img'>";
 
                     echo "<h3>$name</h3>";
                     echo "<p class='price'>$$price</p>";
@@ -61,7 +65,7 @@ echo '<main class="shop">';
         } else {
             echo '<p style="grid-column: 1 / -1;">No products found.</p>';
         }
-
+echo '</div>';
         echo '<aside class="order-sidebar">';
             echo '<div class="order-card">';
                 echo '<h2>Order Online</h2>';
