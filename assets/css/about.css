@@ -1,23 +1,26 @@
 .about {
     padding: 160px 20px 80px;
-    background: #fff;
+    background: #111;
+    color: white;
     text-align: center;
 }
 
 .about-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .about-container h1 {
     font-size: 42px;
     margin-bottom: 20px;
+    color: #d4af37;
 }
 
-.about-container p {
+.about-container > p {
     font-size: 18px;
     line-height: 1.7;
     margin-bottom: 30px;
+    color: white;
 }
 .welcome-message {
     display: inline-block;
@@ -30,26 +33,52 @@
     margin-bottom: 20px;
 }
 
-.about-grid {
+.about-grid,
+.about-stats {
     display: flex;
     justify-content: center;
     gap: 25px;
     flex-wrap: wrap;
+}
+
+.about-grid {
     margin-top: 30px;
 }
 
-.about-card {
-    background: #111;
+.about-stats {
+    margin: 55px auto 20px;
+    width: 100%;
+}
+
+.about-card,
+.about-stat-card {
+    background: #1f1f1f;
     color: white;
-    padding: 25px;
-    border-radius: 12px;
-    width: 300px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-    transition: 0.3s ease;
+    width: 330px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    transition: all 0.3s ease;
+}
+
+.about-card {
+    min-height: 230px;
+    padding: 35px 25px;
+}
+
+.about-stat-card {
+    min-height: 170px;
+    padding: 45px 25px;
+}
+
+.about-card:hover,
+.about-stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.18);
 }
 
 .about-card:hover {
-    transform: translateY(-6px);
     background: #d4af37;
     color: black;
 }
@@ -59,26 +88,76 @@
     font-size: 24px;
 }
 
-body.dark .about {
-    background: #111;
-    color: white;
+.about-card h3::after {
+    content: "";
+    display: block;
+    width: 55px;
+    height: 2px;
+    background: #d4af37;
+    margin: 14px auto 0;
 }
 
-body.dark .about-container h1,
-body.dark .about-container p {
-    color: white;
+.about-card:hover h3::after {
+    background: black;
 }
 
-body.dark .about-card {
-    background: #1e1e1e;
+.about-card p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.about-stat-card h2 {
+    color: #d4af37;
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.about-stat-card h2::before {
+    content: "✦";
+    display: block;
+    font-size: 24px;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.about-stat-card p {
     color: white;
+    font-size: 18px;
+    margin: 0;
 }
 body.dark .welcome-message {
     color: #d4af37;
     background: rgba(212, 175, 55, 0.18);
 }
 
-body.dark .about-card:hover {
-    background: #d4af37;
-    color: black;
+.about-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 60px 0;
+}
+
+.about-divider::before,
+.about-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #d4af37, transparent);
+    margin: 0 20px;
+}
+
+.about-divider::before {
+    margin-left: 0;
+}
+
+.about-divider::after {
+    margin-right: 0;
+}
+
+@media (max-width: 900px) {
+    .about-card,
+    .about-stat-card {
+        width: 100%;
+        max-width: 360px;
+    }
 }

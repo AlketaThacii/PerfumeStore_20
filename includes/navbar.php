@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $count = 0;
 if (!empty($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $item) {
@@ -6,6 +10,7 @@ if (!empty($_SESSION['cart'])) {
     }
 }
 ?>
+
 <header class="header">
     <div class="container">
 
@@ -17,14 +22,13 @@ if (!empty($_SESSION['cart'])) {
             <a href="/PerfumeStore_20/pages/about.php">About Us</a>
             <a href="/PerfumeStore_20/pages/visitus.php">Visit Us</a>
 
-            <div class="dropdown">
-                <span class="dropbtn">Register ▾</span>
-                <div class="dropdown-content">
-                    <a href="/PerfumeStore_20/login.php">Log In</a>
-                    <a href="#">Sign Up</a>
-                </div>
-            </div>
-            <a href="cart.php">🛒 Cart (<span id="cart-count"><?php echo $count; ?></span>)</a>
+            <?php if (isset($_SESSION["username"])): ?>
+                <a href="/PerfumeStore_20/logout.php">LogOut</a>
+            <?php else: ?>
+                <a href="/PerfumeStore_20/login.php">Log In</a>
+            <?php endif; ?>
+
+            
         </nav>
 
     </div>

@@ -3,12 +3,12 @@ include("includes/header.php");
 include("includes/navbar.php");
 
 $products = [
-    ["name" => "Dior Sauvage", "price" => 120, "type" => "Men", "img" => "dior.jpg"],
-    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "chanel.jpg"],
-    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "armani.jpg"],
-    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "ysl.jpg"],
-    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "versace.jpg"],
-    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "gucci.jpg"]
+    ["name" => "cqua di Gio", "price" => 110, "type" => "Men", "img" => "image4.webp"],
+    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "image2.avif"],
+    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "image12.jpg"],
+    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "image44.avif"],
+    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "image14.avif"],
+    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "image7.jpg"]
 ];
 
 function formatPrice($price)
@@ -19,7 +19,7 @@ function formatPrice($price)
 function getBadge($price)
 {
     if ($price >= 150) return "Premium";
-    if ($price <= 115) return "Sale";
+    if ($price < 110) return "Sale";
     return "";
 }
 
@@ -36,13 +36,6 @@ function renderProductCard($p)
         <?php if ($badge): ?>
             <span class="badge"><?php echo $badge; ?></span>
         <?php endif; ?>
-
-        <form class="add-to-cart-form">
-    <input type="hidden" name="name" value="<?php echo $p['name']; ?>">
-    <input type="hidden" name="price" value="<?php echo $p['price']; ?>">
-
-    <button type="submit" class="btn-cart">Add to Cart</button>
-</form>
     </div>
 <?php
 }
@@ -60,22 +53,31 @@ $filtered = array_filter($products, function ($p) use ($type) {
 $featured = array_slice($products, 0, 3);
 ?>
 
-<main class="shop">
+<main class="main1">
     <section class="hero">
-        <h1>Maison De Parfum</h1>
-        <p>Discover luxury fragrances for every personality</p>
-        <a href="pages/products.php" class="btn">Shop Now</a>
+
+        <video autoplay muted loop class="hero-video">
+            <source src="assets/video/video1.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <h1>The Art of Fragrance</h1>
+            <p class="hero-subtitle">Inspired by elegance. Created with passion.</p>
+            <p class="hero-desc">Each fragrance tells a story of character, depth, and modern luxury.</p>
+
+
+            <div class="hero-buttons">
+                <a href="pages/products.php" class="btn primary">Shop Now</a>
+                <a href="pages/visitus.php" class="btn primary">Discover</a>
+            </div>
+        </div>
+
     </section>
 
-    <section class="featured">
-        <?php renderSectionTitle("Featured Products"); ?>
-        <div class="grid">
-            <?php foreach ($featured as $p) renderProductCard($p); ?>
-        </div>
-    </section>
+
 
     <section id="products">
-        <?php renderSectionTitle("Our Collection"); ?>
+        <?php renderSectionTitle("Top Picks"); ?>
 
         <div class="filter">
             <?php
@@ -86,8 +88,52 @@ $featured = array_slice($products, 0, 3);
             ?>
         </div>
 
-        <div class="grid">
+        <div class="grid-index">
             <?php foreach ($filtered as $p) renderProductCard($p); ?>
+        </div>
+    </section>
+    <?php
+    $title = "CREATED WITH PURPOSE";
+
+    $paragraphs = [
+        "A refined luxury experience crafted with passion and elegance. Maison de Parfum is a contemporary fragrance house dedicated to refinement, authenticity, and the art of modern perfumery.",
+
+    ];
+
+    $images = [
+        ["src" => "assets/images/perfume.webp", "class" => "img-top"],
+        ["src" => "assets/images/img-12.jpg", "class" => "img-middle"],
+        ["src" => "assets/images/perfumee.jpg", "class" => "img-bottom"]
+    ];
+    ?>
+
+    <section class="about-home">
+        <div class="about-home-container">
+
+            <!-- LEFT -->
+            <div class="about-home-text">
+                <h2><?= $title ?></h2>
+
+                <?php foreach ($paragraphs as $i => $p): ?>
+                    <p class="<?= $i == 0 ? 'about-home-lead' : '' ?>">
+                        <?= $p ?>
+                    </p>
+                <?php endforeach; ?>
+
+                <p class="about-home-quote">
+                    "Perfume is the art that makes memory speak."
+                </p>
+
+                <a href="pages/about.php" class="about-home-btn">Read More</a>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="about-home-images">
+                <?php foreach ($images as $img): ?>
+                    <img src="<?= $img['src']; ?>" class="about-home-img <?= $img['class']; ?>">
+                <?php endforeach; ?>
+            </div>
+
         </div>
     </section>
 
@@ -111,6 +157,61 @@ $featured = array_slice($products, 0, 3);
             <?php endforeach; ?>
         </div>
     </section>
+    <section class="testimonials">
+        <?php renderSectionTitle("What Our Customers Say"); ?>
+
+        <?php
+        $reviews = [
+            [
+                "name" => "Shqipe Shala",
+                "text" => "Fast delivery and quality products, value for money.",
+                "img" => "person7.jpg",
+                "rating" => 5
+            ],
+            [
+                "name" => "Besnik Gashi",
+                "text" => "Amazing perfumes! I will definitely shop again.",
+                "img" => "person1.jpg",
+                "rating" => 4
+            ],
+            [
+                "name" => "Aferdita Berisha",
+                "text" => "Best perfume store! Highly recommended.",
+                "img" => "person9.jpg",
+                "rating" => 5
+            ]
+        ];
+
+        function renderStars($rating)
+        {
+            for ($i = 1; $i <= 5; $i++) {
+                if ($i <= $rating) {
+                    echo "★";
+                } else {
+                    echo "☆";
+                }
+            }
+        }
+        ?>
+
+        <div class="testimonials-grid">
+            <?php foreach ($reviews as $r): ?>
+                <div class="testimonial-card">
+
+                    <img src="/PerfumeStore_20/assets/images/<?php echo $r['img']; ?>" alt="">
+
+                    <h3><?php echo $r['name']; ?></h3>
+                    <p class="review-text"><?php echo $r['text']; ?></p>
+
+                    <div class="stars">
+                        <?php renderStars($r['rating']); ?>
+                    </div>
+
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </section>
     <section class="newsletter">
         <?php renderSectionTitle("Join Our Newsletter"); ?>
         <p>Get updates about new perfumes</p>
@@ -128,12 +229,6 @@ $featured = array_slice($products, 0, 3);
             }
         }
         ?>
-    </section>
-    <section class="about">
-        <?php renderSectionTitle("About Us"); ?>
-        <p>
-            Maison De Parfum is your destination for premium fragrances.
-        </p>
     </section>
 
 
