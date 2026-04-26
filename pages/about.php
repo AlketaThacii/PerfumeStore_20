@@ -63,5 +63,5 @@ $aboutCards = [
 </main>
 
 
-
+<script src="../assets/js/about.js"></script>
 <?php include '../includes/footer.php'; ?>
