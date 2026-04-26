@@ -27,8 +27,6 @@ if (!empty($_SESSION['cart'])) {
             <?php else: ?>
                 <a href="/PerfumeStore_20/login.php">Log In</a>
             <?php endif; ?>
-
-            
         </nav>
 
     </div>
