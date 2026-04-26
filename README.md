@@ -18,6 +18,7 @@ pages/
     products.php
     about.php
     visitUs.php
+    orders.php
 includes/
     header.php
     navbar.php
@@ -38,7 +39,15 @@ Badge “PREMIUM” për produkte të shtrenjta
 Kontroll i sasisë (+ / -)
 Llogaritje e totalit në kohë reale (JavaScript)
 
-Login (login.php) - Autentikim i thjeshtë me përdorues të paracaktuar, ruajtje e të dhënave në session: username; role (admin/user). Mesazh gabimi në rast të kredencialeve të pasakta
+Login (login.php) - Autentikim i thjeshtë me përdorues të paracaktuar, ruajtje e të dhënave në session: username; role (admin/user). Mesazh gabimi në rast të kredencialeve të pasakta.
+User:
+Mund të shfletojë produktet
+Mund të zgjedhë sasinë dhe të bëjë porosi
+Nuk ka qasje në faqen Orders
+Admin:
+Ka qasje në të gjitha faqet
+Mund të shohë faqen Orders
+Nuk kryen blerje (nuk shfaqet forma e porosisë)
 
 About Us (about.php) - Informacion për biznesin. Përmban: Misionin, arsye pse të zgjidhet kompania, statistika me animacion, shfaq mesazh personal nëse ekziston cookie (email)
 
