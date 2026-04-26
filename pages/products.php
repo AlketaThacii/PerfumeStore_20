@@ -66,6 +66,7 @@ echo '<div class ="left-side">';
             echo '<p style="grid-column: 1 / -1;">No products found.</p>';
         }
 echo '</div>';
+echo '</div>';
         echo '<aside class="order-sidebar">';
             echo '<div class="order-card">';
                 echo '<h2>Order Online</h2>';
@@ -74,6 +75,9 @@ echo '</div>';
                 echo '<div style="margin: 15px 0; font-weight: bold; color: #d4af37; font-size: 1.2rem;">';
                     echo 'Total: $<span id="grand-total">0.00</span>';
                 echo '</div>';
+                echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
+                echo '<p style="font-size: 0.9rem; margin-bottom: 10px;">Please provide your details to complete the purchase.</p>';
+                
 
                 echo '<form action="process_order.php" method="POST">';
                     echo '<div class="input-group">';
