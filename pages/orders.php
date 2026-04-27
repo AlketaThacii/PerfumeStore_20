@@ -11,7 +11,9 @@ $orderEmail = $_SESSION['order_email'] ?? 'No order yet';
 $orderPhone = $_SESSION['order_phone'] ?? 'No order yet';
 $orderAddress = $_SESSION['order_address'] ?? 'No address saved';
 
+
 echo '<main class="orders-page">';
+echo '<link rel="stylesheet" href="../assets/css/orders.css">';
     echo '<div class="orders-container">';
 
         echo '<h1>Orders</h1>';

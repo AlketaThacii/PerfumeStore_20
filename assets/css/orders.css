@@ -1,0 +1,121 @@
+.orders-page {
+    padding: 170px 40px 70px;
+    min-height: 80vh;
+    background: #050505;
+    color: white;
+}
+
+.orders-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.orders-container h1 {
+    color: #d4af37;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.orders-container > p {
+    color: #ccc;
+    margin-bottom: 35px;
+}
+
+.orders-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+}
+
+.order-stat-card {
+    flex: 1;
+    min-width: 220px;
+    background: #111;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+}
+
+.order-stat-card h2 {
+    color: #d4af37;
+    font-size: 36px;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #111;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.order-table th,
+.order-table td {
+    padding: 16px;
+    border-bottom: 1px solid #333;
+    text-align: left;
+}
+
+.order-table th {
+    background: #d4af37;
+    color: black;
+}
+
+.status {
+    background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+body:not(.dark) .orders-page {
+    background: #f6f6f6;
+    color: #000;
+}
+body:not(.dark) .orders-container > p {
+    color: #666;
+}
+body:not(.dark) .order-stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    color: #000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+body:not(.dark) .order-table {
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+body:not(.dark) .order-table th {
+    background: #d4af37;
+    color: #000;
+}
+body:not(.dark) .order-table tr:nth-child(even) {
+    background: #fafafa;
+}
+body:not(.dark) .order-table th,
+body:not(.dark) .order-table td {
+    border-bottom: 1px solid #e0e0e0;
+    color: #000;
+}
+body:not(.dark) .status {
+    background: rgba(212, 175, 55, 0.15);
+    color: #a8872d;
+}
+@media (max-width: 768px) {
+    .orders-page {
+        padding: 190px 20px 50px;
+    }
+
+    .order-table {
+        font-size: 14px;
+    }
+
+    .order-table th,
+    .order-table td {
+        padding: 10px;
+    }
+}

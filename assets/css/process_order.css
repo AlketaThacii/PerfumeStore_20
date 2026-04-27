@@ -38,3 +38,25 @@
     border-radius: 6px;
     font-weight: bold;
 }
+
+body:not(.dark) .order-result-card {
+    background: #ffffff;
+    color: #000;
+}
+
+body:not(.dark) .order-result-card h2 {
+    color: #d4af37;
+}
+
+body:not(.dark) .order-result-card p {
+    color: #333;
+}
+
+body:not(.dark) .order-result-card .error {
+    color: #d9534f;
+}
+
+body:not(.dark) .order-result-card .btn {
+    background: #d4af37;
+    color: #000;
+}
