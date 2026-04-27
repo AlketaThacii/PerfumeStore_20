@@ -212,17 +212,19 @@ $featured = array_slice($products, 0, 3);
         </div>
 
     </section>
-    <section class="newsletter">
-        <?php renderSectionTitle("Join Our Newsletter"); ?>
-        <p>Get updates about new perfumes</p>
-        <form method="POST" action="pages/newsletter.php">
-            <input
-                type="email"
-                name="email"
-                placeholder="Enter your email">
-            <button type="submit">Subscribe</button>
-        </form>
-    </section>
+   <?php if (!isset($_SESSION["role"]) || $_SESSION["role"] == "user"): ?>
+<section class="newsletter">
+    <?php renderSectionTitle("Join Our Newsletter"); ?>
+    <p>Get updates about new perfumes</p>
+    <form method="POST" action="pages/newsletter.php">
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter your email">
+        <button type="submit">Subscribe</button>
+    </form>
+</section>
+<?php endif; ?>
 
 
 
