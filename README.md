@@ -34,19 +34,19 @@ Homepage (index.php) - Faqja kryesore e aplikacionit, përfshin navigimin dhe st
 
 Produktet (products.php) - Shfaq të gjitha produktet në mënyrë dinamike, filtrim sipas kategorisë: Meshkuj; Femra; Unisex. Renditje sipas çmimit: Në rritje; Në zbritje 
 Karakteristika:
-Kartela produktesh
-Badge “PREMIUM” për produkte të shtrenjta
-Kontroll i sasisë (+ / -)
+Kartela produktesh,
+Badge “PREMIUM” për produkte të shtrenjta,
+Kontroll i sasisë (+ / -),
 Llogaritje e totalit në kohë reale (JavaScript)
 
 Login (login.php) - Autentikim i thjeshtë me përdorues të paracaktuar, ruajtje e të dhënave në session: username; role (admin/user). Mesazh gabimi në rast të kredencialeve të pasakta.
 User:
-Mund të shfletojë produktet
-Mund të zgjedhë sasinë dhe të bëjë porosi
+Mund të shfletojë produktet,
+Mund të zgjedhë sasinë dhe të bëjë porosi,
 Nuk ka qasje në faqen Orders
 Admin:
-Ka qasje në të gjitha faqet
-Mund të shohë faqen Orders
+Ka qasje në të gjitha faqet,
+Mund të shohë faqen Orders,
 Nuk kryen blerje (nuk shfaqet forma e porosisë)
 
 About Us (about.php) - Informacion për biznesin. Përmban: Misionin, arsye pse të zgjidhet kompania, statistika me animacion, shfaq mesazh personal nëse ekziston cookie (email)
@@ -77,6 +77,8 @@ Kredencialet për Testim
 Admin:
 username: admin
 password: 123
+
+Ky eshte linku i videos te projektit https://drive.google.com/file/d/1loIlWBN9lfYDyuU-07l3V5h-gTBlxLCq/view?usp=drive_link
 
 User:
 username: user
