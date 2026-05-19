@@ -3,7 +3,7 @@
 $conn = mysqli_connect(
     "localhost",
     "root",
-    "",
+    "pass",
     "perfume_store"
 );
 
