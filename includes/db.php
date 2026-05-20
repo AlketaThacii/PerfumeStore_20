@@ -1,13 +1,12 @@
 <?php
-
 $conn = mysqli_connect(
-    "localhost",
-    "root",
-    "pass",
-    "perfume_store"
-);
+    "localhost", 
+    "root", 
+    "pass", 
+    "perfume_store");
 
-if(!$conn){
-    die("Connection failed");
+if (!$conn) {
+    die("Database connection failed");
 }
-?>
+
+mysqli_set_charset($conn, "utf8mb4");
