@@ -18,6 +18,45 @@ $categories = mysqli_query(
     "SELECT id, name FROM categories ORDER BY name ASC"
 );
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $name = trim($_POST["name"] ?? "");
+    $price = (float)($_POST["price"] ?? 0);
+    $categoryId = (int)($_POST["category_id"] ?? 0);
+
+    if ($name !== "" && $price > 0 && $categoryId > 0) {
+
+        $stmt = $conn->prepare(
+            "INSERT INTO products
+            (category_id, name, price)
+            VALUES (?, ?, ?)"
+        );
+
+        $stmt->bind_param(
+            "isd",
+            $categoryId,
+            $name,
+            $price
+        );
+
+        if ($stmt->execute()) {
+
+            header("Location: products.php");
+            exit;
+        }
+
+        $message =
+            "Product could not be added.";
+
+        $stmt->close();
+
+    } else {
+
+        $message =
+            "Please fill all required fields.";
+    }
+}
+
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
