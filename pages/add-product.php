@@ -13,6 +13,11 @@ if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
 
 $message = "";
 
+$categories = mysqli_query(
+    $conn,
+    "SELECT id, name FROM categories ORDER BY name ASC"
+);
+
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
