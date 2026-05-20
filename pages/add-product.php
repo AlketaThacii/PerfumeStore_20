@@ -24,21 +24,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $price = (float)($_POST["price"] ?? 0);
     $categoryId = (int)($_POST["category_id"] ?? 0);
 
+    $imagePath = null;
+
+    if (!empty($_FILES["image"]["name"])) {
+
+        $allowedExtensions = [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "avif"
+        ];
+
+        $extension = strtolower(
+            pathinfo(
+                $_FILES["image"]["name"],
+                PATHINFO_EXTENSION
+            )
+        );
+
+        if (
+            in_array(
+                $extension,
+                $allowedExtensions,
+                true
+            )
+        ) {
+
+            $safeName =
+                uniqid(
+                    "product_",
+                    true
+                ) . "." . $extension;
+
+            $target =
+                "../assets/images/" .
+                $safeName;
+
+            if (
+                move_uploaded_file(
+                    $_FILES["image"]["tmp_name"],
+                    $target
+                )
+            ) {
+
+                $imagePath =
+                    $target;
+            }
+        }
+    }
+
     if ($name !== "" && $price > 0 && $categoryId > 0) {
 
         $stmt = $conn->prepare(
             "INSERT INTO products
-            (category_id, name, price)
-            VALUES (?, ?, ?)"
+    (category_id, name, price, image)
+    VALUES (?, ?, ?, ?)"
         );
 
         $stmt->bind_param(
-            "isd",
+            "isds",
             $categoryId,
             $name,
-            $price
+            $price,
+            $imagePath
         );
-
         if ($stmt->execute()) {
 
             header("Location: products.php");
@@ -49,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "Product could not be added.";
 
         $stmt->close();
-
     } else {
 
         $message =
@@ -70,7 +119,8 @@ include("../includes/navbar.php");
             <p><?php echo htmlspecialchars($message); ?></p>
         <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST"
+            enctype="multipart/form-data">
 
             <label>
                 Product name
@@ -109,6 +159,14 @@ include("../includes/navbar.php");
                     <?php endwhile; ?>
 
                 </select>
+            </label>
+            <label>
+                Product image
+
+                <input
+                    type="file"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.webp,.avif">
             </label>
 
             <button type="submit">
