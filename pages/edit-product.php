@@ -56,6 +56,25 @@ include("../includes/navbar.php");
         <h1>Edit Product</h1>
 
         <form method="POST">
+            <label>
+                Product name
+                <input
+                    type="text"
+                    name="name"
+                    value="<?php echo htmlspecialchars($product["name"]); ?>"
+                    required>
+            </label>
+
+            <label>
+                Price
+                <input
+                    type="number"
+                    name="price"
+                    step="0.01"
+                    min="0"
+                    value="<?php echo htmlspecialchars($product["price"]); ?>"
+                    required>
+            </label>
 
         </form>
 
