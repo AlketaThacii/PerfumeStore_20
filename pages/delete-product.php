@@ -38,6 +38,13 @@ if (!$product) {
     header("Location: products.php");
     exit;
 }
+$delete =
+    $conn->prepare(
+        "DELETE FROM products
+         WHERE id = ?"
+    );
+
+$delete->bind_param("i", $id);
 
 include("../includes/header.php");
 include("../includes/navbar.php");
