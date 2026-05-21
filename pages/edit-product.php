@@ -18,6 +18,25 @@ if ($id <= 0) {
     exit;
 }
 
+$stmt = $conn->prepare(
+    "SELECT id, category_id, name, price, image
+     FROM products
+     WHERE id = ?"
+);
+
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$product =
+    $stmt->get_result()->fetch_assoc();
+
+$stmt->close();
+
+if (!$product) {
+    header("Location: products.php");
+    exit;
+}
+
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
