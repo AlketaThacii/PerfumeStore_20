@@ -75,6 +75,31 @@ include("../includes/navbar.php");
                     value="<?php echo htmlspecialchars($product["price"]); ?>"
                     required>
             </label>
+            <label>
+                Category
+                <select
+                    name="category_id"
+                    required>
+
+                    <?php while ($category = mysqli_fetch_assoc($categories)): ?>
+
+                        <option
+                            value="<?php echo (int)$category["id"]; ?>"
+
+                            <?php echo ((int)$product["category_id"] === (int)$category["id"]) ? "selected" : ""; ?>>
+
+                            <?php echo htmlspecialchars($category["name"]); ?>
+
+                        </option>
+
+                    <?php endwhile; ?>
+
+                </select>
+            </label>
+
+            <button type="submit">
+                Save Changes
+            </button>
 
         </form>
 
