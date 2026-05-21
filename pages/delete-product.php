@@ -20,6 +20,25 @@ if ($id <= 0) {
     header("Location: products.php");
     exit;
 }
+$stmt = $conn->prepare(
+    "SELECT image
+     FROM products
+     WHERE id = ?"
+);
+
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$product =
+    $stmt->get_result()->fetch_assoc();
+
+$stmt->close();
+
+if (!$product) {
+    header("Location: products.php");
+    exit;
+}
+
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
