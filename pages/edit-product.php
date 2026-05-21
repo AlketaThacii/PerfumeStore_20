@@ -50,8 +50,16 @@ include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
 
-<main>
-    <h1>Edit Product</h1>
+<main class="product-admin-page">
+    <section class="product-form-panel">
+
+        <h1>Edit Product</h1>
+
+        <form method="POST">
+
+        </form>
+
+    </section>
 </main>
 
 <?php include("../includes/footer.php"); ?>
