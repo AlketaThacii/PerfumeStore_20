@@ -14,6 +14,12 @@ if (
     exit;
 }
 
+$id = (int)($_GET["id"] ?? 0);
+
+if ($id <= 0) {
+    header("Location: products.php");
+    exit;
+}
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
