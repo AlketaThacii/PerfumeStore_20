@@ -56,6 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $categoryId =
         (int)($_POST["category_id"] ?? 0);
+    $imagePath =
+        $product["image"];
 
     if (
         $name !== "" &&
