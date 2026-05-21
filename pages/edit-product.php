@@ -59,10 +59,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (
         $name !== "" &&
-        $price >= 0 &&
+        $price > 0 &&
         $categoryId > 0
     ) {
+        $update =
+            $conn->prepare(
+                "UPDATE products
+         SET category_id = ?,
+         name = ?,
+         price = ?
+         WHERE id = ?"
+            );
 
+        $update->bind_param(
+            "isdi",
+            $categoryId,
+            $name,
+            $price,
+            $id
+        );
+
+        if ($update->execute()) {
+
+            $update->close();
+
+            header("Location: products.php");
+            exit;
+        }
+
+        $message =
+            "Product could not be updated.";
     } else {
 
         $message =
