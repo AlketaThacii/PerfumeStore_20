@@ -96,8 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $_FILES["image"]["tmp_name"],
                     $target
                 )
-            ) 
-            {
+            ) {
 
                 $imagePath =
                     $target;
@@ -115,18 +114,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "UPDATE products
          SET category_id = ?,
          name = ?,
-         price = ?
+         price = ?,
+         image = ?
          WHERE id = ?"
             );
 
         $update->bind_param(
-            "isdi",
+            "isdsi",
             $categoryId,
             $name,
             $price,
+            $imagePath,
             $id
         );
-
         if ($update->execute()) {
 
             $update->close();
