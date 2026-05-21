@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (
         $name !== "" &&
-        $price > 0 &&
+        $price >= 0 &&
         $categoryId > 0
     ) {
         $update =
@@ -153,7 +153,9 @@ include("../includes/navbar.php");
 
         <h1>Edit Product</h1>
 
-        <form method="POST">
+        <form method="POST"
+            enctype="multipart/form-data"
+            class="product-form">
             <label>
                 Product name
                 <input
@@ -194,6 +196,23 @@ include("../includes/navbar.php");
 
                 </select>
             </label>
+            <label>
+                Product image
+
+                <input
+                    type="file"
+                    name="image"
+                    accept=".jpg,.jpeg,.png,.webp,.avif">
+            </label>
+
+            <?php if (!empty($product["image"])): ?>
+
+                <img
+                    class="form-preview"
+                    src="<?php echo htmlspecialchars($product["image"]); ?>"
+                    alt="<?php echo htmlspecialchars($product["name"]); ?>">
+
+            <?php endif; ?>
 
             <button type="submit">
                 Save Changes
