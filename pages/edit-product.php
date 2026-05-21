@@ -59,6 +59,52 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $imagePath =
         $product["image"];
 
+    if (!empty($_FILES["image"]["name"])) {
+
+        $allowedExtensions = [
+            "jpg",
+            "jpeg",
+            "png",
+            "webp",
+            "avif"
+        ];
+
+        $extension = strtolower(
+            pathinfo(
+                $_FILES["image"]["name"],
+                PATHINFO_EXTENSION
+            )
+        );
+
+        if (
+            in_array(
+                $extension,
+                $allowedExtensions,
+                true
+            )
+        ) {
+            $safeName =
+                uniqid(
+                    "product_",
+                    true
+                ) . "." . $extension;
+            $target =
+                "../assets/images/" .
+                $safeName;
+            if (
+                move_uploaded_file(
+                    $_FILES["image"]["tmp_name"],
+                    $target
+                )
+            ) 
+            {
+
+                $imagePath =
+                    $target;
+            }
+        }
+    }
+
     if (
         $name !== "" &&
         $price > 0 &&
