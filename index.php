@@ -1,15 +1,27 @@
 <?php
 include("includes/header.php");
 include("includes/navbar.php");
+include("includes/db.php");
 
-$products = [
-    ["name" => "cqua di Gio", "price" => 110, "type" => "Men", "img" => "image4.webp"],
-    ["name" => "Tom Ford Noir", "price" => 160, "type" => "Women", "img" => "image2.avif"],
-    ["name" => "Bleu de Chanel", "price" => 140, "type" => "Men", "img" => "image12.jpg"],
-    ["name" => "YSL Libre", "price" => 130, "type" => "Women", "img" => "image44.avif"],
-    ["name" => "Versace Eros", "price" => 100, "type" => "Men", "img" => "image14.avif"],
-    ["name" => "Gucci Bloom", "price" => 125, "type" => "Women", "img" => "image7.jpg"]
-];
+$query = mysqli_query(
+    $conn,
+    "SELECT
+        products.id,
+        products.name,
+        products.price,
+        products.image,
+        categories.name AS category
+     FROM products
+     LEFT JOIN categories
+     ON products.category_id = categories.id
+     ORDER BY RAND()
+     LIMIT 6"
+);
+
+$products = mysqli_fetch_all(
+    $query,
+    MYSQLI_ASSOC
+);
 
 function formatPrice($price)
 {
@@ -28,9 +40,9 @@ function renderProductCard($p)
     $badge = getBadge($p['price']);
 ?>
     <div class="card">
-        <img src="/PerfumeStore_20/assets/images/<?php echo $p['img']; ?>" alt="">
-        <h3><?php echo $p['name']; ?></h3>
-        <p class="type"><?php echo $p['type']; ?></p>
+        <img src="<?php echo str_replace('../', '', htmlspecialchars($p['image'])); ?>" alt="">
+        <h3><?php echo htmlspecialchars($p['name']); ?></h3>
+        <p class="type"><?php echo htmlspecialchars(ucfirst($p['category'] ?? 'Unknown')); ?></p>
         <p class="price"><?php echo formatPrice($p['price']); ?></p>
 
         <?php if ($badge): ?>
@@ -44,13 +56,20 @@ function renderSectionTitle($title)
 {
     echo "<h2>$title</h2>";
 }
-$type = $_GET['type'] ?? "All";
+$type = strtolower(
+    $_GET['type'] ?? "all"
+);
 
-$filtered = array_filter($products, function ($p) use ($type) {
-    return $type === "All" || $p['type'] === $type;
-});
-
-$featured = array_slice($products, 0, 3);
+$filtered = array_filter(
+    $products,
+    function ($p) use ($type) {
+        return
+            $type === "all" ||
+            strtolower(
+                $p["category"] ?? ""
+            ) === $type;
+    }
+);
 ?>
 
 <main class="main1">
@@ -81,7 +100,12 @@ $featured = array_slice($products, 0, 3);
 
         <div class="filter">
             <?php
-            $types = ["All", "Men", "Women"];
+            $types = [
+                "All",
+                "Men",
+                "Women",
+                "Unisex"
+            ];
             foreach ($types as $t) {
                 echo "<a href='?type=$t'>$t</a>";
             }
