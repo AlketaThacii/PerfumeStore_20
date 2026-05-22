@@ -62,12 +62,9 @@ if ($delete->execute()) {
     exit;
 }
 
-include("../includes/header.php");
-include("../includes/navbar.php");
-?>
 
-<main>
-    <h1>Delete Product</h1>
-</main>
+$delete->close();
 
-<?php include("../includes/footer.php"); ?>
+header("Location: products.php");
+exit;
+
