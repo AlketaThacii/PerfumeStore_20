@@ -9,7 +9,7 @@ if ($order) {
     $filteredProducts = sortProducts($filteredProducts, $order);
 }
 
-include("../includes/header.php"); 
+include("../includes/header.php");
 echo '<link rel="stylesheet" href="../assets/css/style.css" >';
 include("../includes/navbar.php");
 
@@ -33,7 +33,7 @@ echo '<div class="grid">';
 if (!empty($filteredProducts)) {
     foreach ($filteredProducts as $product) {
         $name = htmlspecialchars($product->getName());
-        $rawPrice = (float)$product->getPrice(); 
+        $rawPrice = (float)$product->getPrice();
         $price = number_format($rawPrice, 2);
         $cat = strtoupper($product->getCategory());
         $isPremium = ($rawPrice > 150);
@@ -52,11 +52,29 @@ if (!empty($filteredProducts)) {
         echo "<p class='price'>$$price</p>";
         echo "<p style='font-size: 0.8rem; opacity: 0.6; margin-top: 5px;'>$cat</p>";
 
+        if (
+            isset($_SESSION["role"]) &&
+            $_SESSION["role"] === "admin"
+        ) {
+
+            echo '<div style="margin-top:10px;">';
+
+            echo '<a href="edit-product.php?id=' .
+                $product->getId() .
+                '">Edit</a> | ';
+
+            echo '<a href="delete-product.php?id=' .
+                $product->getId() .
+                '" onclick="return confirm(\'Are you sure?\')">Delete</a>';
+
+            echo '</div>';
+        }
+
         if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
-            echo '<div class="qty-control">'; 
-            echo '<button type="button" onclick="changeQty(\''.$cleanId.'\', -1, '.$rawPrice.')">-</button>';
-            echo '<span id="qty-'.$cleanId.'">0</span>'; 
-            echo '<button type="button" onclick="changeQty(\''.$cleanId.'\', 1, '.$rawPrice.')">+</button>';
+            echo '<div class="qty-control">';
+            echo '<button type="button" onclick="changeQty(\'' . $cleanId . '\', -1, ' . $rawPrice . ')">-</button>';
+            echo '<span id="qty-' . $cleanId . '">0</span>';
+            echo '<button type="button" onclick="changeQty(\'' . $cleanId . '\', 1, ' . $rawPrice . ')">+</button>';
             echo '</div>';
         }
 
@@ -111,24 +129,24 @@ include("../includes/footer.php");
 ?>
 
 <script>
-function changeQty(id, delta, price) {
-    let qtyElement = document.getElementById('qty-' + id);
-    let totalElement = document.getElementById('grand-total');
+    function changeQty(id, delta, price) {
+        let qtyElement = document.getElementById('qty-' + id);
+        let totalElement = document.getElementById('grand-total');
 
-    if (!qtyElement || !totalElement) {
-        return;
+        if (!qtyElement || !totalElement) {
+            return;
+        }
+
+        let currentQty = parseInt(qtyElement.innerText);
+        let newQty = currentQty + delta;
+
+        if (newQty >= 0) {
+            qtyElement.innerText = newQty;
+
+            let currentTotal = parseFloat(totalElement.innerText);
+            let newTotal = currentTotal + (delta * price);
+
+            totalElement.innerText = Math.max(0, newTotal).toFixed(2);
+        }
     }
-    
-    let currentQty = parseInt(qtyElement.innerText);
-    let newQty = currentQty + delta;
-    
-    if (newQty >= 0) {
-        qtyElement.innerText = newQty;
-        
-        let currentTotal = parseFloat(totalElement.innerText);
-        let newTotal = currentTotal + (delta * price);
-        
-        totalElement.innerText = Math.max(0, newTotal).toFixed(2);
-    }
-}
 </script>
