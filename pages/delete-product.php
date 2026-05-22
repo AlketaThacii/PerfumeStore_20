@@ -48,6 +48,14 @@ $delete->bind_param("i", $id);
 
 if ($delete->execute()) {
 
+    if (
+        !empty($product["image"]) &&
+        file_exists($product["image"])
+    ) 
+    {
+        unlink($product["image"]);
+    }
+
     $delete->close();
 
     header("Location: products.php");
