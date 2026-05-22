@@ -46,6 +46,14 @@ $delete =
 
 $delete->bind_param("i", $id);
 
+if ($delete->execute()) {
+
+    $delete->close();
+
+    header("Location: products.php");
+    exit;
+}
+
 include("../includes/header.php");
 include("../includes/navbar.php");
 ?>
