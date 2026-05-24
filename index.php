@@ -45,6 +45,13 @@ function renderProductCard($p)
         <p class="type"><?php echo htmlspecialchars(ucfirst($p['category'] ?? 'Unknown')); ?></p>
         <p class="price"><?php echo formatPrice($p['price']); ?></p>
 
+//arijola e ka bo mu deshtt per buton
+        <button class="btn-add-cart" style="background: black; color: white; border: none; padding: 8px 15px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold;" 
+                onclick="addToCart('<?php echo addslashes($p['name']); ?>', <?php echo $p['price']; ?>, '<?php echo addslashes(str_replace('../', '', $p['image'])); ?>')">
+                Add to Cart
+        </button>
+
+        
         <?php if ($badge): ?>
             <span class="badge"><?php echo $badge; ?></span>
         <?php endif; ?>
