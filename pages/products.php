@@ -80,9 +80,26 @@ if (!empty($filteredProducts)) {
 
         echo '</div>';
     }
-} else {
+} 
+if (
+    isset($_SESSION["role"]) &&
+    $_SESSION["role"] === "admin"
+) {
+
+    echo '<a href="add-product.php" class="add-card-link">';
+    echo '<div class="card add-card">';
+
+    echo '<div class="plus-icon">+</div>';
+    echo '<h3>Add Product</h3>';
+
+    echo '</div>';
+    echo '</a>';
+}
+
+if (empty($filteredProducts)) {
     echo '<p style="grid-column: 1 / -1;">No products found.</p>';
 }
+
 
 echo '</div>';
 echo '</div>';
