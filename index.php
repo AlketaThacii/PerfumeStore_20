@@ -46,12 +46,7 @@ function renderProductCard($p)
         <p class="price"><?php echo formatPrice($p['price']); ?></p>
 
 
-       <button class="add-to-cart-btn" 
-        data-name="<?php echo htmlspecialchars($row['name']); ?>" 
-        data-price="<?php echo $row['price']; ?>" 
-        data-img="<?php echo htmlspecialchars($row['image']); ?>">
-    Add to Cart
-</button>
+       
 
 
         <?php if ($badge): ?>
