@@ -243,3 +243,45 @@
         grid-template-columns: 1fr;
     }
 }
+.login-box form {
+    gap: 10px;
+}
+
+.login-box input {
+    height: 42px;
+}
+
+.login-box button {
+    height: 46px;
+}
+
+@media (min-height: 700px) {
+    .login-page {
+        align-items: center;
+    }
+}
+
+.password-box{
+    position:relative;
+    width:100%;
+}
+
+.password-box input{
+    padding-right:50px;
+}
+
+.toggle-password{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    font-size:18px;
+    color:#d4af37;
+    user-select:none;
+    transition:0.3s;
+}
+
+.toggle-password:hover{
+    color:white;
+}
