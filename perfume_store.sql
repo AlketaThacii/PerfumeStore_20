@@ -89,16 +89,20 @@ CREATE TABLE `users` (
   `username` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `role` varchar(20) DEFAULT 'user'
+  `role` varchar(20) DEFAULT 'user',
+  `admin_code` varchar(50) DEFAULT NULL,
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `verification_code_hash` varchar(255) DEFAULT NULL,
+  `verification_expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
-(1, 'admin', 'admin@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'admin'),
-(2, 'user', 'user@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'user');
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `admin_code`, `email_verified`, `verification_code_hash`, `verification_expires_at`) VALUES
+(1, 'admin', 'admin@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'admin', NULL, 1, NULL, NULL),
+(2, 'user', 'user@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'user', NULL, 1, NULL, NULL);
 
 --
 -- Indexes for dumped tables

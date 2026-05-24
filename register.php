@@ -15,9 +15,14 @@ $adminCode = "";
 $validRoles = ["user", "admin"];
 $adminRegisterCode = "MAISON-ADMIN-2026";
 
+if (isset($_SESSION["register_error"])) {
+    $errors[] = $_SESSION["register_error"];
+    unset($_SESSION["register_error"]);
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"] ?? "");
-    $email = trim($_POST["email"] ?? "");
+    $email = strtolower(trim($_POST["email"] ?? ""));
     $password = $_POST["password"] ?? "";
     $confirmPassword = $_POST["confirm_password"] ?? "";
     $role = $_POST["role"] ?? "user";
@@ -74,14 +79,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         if ($role === "admin") {
-            $finalAdminCode = $adminRegisterCode;
+            $finalAdminCode = null;
+            $emailVerified = 1;
+            $verificationCodeHash = null;
+            $verificationExpiresAt = null;
 
             $stmt = $conn->prepare(
-                "INSERT INTO users (username, email, password, role, admin_code)
-                 VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO users (username, email, password, role, admin_code, email_verified, verification_code_hash, verification_expires_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
-            $stmt->bind_param("sssss", $username, $email, $hashedPassword, $role, $finalAdminCode);
+            $stmt->bind_param(
+                "sssssiss",
+                $username,
+                $email,
+                $hashedPassword,
+                $role,
+                $finalAdminCode,
+                $emailVerified,
+                $verificationCodeHash,
+                $verificationExpiresAt
+            );
 
             if ($stmt->execute()) {
                 $success = "Admin account created successfully. You can now log in.";
@@ -95,22 +113,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         } else {
             $verificationCode = (string) random_int(100000, 999999);
+            $verificationCodeHash = password_hash($verificationCode, PASSWORD_DEFAULT);
+            $verificationExpiresAt = date("Y-m-d H:i:s", time() + 300);
+            $emailVerified = 0;
+            $finalAdminCode = null;
 
-            $_SESSION["pending_username"] = $username;
-            $_SESSION["pending_email"] = $email;
-            $_SESSION["pending_password"] = $hashedPassword;
-            $_SESSION["pending_role"] = "user";
-            $_SESSION["pending_admin_code"] = null;
-            $_SESSION["register_code"] = password_hash($verificationCode, PASSWORD_DEFAULT);
-            $_SESSION["register_code_expires"] = time() + 300;
+            $stmt = $conn->prepare(
+                "INSERT INTO users (username, email, password, role, admin_code, email_verified, verification_code_hash, verification_expires_at)
+                 VALUES (?, ?, ?, 'user', ?, ?, ?, ?)"
+            );
 
-            $sent = sendVerificationCode($email, $username, $verificationCode);
+            $stmt->bind_param(
+                "ssssiss",
+                $username,
+                $email,
+                $hashedPassword,
+                $finalAdminCode,
+                $emailVerified,
+                $verificationCodeHash,
+                $verificationExpiresAt
+            );
 
-            if ($sent) {
-                header("Location: verify-register.php");
-                exit();
-            } else {
+            if ($stmt->execute()) {
+                $_SESSION["pending_user_id"] = $stmt->insert_id;
+                $_SESSION["pending_email"] = $email;
+
+                $sent = sendVerificationCode($email, $username, $verificationCode);
+
+                if ($sent) {
+                    header("Location: verify-register.php");
+                    exit();
+                }
+
+                $deleteStmt = $conn->prepare("DELETE FROM users WHERE id = ? AND email_verified = 0");
+                $deleteStmt->bind_param("i", $_SESSION["pending_user_id"]);
+                $deleteStmt->execute();
+
+                unset($_SESSION["pending_user_id"], $_SESSION["pending_email"]);
                 $errors[] = "Verification email could not be sent. Please try again.";
+            } else {
+                $errors[] = "Registration failed. Please try again.";
             }
         }
     }
@@ -126,7 +168,7 @@ include 'includes/navbar.php';
     <div class="login-box">
         <span class="auth-eyebrow">Create Account</span>
         <h1>Register</h1>
-        <p>User accounts must verify their email before being created.</p>
+        <p>User accounts must verify their email before logging in.</p>
 
         <?php foreach ($errors as $error): ?>
             <div class="error-message">
