@@ -1,13 +1,17 @@
 <?php
 session_start();
+
 require_once 'includes/db.php';
+require_once 'includes/send_verification_email.php';
 
 $errors = [];
 $success = "";
+
 $username = "";
 $email = "";
 $role = "user";
 $adminCode = "";
+
 $validRoles = ["user", "admin"];
 $adminRegisterCode = "MAISON-ADMIN-2026";
 
@@ -27,12 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "Please choose a valid account type.";
     }
 
-    if ($role === "admin" && $adminCode !== $adminRegisterCode) {
-        $errors[] = "Admin registration code is not valid.";
-    }
-
-    if ($username !== "" && !preg_match("/^[A-Za-z0-9_]{3,30}$/", $username)) {
-        $errors[] = "Username must be 3-30 characters and can contain letters, numbers and underscore.";
+    if (!preg_match('/^[a-zA-Z0-9_]{8,30}$/', $username)) {
+        $errors[] = "Username must be 8–30 characters long and can contain letters, numbers, and underscores (_).";
     }
 
     if ($email !== "" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -47,10 +47,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "Passwords do not match.";
     }
 
+    if ($role === "admin" && $adminCode !== $adminRegisterCode) {
+        $errors[] = "Admin registration code is not valid.";
+    }
+
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ? LIMIT 1");
         $stmt->bind_param("ss", $username, $email);
         $stmt->execute();
+
         $existingUser = $stmt->get_result()->fetch_assoc();
 
         if ($existingUser) {
@@ -58,19 +63,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $conn->prepare(
-                "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)"
-            );
-            $stmt->bind_param("ssss", $username, $email, $hashedPassword, $role);
+            if ($role === "admin") {
+                $finalAdminCode = $adminRegisterCode;
 
-            if ($stmt->execute()) {
-                $success = "Registration completed successfully as " . ucfirst($role) . ". You can now log in.";
-                $username = "";
-                $email = "";
-                $role = "user";
-                $adminCode = "";
+                $stmt = $conn->prepare(
+                    "INSERT INTO users (username, email, password, role, admin_code)
+                     VALUES (?, ?, ?, ?, ?)"
+                );
+
+                $stmt->bind_param("sssss", $username, $email, $hashedPassword, $role, $finalAdminCode);
+
+                if ($stmt->execute()) {
+                    $success = "Admin account created successfully. You can now log in.";
+                    $username = "";
+                    $email = "";
+                    $role = "user";
+                    $adminCode = "";
+                } else {
+                    $errors[] = "Registration failed. Please try again.";
+                }
+
             } else {
-                $errors[] = "Registration failed. Please try again.";
+                $verificationCode = (string) random_int(100000, 999999);
+
+                $_SESSION["pending_username"] = $username;
+                $_SESSION["pending_email"] = $email;
+                $_SESSION["pending_password"] = $hashedPassword;
+                $_SESSION["pending_role"] = "user";
+                $_SESSION["pending_admin_code"] = null;
+                $_SESSION["register_code"] = password_hash($verificationCode, PASSWORD_DEFAULT);
+                $_SESSION["register_code_expires"] = time() + 300;
+
+                $sent = sendVerificationCode($email, $username, $verificationCode);
+
+                if ($sent) {
+                    header("Location: verify-register.php");
+                    exit();
+                } else {
+                    $errors[] = "Verification email could not be sent. Please try again.";
+                }
             }
         }
     }
@@ -80,13 +111,13 @@ include 'includes/header.php';
 include 'includes/navbar.php';
 ?>
 
-<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/login.css">
+<link rel="stylesheet" href="/PerfumeStore_20/assets/css/login.css">
 
 <main class="login-page">
     <div class="login-box">
         <span class="auth-eyebrow">Create Account</span>
         <h1>Register</h1>
-        <p>Create your account with a real email and choose the correct access type.</p>
+        <p>User accounts must verify their email before being created.</p>
 
         <?php foreach ($errors as $error): ?>
             <div class="error-message">
@@ -116,22 +147,22 @@ include 'includes/navbar.php';
                 required>
 
             <label>Account Type</label>
-            <div class="role-selector" role="radiogroup" aria-label="Choose account type">
-                <label class="role-option <?php echo $role === 'user' ? 'active' : ''; ?>">
+            <div class="role-selector">
+                <label class="role-option">
                     <input
                         type="radio"
                         name="role"
                         value="user"
-                        <?php echo $role === 'user' ? 'checked' : ''; ?>>
+                        <?php echo $role === "user" ? "checked" : ""; ?>>
                     <span>User</span>
                 </label>
 
-                <label class="role-option <?php echo $role === 'admin' ? 'active' : ''; ?>">
+                <label class="role-option">
                     <input
                         type="radio"
                         name="role"
                         value="admin"
-                        <?php echo $role === 'admin' ? 'checked' : ''; ?>>
+                        <?php echo $role === "admin" ? "checked" : ""; ?>>
                     <span>Admin</span>
                 </label>
             </div>
@@ -144,10 +175,16 @@ include 'includes/navbar.php';
                 placeholder="Required only for admin accounts">
 
             <label>Password</label>
-            <input type="password" name="password" required>
+            <div class="password-box">
+                <input type="password" id="password" name="password" required>
+                <span class="toggle-password" onclick="togglePassword('password', this)">👁</span>
+            </div>
 
             <label>Confirm Password</label>
-            <input type="password" name="confirm_password" required>
+            <div class="password-box">
+                <input type="password" id="confirmPassword" name="confirm_password" required>
+                <span class="toggle-password" onclick="togglePassword('confirmPassword', this)">👁</span>
+            </div>
 
             <button type="submit">Register</button>
         </form>
@@ -158,5 +195,19 @@ include 'includes/navbar.php';
         </p>
     </div>
 </main>
+
+<script>
+function togglePassword(inputId, icon) {
+    let input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.innerHTML = "🙈";
+    } else {
+        input.type = "password";
+        icon.innerHTML = "👁";
+    }
+}
+</script>
 
 <?php include 'includes/footer.php'; ?>
