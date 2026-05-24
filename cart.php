@@ -9,7 +9,7 @@ if (!isset($_SESSION['cart'])) {
 
 $total = 0;
 ?>
-
+a
 <main class="cart-page" style="padding: 50px 10%; min-height: 60vh;">
     <h2>Shporta Juaj</h2>
 
