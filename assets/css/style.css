@@ -384,6 +384,25 @@ body:not(.dark) .btn.primary:hover {
     font-size: 18px;
     font-weight: bold;
 }
+body:not(.dark) .card {
+    background: #fff;
+
+    color: #000;
+
+    border: 1px solid #eee;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+body:not(.dark) .card h3 {
+    color: #000;
+}
+body:not(.dark) #top-picks-filter .top-filter-btn {
+    background: #ffffff;
+    color: #000;
+
+    border: 1px solid #d4af37;
+}
 
 /* Seksioni About Us*/
 .about-home {
