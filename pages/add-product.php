@@ -19,37 +19,27 @@ $categories = mysqli_query(
 );
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
+try{
     $name = trim($_POST["name"] ?? "");
     $price = (float)($_POST["price"] ?? 0);
     $categoryId = (int)($_POST["category_id"] ?? 0);
 
     $imagePath = null;
 
-    if (!empty($_FILES["image"]["name"])) {
+     if ($name === "" || $price <= 0 || $categoryId <= 0) {
+            throw new Exception("Please fill all required fields.");
+        }
 
-        $allowedExtensions = [
-            "jpg",
-            "jpeg",
-            "png",
-            "webp",
-            "avif"
-        ];
+        if (!empty($_FILES["image"]["name"])) {
+            $allowedExtensions = ["jpg", "jpeg", "png", "webp", "avif"];
 
-        $extension = strtolower(
-            pathinfo(
-                $_FILES["image"]["name"],
-                PATHINFO_EXTENSION
-            )
-        );
+            $extension = strtolower(
+                pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION)
+            );
 
-        if (
-            in_array(
-                $extension,
-                $allowedExtensions,
-                true
-            )
-        ) {
+            if (!in_array($extension, $allowedExtensions, true)) {
+                throw new Exception("Only JPG, JPEG, PNG, WEBP and AVIF files are allowed.");
+            }
 
             $safeName =
                 uniqid(
@@ -61,48 +51,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "../assets/images/" .
                 $safeName;
 
-            if (
-                move_uploaded_file(
-                    $_FILES["image"]["tmp_name"],
-                    $target
-                )
-            ) {
-
-                $imagePath =
-                    $target;
+             if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target)) {
+                throw new Exception("Image upload failed.");
             }
-        }
-    }
 
-    if ($name !== "" && $price > 0 && $categoryId > 0) {
-
-        $stmt = $conn->prepare(
-            "INSERT INTO products
-    (category_id, name, price, image)
-    VALUES (?, ?, ?, ?)"
-        );
-
-        $stmt->bind_param(
-            "isds",
-            $categoryId,
-            $name,
-            $price,
+              $imagePath = $target;
+            }
+            $stmt = $conn->prepare(
+            "INSERT INTO products (category_id, name, price, image)
+             VALUES (?, ?, ?, ?)"
+            );
+          $stmt->bind_param("isds", 
+          $categoryId,
+           $name, 
+           $price,
             $imagePath
-        );
-        if ($stmt->execute()) {
-
+            );
+         if ($stmt->execute()) {
             header("Location: products.php");
             exit;
         }
 
-        $message =
-            "Product could not be added.";
-
-        $stmt->close();
-    } else {
-
-        $message =
-            "Please fill all required fields.";
+        throw new Exception("Product could not be added.");
+    } catch (Exception $e) {
+        $message = $e->getMessage();
     }
 }
 
