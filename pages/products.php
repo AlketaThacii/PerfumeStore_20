@@ -1,6 +1,8 @@
 <?php
 include("../includes/config.php");
 
+echo '<link rel="stylesheet" href="../assets/css/products.css">';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

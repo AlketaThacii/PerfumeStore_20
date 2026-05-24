@@ -1,0 +1,52 @@
+/* =========================
+   BASE BUTTON STYLE
+========================= */
+.card a,
+.card button {
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 600;
+}
+
+/* =========================
+   EDIT BUTTON (GOLD OUTLINE)
+========================= */
+.card a[href*="edit-product"] {
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: transparent;
+    margin-right: 6px;
+}
+
+.card a[href*="edit-product"]:hover {
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   DELETE BUTTON (GOLD DARK)
+========================= */
+.ajax-delete-product {
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+    color: #d4af37;
+}
+
+.ajax-delete-product:hover {
+    background: linear-gradient(135deg, #d4af37, #b8860b);
+    color: #000;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+    transform: translateY(-2px);
+}
+
+/* click effect */
+.card a:active,
+.card button:active {
+    transform: scale(0.95);
+}
