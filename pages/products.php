@@ -138,64 +138,64 @@ include("../includes/footer.php");
 ?>
 
 <script>
-function changeQty(productId, delta) {
-    let action = delta > 0 ? "add" : "remove";
+    function changeQty(productId, delta) {
+        let action = delta > 0 ? "add" : "remove";
 
-    fetch("../ajax/cart_action.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: "action=" + action + "&product_id=" + productId
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            let qtyElement = document.getElementById("qty-" + productId);
-            let totalElement = document.getElementById("grand-total");
-
-            if (qtyElement) {
-                qtyElement.innerText = data.quantity;
-            }
-
-            if (totalElement) {
-                totalElement.innerText = data.total;
-            }
-        }
-    });
-}
-
-let searchInput = document.getElementById("live-search");
-
-if (searchInput) {
-    searchInput.addEventListener("keyup", function () {
-        fetch("../ajax/search_products.php?search=" + encodeURIComponent(this.value))
-            .then(response => response.text())
+        fetch("../ajax/cart_action.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "action=" + action + "&product_id=" + productId
+            })
+            .then(response => response.json())
             .then(data => {
-                document.getElementById("product-list").innerHTML = data;
+                if (data.success) {
+                    let qtyElement = document.getElementById("qty-" + productId);
+                    let totalElement = document.getElementById("grand-total");
+
+                    if (qtyElement) {
+                        qtyElement.innerText = data.quantity;
+                    }
+
+                    if (totalElement) {
+                        totalElement.innerText = data.total;
+                    }
+                }
             });
-    });
-}
+    }
 
-document.querySelectorAll(".ajax-delete-product").forEach(button => {
-    button.addEventListener("click", function () {
-        if (!confirm("Are you sure?")) {
-            return;
-        }
+    let searchInput = document.getElementById("live-search");
 
-        fetch("../ajax/delete_product.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "id=" + this.dataset.id
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                this.closest(".card").remove();
+    if (searchInput) {
+        searchInput.addEventListener("keyup", function() {
+            fetch("../ajax/search_products.php?search=" + encodeURIComponent(this.value))
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("product-list").innerHTML = data;
+                });
+        });
+    }
+
+    document.querySelectorAll(".ajax-delete-product").forEach(button => {
+        button.addEventListener("click", function() {
+            if (!confirm("Are you sure?")) {
+                return;
             }
+
+            fetch("../ajax/delete_product.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "id=" + this.dataset.id
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest(".card").remove();
+                    }
+                });
         });
     });
-});
 </script>

@@ -20,4 +20,4 @@ if ($id <= 0) {
 
 echo json_encode(["success" => true]);
 
->?
+?>

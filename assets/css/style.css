@@ -325,7 +325,7 @@ body:not(.dark) .btn.primary:hover {
     margin: 10px;
     text-decoration: none;
     font-weight: bold;
-    color: #d4af37;
+    color: #d4af37 !important;
 }
 .filter a:hover {
     color: #d4af37;
@@ -1106,7 +1106,6 @@ body.dark .shop textarea {
     gap: 12px;
     flex-wrap: wrap;
     margin: 25px 0 35px;
-    background: transparent !important;
 }
 
 #top-picks-filter .top-filter-btn {
@@ -1124,6 +1123,7 @@ body.dark .shop textarea {
     line-height: 1;
     cursor: pointer;
     text-align: center;
+    margin-left: ;
 }
 
 #top-picks-filter .top-filter-btn:hover {
