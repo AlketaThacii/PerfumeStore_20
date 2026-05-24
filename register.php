@@ -52,60 +52,69 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (empty($errors)) {
-        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ? LIMIT 1");
-        $stmt->bind_param("ss", $username, $email);
-        $stmt->execute();
+    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $existingUsername = $stmt->get_result()->fetch_assoc();
 
-        $existingUser = $stmt->get_result()->fetch_assoc();
+    if ($existingUsername) {
+        $errors[] = "Username already exists.";
+    }
 
-        if ($existingUser) {
-            $errors[] = "Username or email already exists.";
-        } else {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $existingEmail = $stmt->get_result()->fetch_assoc();
 
-            if ($role === "admin") {
-                $finalAdminCode = $adminRegisterCode;
+    if ($existingEmail) {
+        $errors[] = "Email already exists.";
+    }
 
-                $stmt = $conn->prepare(
-                    "INSERT INTO users (username, email, password, role, admin_code)
-                     VALUES (?, ?, ?, ?, ?)"
-                );
+    if (empty($errors)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-                $stmt->bind_param("sssss", $username, $email, $hashedPassword, $role, $finalAdminCode);
+        if ($role === "admin") {
+            $finalAdminCode = $adminRegisterCode;
 
-                if ($stmt->execute()) {
-                    $success = "Admin account created successfully. You can now log in.";
-                    $username = "";
-                    $email = "";
-                    $role = "user";
-                    $adminCode = "";
-                } else {
-                    $errors[] = "Registration failed. Please try again.";
-                }
+            $stmt = $conn->prepare(
+                "INSERT INTO users (username, email, password, role, admin_code)
+                 VALUES (?, ?, ?, ?, ?)"
+            );
 
+            $stmt->bind_param("sssss", $username, $email, $hashedPassword, $role, $finalAdminCode);
+
+            if ($stmt->execute()) {
+                $success = "Admin account created successfully. You can now log in.";
+                $username = "";
+                $email = "";
+                $role = "user";
+                $adminCode = "";
             } else {
-                $verificationCode = (string) random_int(100000, 999999);
+                $errors[] = "Registration failed. Please try again.";
+            }
 
-                $_SESSION["pending_username"] = $username;
-                $_SESSION["pending_email"] = $email;
-                $_SESSION["pending_password"] = $hashedPassword;
-                $_SESSION["pending_role"] = "user";
-                $_SESSION["pending_admin_code"] = null;
-                $_SESSION["register_code"] = password_hash($verificationCode, PASSWORD_DEFAULT);
-                $_SESSION["register_code_expires"] = time() + 300;
+        } else {
+            $verificationCode = (string) random_int(100000, 999999);
 
-                $sent = sendVerificationCode($email, $username, $verificationCode);
+            $_SESSION["pending_username"] = $username;
+            $_SESSION["pending_email"] = $email;
+            $_SESSION["pending_password"] = $hashedPassword;
+            $_SESSION["pending_role"] = "user";
+            $_SESSION["pending_admin_code"] = null;
+            $_SESSION["register_code"] = password_hash($verificationCode, PASSWORD_DEFAULT);
+            $_SESSION["register_code_expires"] = time() + 300;
 
-                if ($sent) {
-                    header("Location: verify-register.php");
-                    exit();
-                } else {
-                    $errors[] = "Verification email could not be sent. Please try again.";
-                }
+            $sent = sendVerificationCode($email, $username, $verificationCode);
+
+            if ($sent) {
+                header("Location: verify-register.php");
+                exit();
+            } else {
+                $errors[] = "Verification email could not be sent. Please try again.";
             }
         }
     }
-}
+}}
 
 include 'includes/header.php';
 include 'includes/navbar.php';
