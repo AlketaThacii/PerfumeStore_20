@@ -24,7 +24,7 @@ body.dark {
 }
 body {
     margin: 0;
-    background: var(--bg);   
+    background: var(--bg);
     color: var(--text);
     transition: 0.3s ease;
 }
@@ -44,7 +44,6 @@ body {
     border-radius: 14px;
     border: 1px solid var(--border);
     box-shadow: 0 10px 30px var(--shadow);
-    transition: 0.3s ease;
 }
 .product-form-panel h1 {
     text-align: center;
@@ -108,4 +107,29 @@ body {
 select option {
     background: var(--panel);
     color: var(--text);
+}
+.form-preview {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+
+    display: block;
+    margin: 18px auto 0 auto;
+
+    border-radius: 14px;
+
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.15),
+        0 0 18px rgba(212, 175, 55, 0.25);
+
+    transition: all 0.35s ease;
+
+    cursor: pointer;
+}
+.form-preview:hover {
+    transform: scale(1.08);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.25),
+        0 0 25px rgba(212, 175, 55, 0.4);
 }

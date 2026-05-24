@@ -2,6 +2,8 @@
 
 include("../includes/db.php");
 
+echo '<link rel="stylesheet" href="../assets/css/edit-product.css">';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
