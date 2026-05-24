@@ -12,7 +12,10 @@ if (!isset($_SESSION["cart"])) {
 }
 
 if ($productId <= 0) {
-    echo json_encode(["success" => false]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid product"
+    ]);
     exit;
 }
 
@@ -20,12 +23,28 @@ if ($action === "add") {
     $_SESSION["cart"][$productId] = ($_SESSION["cart"][$productId] ?? 0) + 1;
 }
 
-if ($action === "remove" && isset($_SESSION["cart"][$productId])) {
-    $_SESSION["cart"][$productId]--;
+if ($action === "remove") {
+    if (isset($_SESSION["cart"][$productId])) {
+        $_SESSION["cart"][$productId]--;
 
-    if ($_SESSION["cart"][$productId] <= 0) {
-        unset($_SESSION["cart"][$productId]);
+        if ($_SESSION["cart"][$productId] <= 0) {
+            unset($_SESSION["cart"][$productId]);
+        }
     }
+}
+
+if ($action === "set") {
+    $quantity = isset($_POST["quantity"]) ? (int)$_POST["quantity"] : 1;
+
+    if ($quantity <= 0) {
+        unset($_SESSION["cart"][$productId]);
+    } else {
+        $_SESSION["cart"][$productId] = $quantity;
+    }
+}
+
+if ($action === "delete") {
+    unset($_SESSION["cart"][$productId]);
 }
 
 $quantity = $_SESSION["cart"][$productId] ?? 0;

@@ -125,27 +125,8 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
     echo '</div>';
 
     echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
-    echo '<p style="font-size: 0.9rem; margin-bottom: 10px;">Please provide your details to complete the purchase.</p>';
-
-    echo '<form action="process_order.php" method="POST">';
-    echo '<div class="input-group">';
-    echo '<label>Email Address</label>';
-    echo '<input type="email" name="email" placeholder="email@example.com" required>';
-    echo '</div>';
-
-    echo '<div class="input-group">';
-    echo '<label>Phone Number</label>';
-    echo '<input type="tel" name="phone" placeholder="06XXXXXXXX" required>';
-    echo '</div>';
-
-    echo '<div class="input-group">';
-    echo '<label>Delivery Address</label>';
-    echo '<textarea name="address" placeholder="Street, City, Zip Code" required></textarea>';
-    echo '</div>';
-
-    echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
-     echo '<a href="checkout.php" class="submit-order-btn">Go to Checkout</a>';
-    echo '</form>';
+    echo '<p style="font-size: 0.9rem; margin-bottom: 10px;">Please review your cart before completing the purchase.</p>';
+    echo '<a href="checkout.php" class="submit-order-btn" style="display:block; text-align:center; text-decoration:none;">Go to Checkout</a>';
 
     echo '</div>';
     echo '</aside>';

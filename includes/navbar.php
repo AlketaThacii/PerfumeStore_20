@@ -4,9 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $count = 0;
-if (!empty($_SESSION['cart'])) {
-    foreach ($_SESSION['cart'] as $item) {
-        $count += $item['qty'];
+if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $qty) {
+        $count += (int)$qty;
     }
 }
 ?>
