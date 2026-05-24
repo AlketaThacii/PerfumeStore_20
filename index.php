@@ -102,21 +102,22 @@ $filtered = array_filter(
     <section id="products">
         <?php renderSectionTitle("Top Picks"); ?>
 
-        <div class="filter">
-            <?php
-            $types = [
-                "All",
-                "Men",
-                "Women",
-                "Unisex"
-            ];
-            foreach ($types as $t) {
-                echo "<a href='?type=$t'>$t</a>";
-            }
-            ?>
-        </div>
+       <div class="filter" id="top-picks-filter">
+    <?php
+    $types = [
+        "All",
+        "Men",
+        "Women",
+        "Unisex"
+    ];
 
-        <div class="grid-index">
+    foreach ($types as $t) {
+        echo "<button type='button' class='top-filter-btn' data-type='$t'>$t</button>";
+    }
+    ?>
+</div>
+
+        <div class="grid-index" id="top-picks-list">
             <?php foreach ($filtered as $p) renderProductCard($p); ?>
         </div>
     </section>
@@ -257,5 +258,18 @@ $filtered = array_filter(
 
 
 </main>
+<script>
+document.querySelectorAll(".top-filter-btn").forEach(button => {
+    button.addEventListener("click", function () {
+        let type = this.dataset.type;
+
+        fetch("ajax/filter_top_picks.php?type=" + encodeURIComponent(type))
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("top-picks-list").innerHTML = data;
+            });
+    });
+});
+</script>
 
 <?php include("includes/footer.php"); ?>
