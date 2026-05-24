@@ -1,42 +1,55 @@
 <?php
 session_start();
-include "db.php"; 
+include("../includes/config.php");
 
-$action = $_POST['action'] ?? '';
-$id = $_POST['id'] ?? 0;
+header("Content-Type: application/json");
 
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
+$action = $_POST["action"] ?? "";
+$productId = isset($_POST["product_id"]) ? (int)$_POST["product_id"] : 0;
+
+if (!isset($_SESSION["cart"])) {
+    $_SESSION["cart"] = [];
 }
 
-if ($action == "add") {
-    $id = (int)$id;
+if ($productId <= 0) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid product"
+    ]);
+    exit;
+}
 
-    if (isset($_SESSION['cart'][$id])) {
-        $_SESSION['cart'][$id]++;
-    } else {
-        $_SESSION['cart'][$id] = 1;
+if ($action === "add") {
+    if (!isset($_SESSION["cart"][$productId])) {
+        $_SESSION["cart"][$productId] = 0;
+    }
+
+    $_SESSION["cart"][$productId]++;
+}
+
+if ($action === "remove") {
+    if (isset($_SESSION["cart"][$productId])) {
+        $_SESSION["cart"][$productId]--;
+
+        if ($_SESSION["cart"][$productId] <= 0) {
+            unset($_SESSION["cart"][$productId]);
+        }
     }
 }
 
-if ($action == "remove") {
-    unset($_SESSION['cart'][$id]);
-}
+$total = 0;
+$quantity = $_SESSION["cart"][$productId] ?? 0;
 
-if ($action == "update") {
-    $qty = (int)$_POST['quantity'];
-
-    if ($qty <= 0) {
-        unset($_SESSION['cart'][$id]);
-    } else {
-        $_SESSION['cart'][$id] = $qty;
+foreach ($_SESSION["cart"] as $id => $qty) {
+    foreach ($products as $product) {
+        if ($product->getId() == $id) {
+            $total += $product->getPrice() * $qty;
+        }
     }
 }
-
-$count = array_sum($_SESSION['cart']);
 
 echo json_encode([
     "success" => true,
-    "count" => $count
+    "quantity" => $quantity,
+    "total" => number_format($total, 2, ".", "")
 ]);
-?>

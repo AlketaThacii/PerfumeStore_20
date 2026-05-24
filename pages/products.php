@@ -1,5 +1,8 @@
 <?php
 include("../includes/config.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $order = $_GET['sort'] ?? null;
 $category = $_GET['category'] ?? "all";
@@ -72,9 +75,12 @@ if (!empty($filteredProducts)) {
 
         if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
             echo '<div class="qty-control">';
-            echo '<button type="button" onclick="changeQty(\'' . $cleanId . '\', -1, ' . $rawPrice . ')">-</button>';
-            echo '<span id="qty-' . $cleanId . '">0</span>';
-            echo '<button type="button" onclick="changeQty(\'' . $cleanId . '\', 1, ' . $rawPrice . ')">+</button>';
+          $productId = $product->getId();
+          $currentQty = $_SESSION['cart'][$productId] ?? 0;
+
+        echo '<button type="button" onclick="changeQty(' . $productId . ', -1)">-</button>';
+        echo '<span id="qty-' . $productId . '">' . $currentQty . '</span>';
+        echo '<button type="button" onclick="changeQty(' . $productId . ', 1)">+</button>';
             echo '</div>';
         }
 
@@ -105,12 +111,23 @@ echo '</div>';
 echo '</div>';
 
 if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
+    $cartTotal = 0;
+
+if (isset($_SESSION["cart"])) {
+    foreach ($_SESSION["cart"] as $cartProductId => $cartQty) {
+        foreach ($products as $product) {
+            if ($product->getId() == $cartProductId) {
+                $cartTotal += $product->getPrice() * $cartQty;
+            }
+        }
+    }
+}
     echo '<aside class="order-sidebar">';
     echo '<div class="order-card">';
     echo '<h2>Order Online</h2>';
 
     echo '<div style="margin: 15px 0; font-weight: bold; color: #d4af37; font-size: 1.2rem;">';
-    echo 'Total: $<span id="grand-total">0.00</span>';
+    echo 'Total: $<span id="grand-total">' . number_format($cartTotal, 2) . '</span>';
     echo '</div>';
 
     echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
@@ -146,24 +163,30 @@ include("../includes/footer.php");
 ?>
 
 <script>
-    function changeQty(id, delta, price) {
-        let qtyElement = document.getElementById('qty-' + id);
-        let totalElement = document.getElementById('grand-total');
+function changeQty(productId, delta) {
+    let action = delta > 0 ? "add" : "remove";
 
-        if (!qtyElement || !totalElement) {
-            return;
+    fetch("../ajax/cart_action.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "action=" + action + "&product_id=" + productId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            let qtyElement = document.getElementById("qty-" + productId);
+            let totalElement = document.getElementById("grand-total");
+
+            if (qtyElement) {
+                qtyElement.innerText = data.quantity;
+            }
+
+            if (totalElement) {
+                totalElement.innerText = data.total;
+            }
         }
-
-        let currentQty = parseInt(qtyElement.innerText);
-        let newQty = currentQty + delta;
-
-        if (newQty >= 0) {
-            qtyElement.innerText = newQty;
-
-            let currentTotal = parseFloat(totalElement.innerText);
-            let newTotal = currentTotal + (delta * price);
-
-            totalElement.innerText = Math.max(0, newTotal).toFixed(2);
-        }
-    }
+    });
+}
 </script>
