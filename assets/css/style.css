@@ -1091,3 +1091,35 @@ body.dark .shop textarea {
     color: white;
     border: 1px solid #333;
 }
+#top-picks-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 25px 0 35px;
+}
+
+#top-picks-filter .top-filter-btn {
+    background: transparent;
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.75);
+    padding: 10px 22px;
+    min-width: 95px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+#top-picks-filter .top-filter-btn:hover {
+    background: #d4af37;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+#top-picks-filter .top-filter-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
