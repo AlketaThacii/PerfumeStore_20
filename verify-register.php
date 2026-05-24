@@ -2,6 +2,7 @@
 session_start();
 
 require_once 'includes/db.php';
+require_once 'includes/security.php';
 
 $error = "";
 $code = "";
@@ -44,12 +45,21 @@ if (strtotime($pendingUser["verification_expires_at"]) < time()) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $code = trim($_POST["code"] ?? "");
+    $rateLimitName = "verify_" . $pendingUserId;
+    $waitSeconds = rate_limit_remaining_seconds($rateLimitName, 5, 300);
 
-    if ($code === "") {
+    if (!csrf_is_valid()) {
+        $error = "Your session expired. Please refresh the page and try again.";
+    } elseif ($waitSeconds > 0) {
+        $error = "Too many verification attempts. Please try again in " . ceil($waitSeconds / 60) . " minute(s).";
+    } elseif ($code === "") {
+        rate_limit_hit($rateLimitName);
         $error = "Please enter the verification code.";
     } elseif (!preg_match('/^[0-9]{6}$/', $code)) {
+        rate_limit_hit($rateLimitName);
         $error = "Verification code must contain 6 digits.";
     } elseif (!password_verify($code, $pendingUser["verification_code_hash"])) {
+        rate_limit_hit($rateLimitName);
         $error = "Verification code is incorrect.";
     } else {
         $stmt = $conn->prepare(
@@ -62,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("i", $pendingUserId);
 
         if ($stmt->execute()) {
+            rate_limit_reset($rateLimitName);
             unset($_SESSION["pending_user_id"], $_SESSION["pending_email"]);
             $_SESSION["register_success"] = "Email verified successfully. You can now log in.";
 
@@ -92,11 +103,15 @@ include 'includes/navbar.php';
         <?php endif; ?>
 
         <form method="POST" action="">
+            <?php echo csrf_field(); ?>
+
             <label>Verification Code</label>
             <input
                 type="text"
                 name="code"
                 maxlength="6"
+                inputmode="numeric"
+                autocomplete="one-time-code"
                 placeholder="Enter 6-digit code"
                 value="<?php echo htmlspecialchars($code, ENT_QUOTES, 'UTF-8'); ?>"
                 required>

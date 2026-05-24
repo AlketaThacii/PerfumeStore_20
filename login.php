@@ -2,6 +2,7 @@
 session_start();
 
 require_once 'includes/db.php';
+require_once 'includes/security.php';
 
 $error = "";
 $success = "";
@@ -15,10 +16,18 @@ if (isset($_SESSION["register_success"])) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = strtolower(trim($_POST["email"] ?? ""));
     $password = $_POST["password"] ?? "";
+    $rateLimitName = "login_" . ($email !== "" ? $email : "empty");
+    $waitSeconds = rate_limit_remaining_seconds($rateLimitName, 5, 300);
 
-    if ($email === "" || $password === "") {
+    if (!csrf_is_valid()) {
+        $error = "Your session expired. Please refresh the page and try again.";
+    } elseif ($waitSeconds > 0) {
+        $error = "Too many login attempts. Please try again in " . ceil($waitSeconds / 60) . " minute(s).";
+    } elseif ($email === "" || $password === "") {
+        rate_limit_hit($rateLimitName);
         $error = "Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        rate_limit_hit($rateLimitName);
         $error = "Please enter a valid email address.";
     } else {
         $stmt = $conn->prepare(
@@ -36,8 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($user && password_verify($password, $user["password"])) {
             if ($user["role"] === "user" && (int) $user["email_verified"] !== 1) {
+                rate_limit_hit($rateLimitName);
                 $error = "Please verify your email before logging in.";
             } else {
+                rate_limit_reset($rateLimitName);
                 session_regenerate_id(true);
 
                 $_SESSION["user_id"] = $user["id"];
@@ -53,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 exit();
             }
         } else {
+            rate_limit_hit($rateLimitName);
             $error = "Email or password is incorrect.";
         }
     }
@@ -83,6 +95,8 @@ include 'includes/navbar.php';
         <?php endif; ?>
 
         <form method="POST" action="">
+            <?php echo csrf_field(); ?>
+
             <label>Email</label>
             <input
                 type="email"
