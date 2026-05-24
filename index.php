@@ -102,14 +102,9 @@ $filtered = array_filter(
     <section id="products">
         <?php renderSectionTitle("Top Picks"); ?>
 
-       <div class="filter" id="top-picks-filter">
+      <div class="filter" id="top-picks-filter">
     <?php
-    $types = [
-        "All",
-        "Men",
-        "Women",
-        "Unisex"
-    ];
+    $types = ["All", "Men", "Women", "Unisex"];
 
     foreach ($types as $t) {
         echo "<button type='button' class='top-filter-btn' data-type='$t'>$t</button>";

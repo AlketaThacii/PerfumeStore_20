@@ -1099,27 +1099,34 @@ body.dark .shop textarea {
     flex-wrap: wrap;
     margin: 25px 0 35px;
 }
+#top-picks-filter {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 25px 0 35px;
+    background: transparent !important;
+}
 
 #top-picks-filter .top-filter-btn {
-    background: transparent;
-    color: #d4af37;
-    border: 1px solid rgba(212, 175, 55, 0.75);
-    padding: 10px 22px;
-    min-width: 95px;
-    border-radius: 30px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: #050505 !important;
+    color: #d4af37 !important;
+    border: 1px solid #d4af37 !important;
+    padding: 9px 20px;
+    min-width: 90px;
+    border-radius: 999px;
+    font-family: inherit;
     font-size: 0.95rem;
     font-weight: 600;
+    line-height: 1;
     cursor: pointer;
-    transition: 0.25s ease;
+    text-align: center;
 }
 
 #top-picks-filter .top-filter-btn:hover {
-    background: #d4af37;
-    color: #000;
-    transform: translateY(-2px);
-}
-
-#top-picks-filter .top-filter-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+    background: #d4af37 !important;
+    color: #000 !important;
 }
