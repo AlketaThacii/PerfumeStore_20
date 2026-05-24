@@ -97,8 +97,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
-(1, 'admin', 'admin@perfume-store.test', '$2y$10$8H8mZx8vaFYsBsznLXjXkeJc.RoOjfeHq3WbeUkcGcyXGrBpzWoG.', 'admin'),
-(2, 'user', 'user@perfume-store.test', '$2y$10$8H8mZx8vaFYsBsznLXjXkeJc.RoOjfeHq3WbeUkcGcyXGrBpzWoG.', 'user');
+(1, 'admin', 'admin@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'admin'),
+(2, 'user', 'user@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'user');
 
 --
 -- Indexes for dumped tables
@@ -124,6 +124,7 @@ ALTER TABLE `products`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
