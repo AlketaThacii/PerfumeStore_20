@@ -124,7 +124,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
     echo 'Total: $<span id="grand-total">' . number_format($cartTotal, 2) . '</span>';
     echo '</div>';
 
-    echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
+    echo '<hr style="border: 0.5px solid #444; margin: 15px 15px ; left: 0; right: 0;">';
     echo '<p style="font-size: 0.9rem; margin-bottom: 10px;">Please review your cart before completing the purchase.</p>';
     echo '<a href="checkout.php" class="submit-order-btn" style="display:block; text-align:center; text-decoration:none;">Go to Checkout</a>';
 
@@ -136,6 +136,7 @@ echo '</main>';
 
 include("../includes/footer.php");
 ?>
+
 
 <script>
     function changeQty(productId, delta) {
