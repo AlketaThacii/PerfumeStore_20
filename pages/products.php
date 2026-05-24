@@ -16,7 +16,6 @@ if ($order) {
 }
 
 include("../includes/header.php");
-echo '<link rel="stylesheet" href="../assets/css/style.css" >';
 include("../includes/navbar.php");
 
 echo '<main class="shop">';
