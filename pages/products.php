@@ -144,7 +144,7 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
     echo '</div>';
 
     echo '<hr style="border: 0.5px solid #444; margin: 15px 0;">';
-    echo '<button type="submit" class="submit-order-btn">Complete Purchase</button>';
+     echo '<a href="checkout.php" class="submit-order-btn">Go to Checkout</a>';
     echo '</form>';
 
     echo '</div>';

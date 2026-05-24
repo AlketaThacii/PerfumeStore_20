@@ -12,33 +12,24 @@ if (!isset($_SESSION["cart"])) {
 }
 
 if ($productId <= 0) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Invalid product"
-    ]);
+    echo json_encode(["success" => false]);
     exit;
 }
 
 if ($action === "add") {
-    if (!isset($_SESSION["cart"][$productId])) {
-        $_SESSION["cart"][$productId] = 0;
-    }
-
-    $_SESSION["cart"][$productId]++;
+    $_SESSION["cart"][$productId] = ($_SESSION["cart"][$productId] ?? 0) + 1;
 }
 
-if ($action === "remove") {
-    if (isset($_SESSION["cart"][$productId])) {
-        $_SESSION["cart"][$productId]--;
+if ($action === "remove" && isset($_SESSION["cart"][$productId])) {
+    $_SESSION["cart"][$productId]--;
 
-        if ($_SESSION["cart"][$productId] <= 0) {
-            unset($_SESSION["cart"][$productId]);
-        }
+    if ($_SESSION["cart"][$productId] <= 0) {
+        unset($_SESSION["cart"][$productId]);
     }
 }
 
-$total = 0;
 $quantity = $_SESSION["cart"][$productId] ?? 0;
+$total = 0;
 
 foreach ($_SESSION["cart"] as $id => $qty) {
     foreach ($products as $product) {

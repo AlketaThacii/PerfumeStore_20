@@ -1,19 +1,34 @@
 <?php
-include "../db.php";
+session_start();
+include("../includes/config.php");
 
-$search = $_GET['search'] ?? '';
-$search = mysqli_real_escape_string($conn, $search);
+$search = strtolower($_GET["search"] ?? "");
 
-$query = mysqli_query($conn, "SELECT * FROM products WHERE name LIKE '%$search%'");
+foreach ($products as $product) {
+    if ($search !== "" && strpos(strtolower($product->getName()), $search) === false) {
+        continue;
+    }
 
-while ($row = mysqli_fetch_assoc($query)) {
-    echo '
-    <div class="product-card">
-        <img src="images/' . $row['image'] . '" width="150">
-        <h3>' . $row['name'] . '</h3>
-        <p>' . $row['price'] . ' €</p>
-        <button class="add-to-cart" data-id="' . $row['id'] . '">Add to Cart</button>
-    </div>
-    ';
+    $id = $product->getId();
+    $name = htmlspecialchars($product->getName());
+    $price = number_format((float)$product->getPrice(), 2);
+    $cat = strtoupper($product->getCategory());
+    $image = $product->getImage();
+    $currentQty = $_SESSION["cart"][$id] ?? 0;
+
+    echo '<div class="card">';
+    echo "<img src='$image' alt='$name' class='product-img'>";
+    echo "<h3>$name</h3>";
+    echo "<p class='price'>$$price</p>";
+    echo "<p style='font-size: 0.8rem; opacity: 0.6; margin-top: 5px;'>$cat</p>";
+
+    if (isset($_SESSION["role"]) && $_SESSION["role"] === "user") {
+        echo '<div class="qty-control">';
+        echo '<button type="button" onclick="changeQty(' . $id . ', -1)">-</button>';
+        echo '<span id="qty-' . $id . '">' . $currentQty . '</span>';
+        echo '<button type="button" onclick="changeQty(' . $id . ', 1)">+</button>';
+        echo '</div>';
+    }
+
+    echo '</div>';
 }
-?>
