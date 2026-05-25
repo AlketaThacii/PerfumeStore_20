@@ -3,6 +3,8 @@ include("includes/header.php");
 include("includes/navbar.php");
 include("includes/db.php");
 
+echo '<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/style.css">';
+
 $query = mysqli_query(
     $conn,
     "SELECT
@@ -16,7 +18,6 @@ $query = mysqli_query(
      ON products.category_id = categories.id
      ORDER BY RAND()"
 );
-
 $products = mysqli_fetch_all(
     $query,
     MYSQLI_ASSOC
@@ -55,7 +56,6 @@ function formatPrice($price)
 {
     return number_format($price, 2) . " €";
 }
-
 function getBadge($price)
 {
     if ($price >= 150) return "Premium";
@@ -126,7 +126,7 @@ $filtered = array_filter(
     </section>
 
 
-<?php renderTopPicksSection($products, $type); ?>
+    <?php renderTopPicksSection($products, $type); ?>
     <?php
     $title = "CREATED WITH PURPOSE";
 
@@ -196,26 +196,23 @@ $filtered = array_filter(
         <?php renderSectionTitle("What Our Customers Say"); ?>
 
         <?php
-        $reviews = [
-            [
-                "name" => "Shqipe Shala",
-                "text" => "Fast delivery and quality products, value for money.",
-                "img" => "person7.jpg",
-                "rating" => 5
-            ],
-            [
-                "name" => "Besnik Gashi",
-                "text" => "Amazing perfumes! I will definitely shop again.",
-                "img" => "person1.jpg",
-                "rating" => 4
-            ],
-            [
-                "name" => "Aferdita Berisha",
-                "text" => "Best perfume store! Highly recommended.",
-                "img" => "person9.jpg",
-                "rating" => 5
-            ]
-        ];
+        $query = mysqli_query(
+            $conn,
+            "SELECT
+        users.username,
+        feedbacks.message,
+        feedbacks.rating
+     FROM feedbacks
+     INNER JOIN users
+     ON feedbacks.user_id = users.id
+     ORDER BY feedbacks.created_at DESC
+     LIMIT 3"
+        );
+
+        $reviews = mysqli_fetch_all(
+            $query,
+            MYSQLI_ASSOC
+        );
 
         function renderStars($rating)
         {
@@ -233,13 +230,28 @@ $filtered = array_filter(
             <?php foreach ($reviews as $r): ?>
                 <div class="testimonial-card">
 
-                    <img src="/PerfumeStore_20/assets/images/<?php echo $r['img']; ?>" alt="">
+                    <h3>
+                        <?php
+                        echo htmlspecialchars(
+                            $r['username']
+                        );
+                        ?>
+                    </h3>
 
-                    <h3><?php echo $r['name']; ?></h3>
-                    <p class="review-text"><?php echo $r['text']; ?></p>
+                    <p class="review-text">
+                        <?php
+                        echo htmlspecialchars(
+                            $r['message']
+                        );
+                        ?>
+                    </p>
 
                     <div class="stars">
-                        <?php renderStars($r['rating']); ?>
+                        <?php
+                        renderStars(
+                            $r['rating']
+                        );
+                        ?>
                     </div>
 
                 </div>
@@ -259,8 +271,26 @@ $filtered = array_filter(
                 <button type="submit">Subscribe</button>
             </form>
         </section>
-    <?php endif; ?>
+        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "user"): ?>
+        <section class="feedback-section" id="feedback-section">
+            <h2>Give Feedback</h2>
 
+            <form action="pages/save-feedback.php" method="POST" class="feedback-form">
+                <textarea name="feedback" placeholder="Write your feedback..." required></textarea>
+
+                <select name="rating" required>
+                    <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                    <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+                    <option value="3">&#9733;&#9733;&#9733;</option>
+                    <option value="2">&#9733;&#9733;</option>
+                    <option value="1">&#9733;</option>
+                </select>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </section>
+        <?php endif; ?> 
+   <?php endif; ?> 
 
 
 </main>

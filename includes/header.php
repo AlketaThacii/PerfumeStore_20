@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maison De Parfum</title>
-    <link rel="stylesheet" href="/PerfumeStore_20/assets/css/style.css?v=1">
+    <link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/style.css?v=1">
     <link rel="stylesheet" href="../assets/css/infoPages.css">
 </head>
 
