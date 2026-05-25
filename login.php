@@ -2,11 +2,11 @@
 session_start();
 
 require_once 'includes/db.php';
+require_once 'includes/security.php';
 
 $error = "";
 $success = "";
-$login = "";
-$loginType = "user";
+$email = "";
 
 if (isset($_SESSION["register_success"])) {
     $success = $_SESSION["register_success"];
@@ -14,51 +14,58 @@ if (isset($_SESSION["register_success"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $loginType = $_POST["login_type"] ?? "user";
-    $login = trim($_POST["login"] ?? "");
+    $email = strtolower(trim($_POST["email"] ?? ""));
     $password = $_POST["password"] ?? "";
+    $rateLimitName = "login_" . ($email !== "" ? $email : "empty");
+    $waitSeconds = rate_limit_remaining_seconds($rateLimitName, 5, 300);
 
-    if ($login === "" || $password === "") {
+    if (!csrf_is_valid()) {
+        $error = "Your session expired. Please refresh the page and try again.";
+    } elseif ($waitSeconds > 0) {
+        $error = "Too many login attempts. Please try again in " . ceil($waitSeconds / 60) . " minute(s).";
+    } elseif ($email === "" || $password === "") {
+        rate_limit_hit($rateLimitName);
         $error = "Please fill in all fields.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        rate_limit_hit($rateLimitName);
+        $error = "Please enter a valid email address.";
     } else {
-        if ($loginType === "admin") {
-            $stmt = $conn->prepare(
-                "SELECT id, username, email, password, role 
-                 FROM users 
-                 WHERE admin_code = ? AND role = 'admin' 
-                 LIMIT 1"
-            );
-        } else {
-            $stmt = $conn->prepare(
-                "SELECT id, username, email, password, role 
-                 FROM users 
-                 WHERE email = ? AND role = 'user' 
-                 LIMIT 1"
-            );
-        }
+        $stmt = $conn->prepare(
+            "SELECT id, username, email, password, role, email_verified
+             FROM users
+             WHERE email = ?
+             LIMIT 1"
+        );
 
-        $stmt->bind_param("s", $login);
+        $stmt->bind_param("s", $email);
         $stmt->execute();
 
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
 
         if ($user && password_verify($password, $user["password"])) {
-            session_regenerate_id(true);
-
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["username"] = $user["username"];
-            $_SESSION["email"] = $user["email"];
-            $_SESSION["role"] = $user["role"];
-
-            if ($user["role"] === "admin") {
-                header("Location: pages/products.php");
+            if ($user["role"] === "user" && (int) $user["email_verified"] !== 1) {
+                rate_limit_hit($rateLimitName);
+                $error = "Please verify your email before logging in.";
             } else {
-                header("Location: index.php");
+                rate_limit_reset($rateLimitName);
+                session_regenerate_id(true);
+
+                $_SESSION["user_id"] = $user["id"];
+                $_SESSION["username"] = $user["username"];
+                $_SESSION["email"] = $user["email"];
+                $_SESSION["role"] = $user["role"];
+
+                if ($user["role"] === "admin") {
+                    header("Location: pages/products.php");
+                } else {
+                    header("Location: index.php");
+                }
+                exit();
             }
-            exit();
         } else {
-            $error = "Login data or password is incorrect.";
+            rate_limit_hit($rateLimitName);
+            $error = "Email or password is incorrect.";
         }
     }
 }
@@ -73,7 +80,7 @@ include 'includes/navbar.php';
     <div class="login-box">
         <span class="auth-eyebrow">Secure Access</span>
         <h1>Login</h1>
-        <p>User logs in with verified email. Admin logs in with admin code.</p>
+        <p>Log in with your email and password.</p>
 
         <?php if ($success !== ""): ?>
             <div class="success-message">
@@ -88,52 +95,24 @@ include 'includes/navbar.php';
         <?php endif; ?>
 
         <form method="POST" action="">
-            <label>Login Type</label>
+            <?php echo csrf_field(); ?>
 
-            <div class="role-selector">
-                <label class="role-option">
-                    <input
-                        type="radio"
-                        name="login_type"
-                        value="user"
-                        <?php echo $loginType === "user" ? "checked" : ""; ?>>
-                    <span>User</span>
-                </label>
-
-                <label class="role-option">
-                    <input
-                        type="radio"
-                        name="login_type"
-                        value="admin"
-                        <?php echo $loginType === "admin" ? "checked" : ""; ?>>
-                    <span>Admin</span>
-                </label>
-            </div>
-
-            <label>Email or Admin Code</label>
+            <label>Email</label>
             <input
-                type="text"
-                name="login"
-                value="<?php echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>"
-                placeholder="User email / Admin code"
+                type="email"
+                name="email"
+                value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>"
+                placeholder="Enter your email"
                 required>
 
             <label>Password</label>
             <div class="password-box">
                 <input type="password" id="loginPassword" name="password" required>
-                <span class="toggle-password" onclick="togglePassword('loginPassword', this)">👁</span>
+                <span class="toggle-password" onclick="togglePassword('loginPassword', this)">Show</span>
             </div>
 
             <button type="submit">Login</button>
         </form>
-
-        <div class="demo-accounts">
-            <p>Access Info</p>
-            <div>
-                <span>User accounts log in only after email verification.</span>
-                <span>Admin accounts log in with admin code and password.</span>
-            </div>
-        </div>
 
         <p class="auth-link">
             Don't have an account?
@@ -148,10 +127,10 @@ function togglePassword(inputId, icon) {
 
     if (input.type === "password") {
         input.type = "text";
-        icon.innerHTML = "🙈";
+        icon.innerHTML = "Hide";
     } else {
         input.type = "password";
-        icon.innerHTML = "👁";
+        icon.innerHTML = "Show";
     }
 }
 </script>
