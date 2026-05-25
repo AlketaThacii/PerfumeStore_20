@@ -26,10 +26,10 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             <?php endif; ?>
 
             <?php if (isset($_SESSION["username"])): ?>
+                <a href="/PerfumeStore_20/profile.php">Profile</a>
                 <a href="/PerfumeStore_20/logout.php">LogOut</a>
             <?php else: ?>
                 <a href="/PerfumeStore_20/login.php">Log In</a>
-                <a href="/PerfumeStore_20/register.php">Register</a>
             <?php endif; ?>
         </nav>
 
