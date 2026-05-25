@@ -1,6 +1,9 @@
 <?php
 include("../includes/config.php");
 
+echo '<link rel="stylesheet" href="../assets/css/products.css">';
+echo '<link rel="stylesheet" href="/PerfumeStore_20/assets/css/style.css">';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -14,7 +17,6 @@ if ($order) {
 }
 
 include("../includes/header.php");
-echo '<link rel="stylesheet" href="../assets/css/style.css" >';
 include("../includes/navbar.php");
 
 echo '<main class="shop">';

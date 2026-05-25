@@ -1,0 +1,254 @@
+.shop {
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: flex-start;
+    max-width: 1400px; 
+    margin: 0 auto;
+    padding: 120px 0px 40px 10px;
+    width: 200%; 
+}
+.left-side {
+    flex: 1;
+    margin-right: 10px;
+}
+.categories {
+    width: 100%; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+.grid {
+   display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 120%;
+}
+
+.card {
+    background: #111;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    width: 280px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+
+.order-sidebar {
+   width: 500px; 
+    position: -webkit-sticky;
+    position: sticky;
+    top: 80px; 
+    z-index: 10;
+    flex-shrink:0;
+    margin-left: 20px;
+    margin-right: -120px;
+}
+
+.order-card {
+    background: #0a0a0a;
+    border: 1px solid #d4af37;
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    
+}
+
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    color: #d4af37;
+    margin-bottom: 5px;
+}
+
+.input-group input, 
+.input-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: white;
+    border-radius: 8px;
+    box-sizing: border-box; 
+}
+
+
+.submit-order-btn {
+    width: 100%;
+    padding: 15px;
+    background: #d4af37;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.submit-order-btn:hover {
+    background: #f0c94d;
+}
+
+
+
+.qty {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+
+.qty-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.qty-control button {
+    width: 34px;
+    height: 34px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    background: #111;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.2s ease;
+}
+
+.qty-control button:hover {
+    background: #d4af37;
+    color: #000;
+    transform: scale(1.05);
+}
+
+.qty-control button:active {
+    transform: scale(0.95);
+}
+
+
+.qty-control span {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.main1 .card {
+    background: #fff;
+}
+
+body.dark .main1 .card {
+    background: #1a1a1a;
+}
+body.dark .why-box {
+    background: #1e1e1e;
+}
+
+body.dark .newsletter {
+    background: #000;
+}
+body.dark .navigation a {
+    color: #ddd;
+}
+body.dark .logo {
+    color: white;
+}
+
+body:not(.dark) .shop .card {
+    background: #ffffff;
+    color: #000;
+    border: 1px solid #eee;
+}
+body:not(.dark) .shop .order-card {
+    background: #fff;
+    color: #000;
+}
+body.dark .shop {
+    background: #0a0a0a;
+}
+body.dark .shop .card {
+    background: #1a1a1a !important;
+    color: #fff !important;
+    border: 1px solid #333;
+}
+body.dark .shop .price {
+    color: #d4af37;
+}
+body.dark .shop .order-card {
+    background: #111;
+    border: 1px solid #d4af37;
+}
+body.dark .shop input,
+body.dark .shop textarea {
+    background: #1a1a1a;
+    color: white;
+    border: 1px solid #333;
+}
+.card a,
+.card button {
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 600;
+}
+.card a[href*="edit-product"] {
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: transparent;
+    margin-right: 6px;
+}
+
+.card a[href*="edit-product"]:hover {
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+.ajax-delete-product {
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+    color: #d4af37;
+}
+
+.ajax-delete-product:hover {
+    background: linear-gradient(135deg, #d4af37, #b8860b);
+    color: #000;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+    transform: translateY(-2px);
+}
+.card a:active,
+.card button:active {
+    transform: scale(0.95);
+}

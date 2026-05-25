@@ -17,7 +17,7 @@ $categories = mysqli_query(
     $conn,
     "SELECT id, name FROM categories ORDER BY name ASC"
 );
-
+echo '<link rel="stylesheet" href="../assets/css/add-product.css">';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 try{
     $name = trim($_POST["name"] ?? "");

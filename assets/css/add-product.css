@@ -1,0 +1,111 @@
+:root {
+    --bg: #ffffff;
+    --page-bg: #ffffff;
+    --panel: #ffffff;
+    --text: #1a1a1a;
+    --label: #333;
+    --border: rgba(212, 175, 55, 0.4);
+    --gold: #d4af37;
+    --gold-dark: #b8860b;
+    --input-bg: #ffffff;
+    --shadow: rgba(0,0,0,0.08);
+}
+body.dark {
+    --bg: #0d0d0d;
+    --page-bg: black;
+    --panel: #121212;
+    --text: #ffffff;
+    --label: #dddddd;
+    --border: rgba(212, 175, 55, 0.3);
+    --gold: #d4af37;
+    --gold-dark: #b8860b;
+    --input-bg: #0d0d0d;
+    --shadow: rgba(212, 175, 55, 0.15);
+}
+body {
+    margin: 0;
+    background: var(--bg);   
+    color: var(--text);
+    transition: 0.3s ease;
+}
+.product-admin-page {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--page-bg);
+}
+.product-form-panel {
+    width: 100%;
+    max-width: 520px;
+    background: var(--panel);
+    padding: 35px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px var(--shadow);
+    transition: 0.3s ease;
+}
+.product-form-panel h1 {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: var(--gold);
+    letter-spacing: 1px;
+}
+.product-form-panel p {
+    background: rgba(255, 0, 0, 0.08);
+    color: #ff6b6b;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.product-form-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.product-form-panel label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: var(--label);
+    gap: 6px;
+}
+.product-form-panel input,
+.product-form-panel select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    outline: none;
+    transition: 0.25s;
+}
+.product-form-panel input:focus,
+.product-form-panel select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+.product-form-panel input[type="file"] {
+    background: var(--input-bg);
+}
+.product-form-panel button {
+    margin-top: 10px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.product-form-panel button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.25);
+}
+select option {
+    background: var(--panel);
+    color: var(--text);
+}

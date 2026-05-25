@@ -14,8 +14,7 @@ $query = mysqli_query(
      FROM products
      LEFT JOIN categories
      ON products.category_id = categories.id
-     ORDER BY RAND()
-     LIMIT 6"
+     ORDER BY RAND()"
 );
 
 $products = mysqli_fetch_all(
@@ -23,6 +22,35 @@ $products = mysqli_fetch_all(
     MYSQLI_ASSOC
 );
 
+function renderTopPicksSection($products, $type = "all")
+{
+    $filtered = array_filter($products, function ($p) use ($type) {
+        return $type === "all" ||
+            strtolower($p["category"] ?? "") === strtolower($type);
+    });
+
+    shuffle($filtered);
+    $filtered = array_slice($filtered, 0, 6);
+?>
+    <section id="products">
+        <h2>Top Picks</h2>
+
+        <div class="filter" id="top-picks-filter">
+            <?php
+            $types = ["All", "Men", "Women", "Unisex"];
+
+            foreach ($types as $t) {
+                echo "<button type='button' class='top-filter-btn' data-type='$t'>$t</button> ";
+            }
+            ?>
+        </div>
+
+        <div class="grid-index" id="top-picks-list">
+            <?php foreach ($filtered as $p) renderProductCard($p); ?>
+        </div>
+    </section>
+<?php
+}
 function formatPrice($price)
 {
     return number_format($price, 2) . " €";
@@ -46,7 +74,7 @@ function renderProductCard($p)
         <p class="price"><?php echo formatPrice($p['price']); ?></p>
 
 
-       
+
 
 
         <?php if ($badge): ?>
@@ -98,24 +126,7 @@ $filtered = array_filter(
     </section>
 
 
-
-    <section id="products">
-        <?php renderSectionTitle("Top Picks"); ?>
-
-      <div class="filter" id="top-picks-filter">
-    <?php
-    $types = ["All", "Men", "Women", "Unisex"];
-
-    foreach ($types as $t) {
-        echo "<button type='button' class='top-filter-btn' data-type='$t'>$t</button>";
-    }
-    ?>
-</div>
-
-        <div class="grid-index" id="top-picks-list">
-            <?php foreach ($filtered as $p) renderProductCard($p); ?>
-        </div>
-    </section>
+<?php renderTopPicksSection($products, $type); ?>
     <?php
     $title = "CREATED WITH PURPOSE";
 
@@ -254,17 +265,17 @@ $filtered = array_filter(
 
 </main>
 <script>
-document.querySelectorAll(".top-filter-btn").forEach(button => {
-    button.addEventListener("click", function () {
-        let type = this.dataset.type;
+    document.querySelectorAll(".top-filter-btn").forEach(button => {
+        button.addEventListener("click", function() {
+            let type = this.dataset.type;
 
-        fetch("ajax/filter_top_picks.php?type=" + encodeURIComponent(type))
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("top-picks-list").innerHTML = data;
-            });
+            fetch("ajax/filter_top_picks.php?type=" + encodeURIComponent(type))
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("top-picks-list").innerHTML = data;
+                });
+        });
     });
-});
 </script>
 
 <?php include("includes/footer.php"); ?>
