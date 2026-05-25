@@ -260,37 +260,27 @@ $filtered = array_filter(
 
     </section>
     <?php if (!isset($_SESSION["role"]) || $_SESSION["role"] == "user"): ?>
-        <section class="newsletter">
-            <?php renderSectionTitle("Join Our Newsletter"); ?>
-            <p>Get updates about new perfumes</p>
-            <form method="POST" action="pages/newsletter.php">
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email">
-                <button type="submit">Subscribe</button>
-            </form>
-        </section>
+
         <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "user"): ?>
-        <section class="feedback-section" id="feedback-section">
-            <h2>Give Feedback</h2>
+            <section class="feedback-section" id="feedback-section">
+                <h2>Give Feedback</h2>
 
-            <form action="pages/save-feedback.php" method="POST" class="feedback-form">
-                <textarea name="feedback" placeholder="Write your feedback..." required></textarea>
+                <form action="pages/save-feedback.php" method="POST" class="feedback-form">
+                    <textarea name="feedback" placeholder="Write your feedback..." required></textarea>
 
-                <select name="rating" required>
-                    <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
-                    <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
-                    <option value="3">&#9733;&#9733;&#9733;</option>
-                    <option value="2">&#9733;&#9733;</option>
-                    <option value="1">&#9733;</option>
-                </select>
+                    <select name="rating" required>
+                        <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="3">&#9733;&#9733;&#9733;</option>
+                        <option value="2">&#9733;&#9733;</option>
+                        <option value="1">&#9733;</option>
+                    </select>
 
-                <button type="submit">Submit Feedback</button>
-            </form>
-        </section>
-        <?php endif; ?> 
-   <?php endif; ?> 
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </section>
+        <?php endif; ?>
+    <?php endif; ?>
 
 
 </main>
