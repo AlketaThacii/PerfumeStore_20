@@ -7,6 +7,7 @@ if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
     header("Location: /PerfumeStore_20/index.php");
     exit();
 }
+
 // ── FSHI FEEDBACK (nga dashboard) ────────────────────────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_feedback"])) {
     $fid = (int)$_POST["feedback_id"];
@@ -16,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_feedback"])) {
     header("Location: admin-dashboard.php");
     exit;
 }
+
 // ── FSHI USER ─────────────────────────────────────────────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_user"])) {
     $uid = (int)$_POST["user_id"];
@@ -25,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_user"])) {
     header("Location: admin-dashboard.php");
     exit;
 }
+
 // ── NDRYSHO STATUS POROSIE ────────────────────────────────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["order_id"], $_POST["status"])) {
     $allowedStatuses = ["pending", "completed", "cancelled"];
@@ -38,7 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["order_id"], $_POST["s
     header("Location: admin-dashboard.php#orders");
     exit;
 }
-// ── MERR TE DHENAT ───────────────────────────────────────────────────────────
+
+// ── MERR TË DHËNAT ───────────────────────────────────────────────────────────
 
 // Statistika
 $totalUsers     = $conn->query("SELECT COUNT(*) FROM users WHERE role = 'user'")->fetch_row()[0];
@@ -46,7 +50,49 @@ $totalOrders    = $conn->query("SELECT COUNT(*) FROM orders")->fetch_row()[0];
 $totalRevenue   = $conn->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE status = 'completed'")->fetch_row()[0];
 $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0];
 
+// Të gjithë users me orders dhe feedbacks
+$usersResult = $conn->query("
+    SELECT
+        u.id,
+        u.username,
+        u.email,
+        u.email_verified,
+        u.profile_image,
+        (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count,
+        (SELECT COALESCE(SUM(o2.total),0) FROM orders o2 WHERE o2.user_id = u.id AND o2.status = 'completed') AS total_spent,
+        (SELECT COUNT(*) FROM feedbacks f WHERE f.user_id = u.id) AS feedback_count
+    FROM users u
+    WHERE u.role = 'user'
+    ORDER BY u.id ASC
+");
+$users = $usersResult->fetch_all(MYSQLI_ASSOC);
 
+// Të gjitha orders
+$ordersResult = $conn->query("
+    SELECT o.*, u.username, u.email AS user_email
+    FROM orders o
+    LEFT JOIN users u ON o.user_id = u.id
+    ORDER BY o.created_at DESC
+");
+$orders = $ordersResult->fetch_all(MYSQLI_ASSOC);
+
+// Të gjitha feedbacks
+$feedbacksResult = $conn->query("
+    SELECT f.*, u.username, u.profile_image
+    FROM feedbacks f
+    INNER JOIN users u ON f.user_id = u.id
+    ORDER BY f.created_at DESC
+");
+$feedbacks = $feedbacksResult->fetch_all(MYSQLI_ASSOC);
+
+function stars($rating) {
+    $out = "";
+    for ($i = 1; $i <= 5; $i++) {
+        $out .= $i <= $rating ? "★" : "☆";
+    }
+    return $out;
+}
+?>
 
 <style>
 .dash {
@@ -202,6 +248,9 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
     cursor: pointer;
 }
 
+/* User detail expand */
+.user-orders-cell small { display: block; color: #aaa; line-height: 1.6; }
+
 /* Nav tabs */
 .dash-nav {
     display: flex;
@@ -226,49 +275,6 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
     .dash-table th, .dash-table td { padding: 8px; }
 }
 </style>
-
-<form method="POST"
-      onsubmit="return confirm('Delete this feedback?')">
-    <input type="hidden" name="delete_feedback" value="1">
-    <input type="hidden" name="feedback_id" value="<?php echo $fb['id']; ?>">
-    <button type="submit" class="btn-delete">✕ Delete</button>
-</form>
-<form method="POST"
-      onsubmit="return confirm('Delete user <?php echo htmlspecialchars($u['username']); ?>? This cannot be undone.')">
-    <input type="hidden" name="delete_user" value="1">
-    <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
-    <button type="submit" class="btn-delete">✕ Delete</button>
-</form>
-<form method="POST" action="admin-dashboard.php#orders">
-    <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
-    <select name="status" onchange="this.form.submit()" class="status-select">
-        <option value="pending"   <?php echo $order['status']==='pending'   ? 'selected':''; ?>>Pending</option>
-        <option value="completed" <?php echo $order['status']==='completed' ? 'selected':''; ?>>Completed</option>
-        <option value="cancelled" <?php echo $order['status']==='cancelled' ? 'selected':''; ?>>Cancelled</option>
-    </select>
-</form>
-<span class="badge-<?php echo $order['status']; ?>" style="margin-top:4px;display:inline-block;">
-    <?php echo ucfirst($order['status']); ?>
-</span>
-
-<div class="stats-grid">
-    <div class="stat-card">
-        <span class="stat-number"><?php echo $totalUsers; ?></span>
-        <div class="stat-label">Total Users</div>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number"><?php echo $totalOrders; ?></span>
-        <div class="stat-label">Total Orders</div>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number">$<?php echo number_format($totalRevenue, 2); ?></span>
-        <div class="stat-label">Revenue (Completed)</div>
-    </div>
-    <div class="stat-card">
-        <span class="stat-number"><?php echo $totalFeedbacks; ?></span>
-        <div class="stat-label">Feedbacks</div>
-    </div>
-</div>
 
 <main class="dash">
     <h1>Admin Dashboard</h1>
@@ -302,7 +308,6 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
             <div class="stat-label">Feedbacks</div>
         </div>
     </div>
-
 
     <!-- ── USERS ─────────────────────────────────────────────────── -->
     <h2 class="section-title" id="users">👥 Users</h2>
