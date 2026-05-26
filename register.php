@@ -44,9 +44,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $errors[] = "Please enter a valid email address.";
         }
 
-        if ($password !== "" && strlen($password) < 6) {
+        if ($password !== "" && strlen($password) < 8) {
             rate_limit_hit("register");
-            $errors[] = "Password must be at least 6 characters.";
+            $errors[] = "Password must be at least 8 characters.";
+        }
+
+        if ($password !== "" && !preg_match('/[A-Z]/', $password)) {
+            rate_limit_hit("register");
+            $errors[] = "Password must contain at least one uppercase letter.";
+        }
+
+        if ($password !== "" && !preg_match('/[0-9]/', $password)) {
+            rate_limit_hit("register");
+            $errors[] = "Password must contain at least one number.";
+        }
+
+        if ($password !== "" && !preg_match('/[\W_]/', $password)) {
+            rate_limit_hit("register");
+            $errors[] = "Password must contain at least one special character (@, !, # etc.).";
         }
 
         if ($password !== $confirmPassword) {

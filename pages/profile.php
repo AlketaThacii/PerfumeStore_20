@@ -10,20 +10,75 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
-$userId = (int)$_SESSION["user_id"];
+$userId   = (int)$_SESSION["user_id"];
+$errors   = [];
+$success  = "";
 
+// Merr te dhenat e userit
+$stmt = $conn->prepare("SELECT username, email FROM users WHERE id = ? LIMIT 1");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+
+// Ndrysho passwordin
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["change_password"])) {
+    $currentPassword = $_POST["current_password"] ?? "";
+    $newPassword     = $_POST["new_password"] ?? "";
+    $confirmPassword = $_POST["confirm_password"] ?? "";
+
+    $stmt = $conn->prepare("SELECT password FROM users WHERE id = ? LIMIT 1");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+
+    if (!password_verify($currentPassword, $row["password"])) {
+        $errors[] = "Current password is incorrect.";
+    } elseif (strlen($newPassword) < 8) {
+        $errors[] = "Password must be at least 8 characters.";
+    } elseif (!preg_match('/[A-Z]/', $newPassword)) {
+        $errors[] = "Password must contain at least one uppercase letter.";
+    } elseif (!preg_match('/[0-9]/', $newPassword)) {
+        $errors[] = "Password must contain at least one number.";
+    } elseif (!preg_match('/[\W_]/', $newPassword)) {
+        $errors[] = "Password must contain at least one special character (@, !, # etc.).";
+    } elseif ($newPassword !== $confirmPassword) {
+        $errors[] = "New passwords do not match.";
+    } else {
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+        $stmt->bind_param("si", $hashed, $userId);
+        $stmt->execute();
+        $success = "Password changed successfully.";
+    }
+}
+
+// Fshi feedback-un
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_feedback"])) {
+    $feedbackId = (int)$_POST["feedback_id"];
+    $stmt = $conn->prepare("DELETE FROM feedbacks WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $feedbackId, $userId);
+    $stmt->execute();
+    header("Location: profile.php");
+    exit;
+}
+
+// Merr feedbacket
 $stmt = $conn->prepare(
-    "SELECT message, rating, created_at
-     FROM feedbacks
-     WHERE user_id = ?
-     ORDER BY created_at DESC"
+    "SELECT id, message, rating, created_at FROM feedbacks WHERE user_id = ? ORDER BY created_at DESC"
 );
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $feedbacks = $stmt->get_result();
 
-function renderProfileStars($rating)
-{
+// Merr historine e porosive
+$orderStmt = $conn->prepare(
+    "SELECT id, email, phone, address, total, items, status, created_at FROM orders WHERE user_id = ? ORDER BY created_at DESC"
+);
+$orderStmt->bind_param("i", $userId);
+$orderStmt->execute();
+$orders = $orderStmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+function renderProfileStars($rating) {
     for ($i = 1; $i <= 5; $i++) {
         echo $i <= $rating ? "&#9733;" : "&#9734;";
     }
@@ -34,34 +89,324 @@ echo '<link rel="stylesheet" href="../assets/css/style.css">';
 include("../includes/navbar.php");
 ?>
 
+<style>
+.profile-page {
+    padding: 60px 9%;
+    background: #050505;
+    min-height: 80vh;
+    color: #fff;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.profile-card {
+    background: #0f0f0f;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.profile-card h2 {
+    color: #d4af37;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 10px;
+}
+
+.profile-info-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.profile-info-label {
+    color: #d4af37;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.profile-info-value {
+    color: #ccc;
+}
+
+.profile-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+
+.profile-input:focus {
+    border-color: #d4af37;
+    outline: none;
+}
+
+.password-box {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.password-box .profile-input {
+    margin-bottom: 0;
+    padding-right: 60px;
+}
+
+.password-box .toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d4af37;
+    cursor: pointer;
+    font-size: 0.9rem;
+    user-select: none;
+}
+
+.profile-btn {
+    background: #d4af37;
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.profile-btn:hover {
+    background: #f0cf5a;
+}
+
+.profile-feedback-card {
+    background: #1a1a1a;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.profile-feedback-card p {
+    margin: 0 0 8px;
+    color: #ccc;
+}
+
+.profile-feedback-card small {
+    color: #777;
+}
+
+.stars { color: #d4af37; font-size: 1.1rem; }
+
+.delete-feedback-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.delete-feedback-btn:hover {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.order-card {
+    background: #1a1a1a;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-id { color: #d4af37; font-weight: bold; }
+.order-date { color: #777; font-size: 0.85rem; }
+
+.order-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-pending   { background: rgba(212,175,55,0.2);  color: #d4af37; }
+.status-completed { background: rgba(46,204,113,0.2);  color: #2ecc71; }
+.status-cancelled { background: rgba(231,76,60,0.2);   color: #e74c3c; }
+
+.order-items { color: #aaa; font-size: 0.9rem; margin-bottom: 8px; }
+.order-total { color: #d4af37; font-weight: bold; }
+
+.alert-success {
+    background: rgba(46,204,113,0.15);
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.alert-error {
+    background: rgba(231,76,60,0.15);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.profile-full-width {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .profile-full-width { grid-column: 1; }
+}
+</style>
+
 <main class="profile-page">
-    <section class="profile-panel">
-        <h1>My Profile</h1>
-        <p class="profile-username">
-            Username: <?php echo htmlspecialchars($_SESSION["username"]); ?>
-        </p>
+    <div class="profile-grid">
 
-        <h2>My Feedback</h2>
+        <!-- Informacionet e llogarise -->
+        <div class="profile-card">
+            <h2>My Account</h2>
 
-        <?php if ($feedbacks->num_rows > 0): ?>
-            <div class="profile-feedback-list">
-                <?php while ($feedback = $feedbacks->fetch_assoc()): ?>
-                    <article class="profile-feedback-card">
-                        <p><?php echo htmlspecialchars($feedback["message"]); ?></p>
-                        <div class="stars">
-                            <?php renderProfileStars((int)$feedback["rating"]); ?>
-                        </div>
-                        <small><?php echo htmlspecialchars($feedback["created_at"]); ?></small>
-                    </article>
-                <?php endwhile; ?>
+            <div class="profile-info-row">
+                <span class="profile-info-label">Username</span>
+                <span class="profile-info-value"><?php echo htmlspecialchars($user["username"]); ?></span>
             </div>
-        <?php else: ?>
-            <p>You have not submitted feedback yet.</p>
-        <?php endif; ?>
-    </section>
+
+            <div class="profile-info-row">
+                <span class="profile-info-label">Email</span>
+                <span class="profile-info-value"><?php echo htmlspecialchars($user["email"]); ?></span>
+            </div>
+        </div>
+
+        <!-- Ndrysho passwordin -->
+        <div class="profile-card">
+            <h2>Change Password</h2>
+
+            <?php if ($success !== ""): ?>
+                <div class="alert-success"><?php echo htmlspecialchars($success); ?></div>
+            <?php endif; ?>
+
+            <?php foreach ($errors as $error): ?>
+                <div class="alert-error"><?php echo htmlspecialchars($error); ?></div>
+            <?php endforeach; ?>
+
+            <form method="POST">
+                <input type="hidden" name="change_password" value="1">
+                <div class="password-box">
+                    <input type="password" id="currentPw" name="current_password" class="profile-input" placeholder="Current Password" required>
+                    <span class="toggle-password" onclick="togglePassword('currentPw', this)">Show</span>
+                </div>
+                <div class="password-box">
+                    <input type="password" id="newPw" name="new_password" class="profile-input" placeholder="New Password (min. 8 characters)" required>
+                    <span class="toggle-password" onclick="togglePassword('newPw', this)">Show</span>
+                </div>
+                <div class="password-box">
+                    <input type="password" id="confirmPw" name="confirm_password" class="profile-input" placeholder="Confirm New Password" required>
+                    <span class="toggle-password" onclick="togglePassword('confirmPw', this)">Show</span>
+                </div>
+                <button type="submit" class="profile-btn">Update Password</button>
+            </form>
+        </div>
+
+        <!-- Historia e porosive -->
+        <div class="profile-card profile-full-width">
+            <h2>My Orders</h2>
+
+            <?php if (empty($orders)): ?>
+                <p style="color: #777;">You have no orders yet.</p>
+            <?php else: ?>
+                <?php foreach ($orders as $order):
+                    $items = json_decode($order["items"], true);
+                ?>
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span class="order-id">Order #<?php echo $order["id"]; ?></span>
+                            <span class="order-date"><?php echo date("d M Y, H:i", strtotime($order["created_at"])); ?></span>
+                            <span class="order-status status-<?php echo $order["status"]; ?>">
+                                <?php echo ucfirst($order["status"]); ?>
+                            </span>
+                        </div>
+
+                        <div class="order-items">
+                            <?php foreach ($items as $item): ?>
+                                <?php echo htmlspecialchars($item["name"]); ?> x<?php echo (int)$item["qty"]; ?> —
+                                $<?php echo number_format($item["subtotal"], 2); ?><br>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <div class="order-total">Total: $<?php echo number_format($order["total"], 2); ?></div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- Feedbacket -->
+        <div class="profile-card profile-full-width">
+            <h2>My Feedback</h2>
+
+            <?php if ($feedbacks->num_rows > 0): ?>
+                <?php while ($feedback = $feedbacks->fetch_assoc()): ?>
+                    <div class="profile-feedback-card">
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="delete_feedback" value="1">
+                            <input type="hidden" name="feedback_id" value="<?php echo $feedback["id"]; ?>">
+                            <button type="submit" class="delete-feedback-btn"
+                                onclick="return confirm('Delete this feedback?')">✕ Delete</button>
+                        </form>
+
+                        <p><?php echo htmlspecialchars($feedback["message"]); ?></p>
+                        <div class="stars"><?php renderProfileStars((int)$feedback["rating"]); ?></div>
+                        <small><?php echo htmlspecialchars($feedback["created_at"]); ?></small>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p style="color: #777;">You have not submitted any feedback yet.</p>
+            <?php endif; ?>
+        </div>
+
+    </div>
 </main>
 
-<?php
-$stmt->close();
-include("../includes/footer.php");
-?>
+<script>
+function togglePassword(inputId, icon) {
+    let input = document.getElementById(inputId);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.innerHTML = "Hide";
+    } else {
+        input.type = "password";
+        icon.innerHTML = "Show";
+    }
+}
+</script>
+
+<?php include("../includes/footer.php"); ?>
