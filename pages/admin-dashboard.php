@@ -73,3 +73,22 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
 <span class="badge-<?php echo $order['status']; ?>" style="margin-top:4px;display:inline-block;">
     <?php echo ucfirst($order['status']); ?>
 </span>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-number"><?php echo $totalUsers; ?></span>
+        <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number"><?php echo $totalOrders; ?></span>
+        <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number">$<?php echo number_format($totalRevenue, 2); ?></span>
+        <div class="stat-label">Revenue (Completed)</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-number"><?php echo $totalFeedbacks; ?></span>
+        <div class="stat-label">Feedbacks</div>
+    </div>
+</div>
