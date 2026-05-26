@@ -24,6 +24,7 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 
             <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
                 <a href="/PerfumeStore_20/pages/orders.php">Orders</a>
+                <a href="/PerfumeStore_20/pages/admin-dashboard.php">Dashboard</a>
             <?php endif; ?>
 
             <?php if (isset($_SESSION["username"])): ?>
