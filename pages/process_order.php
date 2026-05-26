@@ -1,21 +1,23 @@
 <?php
 session_start();
 include("../includes/config.php");
+require_once "../includes/db.php";
 
-$email = trim($_POST['email'] ?? '');
-$phone = trim($_POST['phone'] ?? '');
+$email   = trim($_POST['email'] ?? '');
+$phone   = trim($_POST['phone'] ?? '');
 $address = trim($_POST['address'] ?? '');
 
 $emailError = "";
 $phoneError = "";
-$success = false;
+$cartError  = "";
+$success    = false;
 
-$cart = $_SESSION["cart"] ?? [];
-$total = 0;
+$cart         = $_SESSION["cart"] ?? [];
+$total        = 0;
 $orderedItems = [];
-$cartError = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
     if (!preg_match("/^[\w\.-]+@[\w\.-]+\.\w+$/", $email)) {
         $emailError = "Email is not valid.";
     }
@@ -32,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         foreach ($products as $product) {
             if ($product->getId() == $productId) {
                 $subtotal = $product->getPrice() * $qty;
-                $total += $subtotal;
+                $total   += $subtotal;
 
                 $orderedItems[] = [
-                    "name" => $product->getName(),
-                    "price" => $product->getPrice(),
-                    "qty" => $qty,
+                    "name"     => $product->getName(),
+                    "price"    => $product->getPrice(),
+                    "qty"      => $qty,
                     "subtotal" => $subtotal
                 ];
             }
@@ -45,16 +47,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($emailError === "" && $phoneError === "" && $cartError === "") {
-        $_SESSION['order_email'] = $email;
-        $_SESSION['order_phone'] = $phone;
-        $_SESSION['last_order_total'] = $total;
-        $_SESSION['last_order_items'] = $orderedItems;
 
-        setcookie("user_email", $email, time() + (86400 * 7), "/");
+        // Ruaj ne databaze
+        $userId     = $_SESSION["user_id"] ?? null;
+        $itemsJson  = json_encode($orderedItems);
 
-        unset($_SESSION["cart"]);
+        $stmt = $conn->prepare(
+            "INSERT INTO orders (user_id, email, phone, address, total, items, status)
+             VALUES (?, ?, ?, ?, ?, ?, 'pending')"
+        );
+        $stmt->bind_param("isssds", $userId, $email, $phone, $address, $total, $itemsJson);
 
-        $success = true;
+        if ($stmt->execute()) {
+            // Pastro cart-in
+            unset($_SESSION["cart"]);
+            setcookie("user_email", $email, time() + (86400 * 7), "/");
+            $success = true;
+        } else {
+            $cartError = "Something went wrong. Please try again.";
+        }
     }
 }
 
