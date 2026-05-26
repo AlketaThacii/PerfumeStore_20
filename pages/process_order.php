@@ -10,6 +10,7 @@ $address = trim($_POST['address'] ?? '');
 $emailError = "";
 $phoneError = "";
 $cartError  = "";
+$dbError    = "";
 $success    = false;
 
 $cart         = $_SESSION["cart"] ?? [];
@@ -48,24 +49,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($emailError === "" && $phoneError === "" && $cartError === "") {
 
-        // Ruaj ne databaze
-        $userId     = $_SESSION["user_id"] ?? null;
-        $itemsJson  = json_encode($orderedItems);
+        // ── RUAJ NE DATABAZË me try/catch ────────────────────────────
+        try {
+            $userId    = $_SESSION["user_id"] ?? null;
+            $itemsJson = json_encode($orderedItems);
 
-        $stmt = $conn->prepare(
-            "INSERT INTO orders (user_id, email, phone, address, total, items, status)
-             VALUES (?, ?, ?, ?, ?, ?, 'pending')"
-        );
-        $stmt->bind_param("isssds", $userId, $email, $phone, $address, $total, $itemsJson);
+            $stmt = $conn->prepare(
+                "INSERT INTO orders (user_id, email, phone, address, total, items, status)
+                 VALUES (?, ?, ?, ?, ?, ?, 'pending')"
+            );
 
-        if ($stmt->execute()) {
+            if (!$stmt) {
+                throw new Exception("Query preparation failed: " . $conn->error);
+            }
+
+            $stmt->bind_param("isssds", $userId, $email, $phone, $address, $total, $itemsJson);
+
+            if (!$stmt->execute()) {
+                throw new Exception("Order could not be saved: " . $stmt->error);
+            }
+
             // Pastro cart-in
             unset($_SESSION["cart"]);
             setcookie("user_email", $email, time() + (86400 * 7), "/");
             $success = true;
-        } else {
-            $cartError = "Something went wrong. Please try again.";
+
+        } catch (Exception $e) {
+            $dbError = "An error occurred while processing your order. Please try again.";
+            
         }
+        // ─────────────────────────────────────────────────────────────
     }
 }
 
@@ -108,7 +121,13 @@ include("../includes/navbar.php");
             <a href="/PerfumeStore_20/pages/products.php" class="btn">Back to Shop</a>
 
         <?php else: ?>
-            <h2>Validation Error</h2>
+            <h2>
+                <?php echo ($dbError !== "") ? "System Error" : "Validation Error"; ?>
+            </h2>
+
+            <?php if ($dbError !== ""): ?>
+                <p class="error"><?php echo htmlspecialchars($dbError, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php endif; ?>
 
             <?php if ($emailError !== ""): ?>
                 <p class="error"><?php echo htmlspecialchars($emailError, ENT_QUOTES, 'UTF-8'); ?></p>
