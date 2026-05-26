@@ -6,7 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Vetëm useri i kyçur mund të aksesojë
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "user") {
     header("Location: /PerfumeStore_20/login.php");
     exit;
@@ -28,22 +27,27 @@ $errors  = [];
 
 $name    = "";
 $email   = "";
+$toEmail = "";
 $subject = "";
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $name    = trim($_POST["name"]    ?? "");
-    $email   = trim($_POST["email"]   ?? "");
-    $subject = trim($_POST["subject"] ?? "");
-    $message = trim($_POST["message"] ?? "");
+    $name    = trim($_POST["name"]     ?? "");
+    $email   = trim($_POST["email"]    ?? "");
+    $toEmail = trim($_POST["to_email"] ?? "");
+    $subject = trim($_POST["subject"]  ?? "");
+    $message = trim($_POST["message"]  ?? "");
 
     // Validim
     if ($name === "") {
-        $errors[] = "Name is required.";
+        $errors[] = "Full name is required.";
     }
     if ($email === "" || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "A valid email address is required.";
+        $errors[] = "A valid sender email address is required.";
+    }
+    if ($toEmail === "" || !filter_var($toEmail, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "A valid recipient email address is required.";
     }
     if ($subject === "") {
         $errors[] = "Subject is required.";
@@ -64,12 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
-            $mail->setFrom($email, htmlspecialchars($name));
-            $mail->addAddress("arjanitalestrani15@gmail.com", "Maison De Parfum");
+            $mail->setFrom("arjanitalestrani15@gmail.com", "Maison De Parfum");
+            $mail->addAddress($toEmail);
             $mail->addReplyTo($email, htmlspecialchars($name));
 
             $mail->isHTML(true);
-            $mail->Subject = "Contact Form: " . htmlspecialchars($subject);
+            $mail->Subject = "Contact: " . htmlspecialchars($subject);
 
             $safeName    = htmlspecialchars($name,    ENT_QUOTES, "UTF-8");
             $safeEmail   = htmlspecialchars($email,   ENT_QUOTES, "UTF-8");
@@ -78,9 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $mail->Body = "
                 <div style='max-width:600px;margin:auto;padding:30px;font-family:Arial,sans-serif;border:1px solid #d4af37;border-radius:12px;'>
-                    <h2 style='color:#d4af37;'>New Contact Message</h2>
-                    <p><strong>Name:</strong> $safeName</p>
-                    <p><strong>Email:</strong> $safeEmail</p>
+                    <h2 style='color:#d4af37;'>New Message — Maison De Parfum</h2>
+                    <p><strong>From:</strong> $safeName ($safeEmail)</p>
                     <p><strong>Subject:</strong> $safeSubject</p>
                     <hr style='border:0.5px solid #d4af37;margin:20px 0;'>
                     <p><strong>Message:</strong></p>
@@ -88,13 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             ";
 
-            $mail->AltBody = "Name: $name\nEmail: $email\nSubject: $subject\n\nMessage:\n$message";
+            $mail->AltBody = "From: $name ($email)\nSubject: $subject\n\nMessage:\n$message";
 
             $mail->send();
-            $success = "Your message has been sent successfully. We will get back to you soon!";
+            $success = "Your message has been sent successfully!";
 
-            // Pastro fushat pas dërgimit
-            $name = $email = $subject = $message = "";
+            $name = $email = $toEmail = $subject = $message = "";
 
         } catch (Exception $e) {
             $error = "Message could not be sent. Please try again later.";
@@ -144,6 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php endforeach; ?>
 
             <form method="POST" action="">
+
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text"
@@ -155,12 +158,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">Your Email</label>
                     <input type="email"
                            id="email"
                            name="email"
                            placeholder="your@email.com"
                            value="<?php echo htmlspecialchars($email); ?>"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="to_email">Send To (Recipient Email)</label>
+                    <input type="email"
+                           id="to_email"
+                           name="to_email"
+                           placeholder="recipient@email.com"
+                           value="<?php echo htmlspecialchars($toEmail); ?>"
                            required>
                 </div>
 
@@ -184,6 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <button type="submit" class="contact-btn">Send Message</button>
+
             </form>
         </div>
 
