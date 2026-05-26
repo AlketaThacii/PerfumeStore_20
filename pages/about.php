@@ -1,5 +1,7 @@
 <?php 
-$userEmail = $_COOKIE['user_email'] ?? '';
+$userEmail = (isset($_SESSION["user_id"]) && !empty($_COOKIE['user_email'])) 
+    ? $_COOKIE['user_email'] 
+    : '';
 include '../includes/header.php'; 
 include '../includes/navbar.php'; 
 
