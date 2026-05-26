@@ -315,7 +315,7 @@ body:not(.dark) .btn.primary:hover {
 #products {
     display: flex;
     flex-direction: column;
-    align-items: center;   /* 👈 e qendron komplet section-in */
+    align-items: center;   
     text-align: center;
     width: 100%;
 }
@@ -330,6 +330,7 @@ body:not(.dark) .btn.primary:hover {
     cursor: pointer;
     transition: all 0.25s ease;
     letter-spacing: 0.3px;
+    margin-bottom: 20px;
 }
 #top-picks-filter .top-filter-btn:active {
     transform: scale(0.97);
@@ -351,6 +352,9 @@ body:not(.dark) .btn.primary:hover {
 .grid-index::-webkit-scrollbar-thumb {
     background: #d4af37;
     border-radius: 20px;
+}
+#products h2 {
+    margin-bottom: 25px;
 }
 .card {
     min-width: 280px;
@@ -384,24 +388,56 @@ body:not(.dark) .btn.primary:hover {
     font-size: 18px;
     font-weight: bold;
 }
-body:not(.dark) .card {
-    background: #fff;
-
-    color: #000;
-
-    border: 1px solid #eee;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+body:not(.dark) #products {
+    background: #f5f5f5 ;
+    padding: 90px 20px;
 }
-
-body:not(.dark) .card h3 {
-    color: #000;
+body:not(.dark) #products h2 {
+    color: #000 ;
+    margin-bottom: 25px;
+}
+body:not(.dark) #top-picks-filter {
+    margin-bottom: 20px;
 }
 body:not(.dark) #top-picks-filter .top-filter-btn {
-    background: #ffffff;
+    background: #ffffff ;
+    color: #000 ;
+    border: 1px solid rgba(212,175,55,0.5) ;
+    border-radius: 999px;
+    transition: 0.3s ease;
+}
+body:not(.dark) #top-picks-filter .top-filter-btn:hover {
+    background: #d4af37 ;
+    color: #000 ;
+    transform: translateY(-2px);
+}
+body:not(.dark) .card {
+    background: #ffffff ;
+    color: #000 ;
+    border: 1px solid rgba(212,175,55,0.20) ;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08) ;
+}
+body:not(.dark) .card:hover {
+    transform: translateY(-8px);
+    border-color: #d4af37 ;
+    box-shadow: 0 12px 30px rgba(212,175,55,0.20) ;
+}
+body:not(.dark) .card h3 {
+    color: #000 ;
+}
+body:not(.dark) .card .type {
+    color: #666 ;
+}
+body:not(.dark) .price {
+    color: #d4af37 ;
+}
+body:not(.dark) .badge {
+    background: #d4af37;
     color: #000;
-
-    border: 1px solid #d4af37;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* Seksioni About Us*/
@@ -513,32 +549,60 @@ body:not(.dark) #top-picks-filter .top-filter-btn {
     }
 }
 body:not(.dark) .about-home {
-    background: #f9f9f9; 
-    color: #000;
+    background: #f5f5f5 ;
+    color: #000 ;
+}
+body:not(.dark) .about-home-container {
+    align-items: center;
+}
+body:not(.dark) .about-home-text {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 body:not(.dark) .about-home-text h2 {
-    color: #000;
+    color: #000 ;
 }
-
+body:not(.dark) .about-home-text h2::after {
+    background: #d4af37;
+}
 body:not(.dark) .about-home-text p {
-    color: #444;
+    color: #444 ;
 }
 body:not(.dark) .about-home-lead {
-    color: #333;
+    color: #333 ;
 }
 body:not(.dark) .about-home-quote {
-    color: #d4af37; 
-}
-body:not(.dark) .about-home-images::after {
-    background: linear-gradient(45deg, rgba(255,255,255,0.6), rgba(212,175,55,0.2));
+    color: #d4af37 ;
+    font-style: italic;
+    font-weight: 500;
 }
 body:not(.dark) .about-home-btn {
-    color: #000;
-    border: 1px solid #d4af37;
+    border: 1px solid #d4af37 ;
+    color: #000 ;
+    background: transparent;
+    border-radius: 8px;
+    transition: 0.3s ease;
 }
 body:not(.dark) .about-home-btn:hover {
-    background: #d4af37;
-    color: #000;
+    background: #d4af37 ;
+    color: #000 ;
+    transform: translateY(-2px);
+}
+body:not(.dark) .about-home-images::after {
+    background: linear-gradient(
+        45deg,
+        rgba(255,255,255,0.2),
+        rgba(212,175,55,0.15)
+    );
+}
+body:not(.dark) .about-home-img {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+body:not(.dark) .about-home-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(212,175,55,0.25);
 }
 
 
@@ -566,31 +630,47 @@ body:not(.dark) .about-home-btn:hover {
     background: #d4af37 !important;
     color: black;
 }
-body:not(.dark) .why{
-    background-color: #f9f9f9;
+
+body:not(.dark) .why {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+}
+body:not(.dark) .why h2 {
+    color: #000 !important;
+}
+body:not(.dark) .why-grid {
+    gap: 30px;
 }
 body:not(.dark) .why-box {
-    background: #f9f9f9;
-    color: #000;
-    border: 1px solid #eee;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: #ffffff !important;
+    color: #000 !important;
+    border: 1px solid rgba(212, 175, 55, 0.25) !important;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+    transition: 0.3s ease;
+}
+body:not(.dark) .why-box h3 {
+    color: #000 !important;
 }
 body:not(.dark) .why-box p {
-    color: #444;
+    color: #555 !important;
 }
 body:not(.dark) .why-box:hover {
-    background: #d4af37;
-    color: #000;
+    transform: translateY(-8px);
+    background: #d4af37 !important;
+    color: #000 !important;
+    box-shadow: 0 10px 25px rgba(212,175,55,0.3) !important;
 }
+body:not(.dark) .why-box:hover h3,
 body:not(.dark) .why-box:hover p {
-    color: #000;
+    color: #000 !important;
 }
 
-//*Seksioni what our costumers say*/
+/*Seksioni what our costumers say*/
 .testimonials {
     padding: 100px 20px;
     text-align: center;
-    background: #0b0f18;
+    background: black;
     padding-top: 50px;
 }
 .testimonials h2 {
@@ -738,8 +818,6 @@ body:not(.dark) .review-text {
     color: #aaa;
 }
 
-
-
 body:not(.dark) .order-result-page {
     background: #f5f5f5;
 }
@@ -767,6 +845,59 @@ body:not(.dark) .order-result-card .btn:hover {
     background: #c9a62f;
 }
 
+body:not(.dark) .testimonials {
+    background: #f5f5f5 !important;
+}
+body:not(.dark) .testimonials h2 {
+    color: #000 !important;
+}
+body:not(.dark) .testimonial-card {
+    background: #ffffff !important;
+    color: #000 !important;
+    border: 1px solid #d4af37 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+}
+body:not(.dark) .testimonial-card::before {
+    background: rgba(212,175,55,0.15) !important;
+}
+body:not(.dark) .testimonial-card h3 {
+    color: #000 !important;
+}
+body:not(.dark) .review-text {
+    color: #444 !important;
+}
+body:not(.dark) .stars {
+    color: #d4af37 !important;
+}
+
+body:not(.dark) .feedback-section {
+    background: #f5f5f5 !important;
+    color: #000 !important;
+    padding: 80px 20px;
+}
+body:not(.dark) .feedback-section h2 {
+    color: #000 !important;
+}
+body:not(.dark) .feedback-form {
+    border-radius: 15px;
+    margin-top: 20px;
+}
+body:not(.dark) .feedback-form textarea,
+body:not(.dark) .feedback-form select {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #ddd !important;
+}
+body:not(.dark) .feedback-form textarea::placeholder {
+    color: #777 !important;
+}
+body:not(.dark) .feedback-form button {
+    background: #d4af37 !important;
+    color: #000 !important;
+}
+body:not(.dark) .feedback-form button:hover {
+    background: #c9a62f !important;
+}
 
 
 /*Pjesa e footerit*/

@@ -67,7 +67,7 @@ include 'includes/header.php';
 include 'includes/navbar.php';
 ?>
  
-<link rel="stylesheet" href="/PerfumeStore_20/assets/css/login.css">
+<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/login.css">
  
 <main class="login-page">
     <div class="login-box">

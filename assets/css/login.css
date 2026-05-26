@@ -285,3 +285,73 @@
 .toggle-password:hover{
     color:white;
 }
+
+/* =========================
+   LIGHT MODE - ADMIN LOGIN
+   ========================= */
+
+body:not(.dark) .login-page {
+    background: #f4f6fb;
+    color: #111;
+}
+
+/* Login box */
+body:not(.dark) .login-box {
+    background: #ffffff;
+    border: 1px solid #e6e8ef;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Titles */
+body:not(.dark) .login-box h1 {
+    color: #b8860b;
+}
+
+body:not(.dark) .auth-eyebrow {
+    color: #b8860b;
+}
+
+body:not(.dark) .login-box p {
+    color: #555;
+}
+
+/* Labels */
+body:not(.dark) .login-box label {
+    color: #b8860b;
+}
+
+/* Inputs */
+body:not(.dark) .login-box input {
+    background: #f9fafc;
+    color: #111;
+    border: 1px solid #dcdfe6;
+}
+
+body:not(.dark) .login-box input:focus {
+    border-color: #b8860b;
+    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.12);
+}
+
+/* Password toggle */
+body:not(.dark) .toggle-password {
+    color: #b8860b;
+}
+
+/* Button */
+body:not(.dark) .login-box button {
+    background: #b8860b;
+    color: #fff;
+    border: none;
+}
+
+body:not(.dark) .login-box button:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+/* Error message */
+body:not(.dark) .error-message {
+    background: #fdeaea;
+    border: 1px solid #e74c3c;
+    color: #c0392b;
+}

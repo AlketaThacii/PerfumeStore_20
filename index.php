@@ -3,7 +3,7 @@ include("includes/header.php");
 include("includes/navbar.php");
 include("includes/db.php");
 
-echo '<link rel="stylesheet" href="/PERFUMESTORE_20/assets/css/style.css">';
+
 
 $query = mysqli_query(
     $conn,
