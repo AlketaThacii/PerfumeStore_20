@@ -1,85 +1,58 @@
-Maison De Parfum – Aplikacion Web për Dyqan Parfumesh
-Përshkrimi
+# Maison De Parfum
 
-Maison De Parfum është një aplikacion web i ndërtuar me PHP që simulon një dyqan online parfumesh. Përdoruesit mund të shfletojnë produkte, t’i filtrojnë dhe rendisin ato, si dhe të kryejnë porosi të thjeshta.
+Maison De Parfum është një aplikacion web i ndërtuar me PHP dhe MySQL që simulon një dyqan online parfumesh luksoze. Përdoruesit mund të regjistrohen, shfletojnë produkte, t'i filtrojnë dhe rendisin ato, të shtojnë në shportë dhe të kryejnë porosi. Projekti përfshin gjithashtu një panel administrativ të plotë.
 
-Ky projekt demonstron konceptet bazë të zhvillimit web:
+## Përshkrimi i Funksionaliteteve
 
-PHP (logjika në server)
-HTML/CSS (dizajni)
-JavaScript (interaktiviteti)
-Session & Cookies
+Regjistrim dhe Login — Përdoruesi regjistrohet me username, email dhe fjalëkalim. Pas regjistrimit dërgohet një kod 6-shifror verifikimi në email përmes PHPMailer. Vetëm pas verifikimit të emailit, përdoruesi mund të kyçet. Fjalëkalimi ruhet i hashuar me password_hash(). Sistemi ka mbrojtje CSRF dhe rate limiting për të parandaluar sulmet brute-force.
 
-Struktura e Projektit:
-index.php
-login.php
-logout.php
+Produktet dhe Shporta — Faqja e produkteve shfaq të gjitha parfumet me mundësi filtrimi sipas kategorisë (Men, Women, Unisex) dhe renditjeje sipas çmimit. Çdo produkt shfaq çmimin edhe në EUR përmes Exchange Rate API. Shtimi dhe heqja e produkteve nga shporta kryhet me AJAX pa refresh të faqes. Totali i shportës përditësohet në kohë reale.
+
+Checkout dhe Porositë — Pas zgjedhjes së produkteve, përdoruesi plotëson formularin e blerjes me email, telefon dhe adresë. Sistemi validon të dhënat dhe ruan porosinë në databazë me try/catch për error handling. Historia e porosive shfaqet te profili i përdoruesit.
+
+Profili — Çdo përdorues ka faqe personale ku mund të ngarkojë, ndryshojë ose fshijë foton e profilit. Gjithashtu mund të ndryshojë fjalëkalimin dhe të shohë historinë e porosive dhe feedback-et e dhëna.
+
+Contact — Faqja e kontaktit lejon përdoruesit e kyçur të dërgojnë mesazhe direkt te emaili i dyqanit përmes PHPMailer. Formulari ka validim të plotë dhe error handling me try/catch.
+
+Panel Admin — Administratori kyçet përmes një faqeje të veçantë me kod shtesë sigurie. Ka qasje në dashboard me statistika (total users, orders, revenue, feedbacks), mund të shtojë, ndryshojë dhe fshijë produkte, si dhe të menaxhojë statusin e porosive.
+
+## Teknologjitë
+
+PHP 8+, MySQL, HTML5, CSS3, JavaScript, AJAX, PHPMailer, Leaflet.js, Exchange Rate API, Git / GitHub
+
+## Struktura e Projektit
+
+index.php, login.php, register.php, verify-register.php, admin-login.php, logout.php
+
 pages/
-    products.php
-    about.php
-    visitUs.php
-    orders.php
+    products.php, add-product.php, edit-product.php, checkout.php,
+    process_order.php, orders.php, profile.php, contact.php,
+    admin-dashboard.php, about.php, visitus.php, save-feedback.php
+
 includes/
-    header.php
-    navbar.php
-    footer.php
-    config.php
+    db.php, config.php, header.php, navbar.php, footer.php,
+    security.php, send_verification_email.php
+
+ajax/
+    cart_action.php, search_products.php, filter_top_picks.php, delete_product.php
+
+classes/
+    Products.php, Perfume.php
+
 assets/
-    css/
-    js/
-    images/
+    css/, js/, images/
 
-Funksionalitetet
-Homepage (index.php) - Faqja kryesore e aplikacionit, përfshin navigimin dhe strukturën bazë, mbështet light mode dhe dark mode
+## Instalimi
 
-Produktet (products.php) - Shfaq të gjitha produktet në mënyrë dinamike, filtrim sipas kategorisë: Meshkuj; Femra; Unisex. Renditje sipas çmimit: Në rritje; Në zbritje 
-Karakteristika:
-Kartela produktesh,
-Badge “PREMIUM” për produkte të shtrenjta,
-Kontroll i sasisë (+ / -),
-Llogaritje e totalit në kohë reale (JavaScript)
+1. Klono projektin dhe vendose në C:/xampp/htdocs/PerfumeStore_20
+2. Krijo databazën perfume_store në phpMyAdmin
+3. Importo skedarin perfume_store.sql
+4. Ekzekuto: ALTER TABLE users ADD COLUMN profile_image VARCHAR(255) DEFAULT NULL;
+5. Ndrysho kredencialet në includes/db.php
+6. Ndrysho SMTP në includes/send_verification_email.php me emailin tënd Gmail
+7. Hap: localhost/PerfumeStore_20
 
-Login (login.php) - Autentikim i thjeshtë me përdorues të paracaktuar, ruajtje e të dhënave në session: username; role (admin/user). Mesazh gabimi në rast të kredencialeve të pasakta.
-User:
-Mund të shfletojë produktet,
-Mund të zgjedhë sasinë dhe të bëjë porosi,
-Nuk ka qasje në faqen Orders
+## Kredencialet për Testim
+
 Admin:
-Ka qasje në të gjitha faqet,
-Mund të shohë faqen Orders,
-Nuk kryen blerje (nuk shfaqet forma e porosisë)
-
-About Us (about.php) - Informacion për biznesin. Përmban: Misionin, arsye pse të zgjidhet kompania, statistika me animacion, shfaq mesazh personal nëse ekziston cookie (email)
-
-Visit Us (visitUs.php) - Shfaq lokacionin e dyqanit. Përfshin: Adresën, Orarin e punës, Numrin e telefonit, Buton për navigim në Google Maps, Hartë interaktive (Leaflet.js)
-
-Logout (logout.php) - Mbyll session-in e përdoruesit, ridrejton në faqen kryesore
-
-Dizajni
-Përdoren disa skedarë CSS:
-style.css – stili kryesor
-about.css – faqja About
-login.css – forma e login-it
-visitUs.css – faqja e lokacionit
-
-Mbështet:
-Light Mode
-Dark Mode
-
-Teknologjitë:
-PHP
-HTML5
-CSS3
-JavaScript
-Leaflet.js
-
-Kredencialet për Testim
-Admin:
-username: admin
-password: 123
-
-Ky eshte linku i videos te projektit https://drive.google.com/file/d/1loIlWBN9lfYDyuU-07l3V5h-gTBlxLCq/view?usp=drive_link
-
-User:
-username: user
-password: 123
+- URL: localhost/PerfumeStore_20/admin-login.php
