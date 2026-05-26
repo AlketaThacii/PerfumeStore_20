@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2026 at 10:07 AM
+-- Generation Time: May 26, 2026 at 09:17 PM
 -- Server version: 8.0.43
 -- PHP Version: 8.0.30
 
@@ -44,6 +44,53 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedbacks`
+--
+
+CREATE TABLE `feedbacks` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `message` text NOT NULL,
+  `rating` int NOT NULL DEFAULT '5',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `feedbacks`
+--
+
+INSERT INTO `feedbacks` (`id`, `user_id`, `message`, `rating`, `created_at`) VALUES
+(2, 6, 'fuyftyd', 4, '2026-05-25 17:31:30'),
+(3, 6, 'sfvyuads', 5, '2026-05-25 18:30:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `items` text NOT NULL,
+  `status` enum('pending','completed','cancelled') DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `email`, `phone`, `address`, `total`, `items`, `status`, `created_at`) VALUES
+(1, 6, 'alketa.thaci@student.uni-pr.edu', '00000000000', 'dsd', 220.00, '[{\"name\":\"Acqua di Gio\",\"price\":\"110.00\",\"qty\":2,\"subtotal\":220}]', 'pending', '2026-05-26 08:54:58');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
@@ -65,7 +112,6 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `image`, `created_
 (2, 1, 'Bleu de Chanel', 140.00, '../assets/images/image12.jpg', '2026-05-20 08:14:30'),
 (3, 1, 'Acqua di Gio', 110.00, '../assets/images/image4.webp', '2026-05-20 08:14:30'),
 (4, 1, 'Versace Eros', 100.00, '../assets/images/image14.avif', '2026-05-20 08:14:30'),
-(5, 1, 'Tom Ford Noir', 160.00, '../assets/images/image2.avif', '2026-05-20 08:14:30'),
 (6, 2, 'Gisada', 150.00, '../assets/images/image9.jpg', '2026-05-20 08:14:30'),
 (7, 2, 'YSL Libre', 130.00, '../assets/images/image44.avif', '2026-05-20 08:14:30'),
 (8, 2, 'Valentino', 125.00, '../assets/images/image23.jpg', '2026-05-20 08:14:30'),
@@ -75,8 +121,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `image`, `created_
 (12, 3, 'Maison Fragrance', 160.00, '../assets/images/image15.jpg', '2026-05-20 08:14:30'),
 (13, 1, 'Amuage', 110.00, '../assets/images/image10.jpg', '2026-05-20 08:14:30'),
 (14, 3, 'Versace', 180.00, '../assets/images/image14.jpg', '2026-05-20 08:14:30'),
-(15, 3, 'Montale Paris', 210.00, '../assets/images/image4.jpg', '2026-05-20 08:14:30'),
-(17, 1, 'test1', 100.00, '../assets/images/product_6a0e0f921ffe89.94873104.jpg', '2026-05-20 19:46:26');
+(15, 3, 'Montale Paris', 210.00, '../assets/images/image4.jpg', '2026-05-20 08:14:30');
 
 -- --------------------------------------------------------
 
@@ -91,18 +136,20 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `role` varchar(20) DEFAULT 'user',
   `admin_code` varchar(50) DEFAULT NULL,
-  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `email_verified` tinyint(1) NOT NULL DEFAULT '0',
   `verification_code_hash` varchar(255) DEFAULT NULL,
-  `verification_expires_at` datetime DEFAULT NULL
+  `verification_expires_at` datetime DEFAULT NULL,
+  `profile_image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `admin_code`, `email_verified`, `verification_code_hash`, `verification_expires_at`) VALUES
-(1, 'admin', 'admin@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'admin', NULL, 1, NULL, NULL),
-(2, 'user', 'user@perfume-store.test', '$2y$10$42ggBFLx92hFP5j3nK5oGeRHcOtVMzqDlJEZpP/ohH33qmzH8vX9O', 'user', NULL, 1, NULL, NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `admin_code`, `email_verified`, `verification_code_hash`, `verification_expires_at`, `profile_image`) VALUES
+(1, 'admin', 'admin@maison.com', '$2y$10$8uQIsMbJBvqeqiykBQ3uHeh.NVEIONvaltLMX.xO6vffQV8Q0xb6q', 'admin', 'MAISON-2026', 1, NULL, NULL, NULL),
+(2, 'user', 'user@perfume-store.test', '$2y$10$8H8mZx8vaFYsBsznLXjXkeJc.RoOjfeHq3WbeUkcGcyXGrBpzWoG.', 'user', NULL, 1, NULL, NULL, NULL),
+(6, 'alketa2026', 'alketa.thaci@student.uni-pr.edu', '$2y$10$cbqdEbDfJJdIbaoc3smLje57BzYpyDmm6MirO/a4HNRa3KwOQ0IeS', 'user', NULL, 1, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -114,6 +161,20 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `admin_code`
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indexes for table `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `products`
@@ -128,7 +189,6 @@ ALTER TABLE `products`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
@@ -142,6 +202,18 @@ ALTER TABLE `categories`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -151,11 +223,23 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `feedbacks`
+--
+ALTER TABLE `feedbacks`
+  ADD CONSTRAINT `feedbacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `products`
