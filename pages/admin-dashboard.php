@@ -302,3 +302,126 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
             <div class="stat-label">Feedbacks</div>
         </div>
     </div>
+
+
+    <!-- ── USERS ─────────────────────────────────────────────────── -->
+    <h2 class="section-title" id="users">👥 Users</h2>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Verified</th>
+                <th>Orders</th>
+                <th>Spent</th>
+                <th>Feedbacks</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (empty($users)): ?>
+            <tr><td colspan="8" style="text-align:center;color:#777;padding:20px;">No users yet.</td></tr>
+        <?php else: ?>
+            <?php foreach ($users as $u): ?>
+            <tr>
+                <td><?php echo $u['id']; ?></td>
+                <td>
+                    <?php if (!empty($u['profile_image'])): ?>
+                        <img class="avatar"
+                             src="../assets/images/<?php echo htmlspecialchars($u['profile_image']); ?>"
+                             alt="">
+                    <?php else: ?>
+                        <span class="avatar-placeholder">
+                            <?php echo strtoupper(substr($u['username'], 0, 1)); ?>
+                        </span>
+                    <?php endif; ?>
+                    <?php echo htmlspecialchars($u['username']); ?>
+                </td>
+                <td><?php echo htmlspecialchars($u['email']); ?></td>
+                <td>
+                    <?php if ($u['email_verified']): ?>
+                        <span class="badge-verified">✓ Verified</span>
+                    <?php else: ?>
+                        <span class="badge-unverified">✗ No</span>
+                    <?php endif; ?>
+                </td>
+                <td style="text-align:center;"><?php echo $u['order_count']; ?></td>
+                <td>$<?php echo number_format($u['total_spent'], 2); ?></td>
+                <td style="text-align:center;"><?php echo $u['feedback_count']; ?></td>
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Delete user <?php echo htmlspecialchars($u['username']); ?>? This cannot be undone.')">
+                        <input type="hidden" name="delete_user" value="1">
+                        <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
+                        <button type="submit" class="btn-delete">✕ Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+
+    <!-- ── ORDERS ─────────────────────────────────────────────────── -->
+    <h2 class="section-title" id="orders">📦 Orders</h2>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (empty($orders)): ?>
+            <tr><td colspan="9" style="text-align:center;color:#777;padding:20px;">No orders yet.</td></tr>
+        <?php else: ?>
+            <?php foreach ($orders as $order):
+                $items = json_decode($order["items"], true) ?? [];
+            ?>
+            <tr>
+                <td>#<?php echo $order['id']; ?></td>
+                <td><?php echo htmlspecialchars($order['username'] ?? '—'); ?></td>
+                <td><?php echo htmlspecialchars($order['email']); ?></td>
+                <td><?php echo htmlspecialchars($order['phone']); ?></td>
+                <td><?php echo htmlspecialchars($order['address']); ?></td>
+                <td>
+                    <?php foreach ($items as $item): ?>
+                        <small style="display:block;">
+                            <?php echo htmlspecialchars($item['name']); ?>
+                            x<?php echo (int)$item['qty']; ?>
+                            — $<?php echo number_format($item['subtotal'], 2); ?>
+                        </small>
+                    <?php endforeach; ?>
+                </td>
+                <td style="color:#d4af37;font-weight:bold;">
+                    $<?php echo number_format($order['total'], 2); ?>
+                </td>
+                <td style="white-space:nowrap;">
+                    <?php echo date("d M Y, H:i", strtotime($order['created_at'])); ?>
+                </td>
+                <td>
+                    <form method="POST" action="admin-dashboard.php#orders">
+                        <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
+                        <select name="status" onchange="this.form.submit()" class="status-select">
+                            <option value="pending"   <?php echo $order['status']==='pending'   ? 'selected':''; ?>>Pending</option>
+                            <option value="completed" <?php echo $order['status']==='completed' ? 'selected':''; ?>>Completed</option>
+                            <option value="cancelled" <?php echo $order['status']==='cancelled' ? 'selected':''; ?>>Cancelled</option>
+                        </select>
+                    </form>
+                    <span class="badge-<?php echo $order['status']; ?>" style="margin-top:4px;display:inline-block;">
+                        <?php echo ucfirst($order['status']); ?>
+                    </span>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
