@@ -38,7 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["order_id"], $_POST["s
     header("Location: admin-dashboard.php#orders");
     exit;
 }
+// ── MERR TE DHENAT ───────────────────────────────────────────────────────────
 
+// Statistika
+$totalUsers     = $conn->query("SELECT COUNT(*) FROM users WHERE role = 'user'")->fetch_row()[0];
+$totalOrders    = $conn->query("SELECT COUNT(*) FROM orders")->fetch_row()[0];
+$totalRevenue   = $conn->query("SELECT COALESCE(SUM(total),0) FROM orders WHERE status = 'completed'")->fetch_row()[0];
+$totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0];
 
 
 
