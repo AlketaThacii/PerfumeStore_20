@@ -1,5 +1,7 @@
 <?php 
-$userEmail = $_COOKIE['user_email'] ?? '';
+$userEmail = (isset($_SESSION["user_id"]) && !empty($_COOKIE['user_email'])) 
+    ? $_COOKIE['user_email'] 
+    : '';
 include '../includes/header.php'; 
 include '../includes/navbar.php'; 
 
@@ -47,29 +49,10 @@ $aboutCards = [
                 <?php endforeach; ?>
             </div>
 
-            <div class="about-divider"></div>
-
-            <div class="about-stats">
-                <div class="about-stat-card">
-                    <h2 class="counter" data-target="250">0</h2>
-                    <p>Produkte të Disponueshme</p>
-                </div>
-
-                <div class="about-stat-card">
-                    <h2 class="counter" data-target="300">0</h2>
-                    <p>Klientë të Kënaqur</p>
-                </div>
-
-                <div class="about-stat-card">
-                    <h2 class="counter" data-target="25">0</h2>
-                    <p>Brende Luksoze</p>
-                </div>
-            </div>
 
         </div>
     </section>
 </main>
 
 
-<script src="../assets/js/about.js"></script>
 <?php include '../includes/footer.php'; ?>
