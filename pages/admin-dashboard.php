@@ -269,3 +269,36 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
         <div class="stat-label">Feedbacks</div>
     </div>
 </div>
+
+<main class="dash">
+    <h1>Admin Dashboard</h1>
+    <p class="dash-subtitle">Overview of all users, orders and feedback</p>
+
+    <!-- Quick nav -->
+    <div class="dash-nav">
+        <a href="#users">👥 Users</a>
+        <a href="#orders">📦 Orders</a>
+        <a href="#feedbacks">💬 Feedback</a>
+        <a href="orders.php">⚙️ Orders Manager</a>
+        <a href="add-product.php">➕ Add Product</a>
+    </div>
+
+    <!-- ── STATS ─────────────────────────────────────────────────── -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-number"><?php echo $totalUsers; ?></span>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number"><?php echo $totalOrders; ?></span>
+            <div class="stat-label">Total Orders</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">$<?php echo number_format($totalRevenue, 2); ?></span>
+            <div class="stat-label">Revenue (Completed)</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number"><?php echo $totalFeedbacks; ?></span>
+            <div class="stat-label">Feedbacks</div>
+        </div>
+    </div>
