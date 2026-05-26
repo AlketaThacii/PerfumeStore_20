@@ -106,3 +106,185 @@ body.light-mode .dash-nav a:hover {
 body.light-mode td[style*="color:#777"] {
     color: #6b7280 !important;
 }
+
+<style>
+.dash {
+    padding: 40px 5%;
+    background: #050505;
+    min-height: 100vh;
+    color: #fff;
+}
+.dash h1 {
+    color: #d4af37;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+.dash-subtitle {
+    color: #777;
+    margin-bottom: 36px;
+    font-size: 0.95rem;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+}
+.stat-card {
+    background: #0f0f0f;
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+}
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d4af37;
+    display: block;
+}
+.stat-card .stat-label {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Section titles */
+.section-title {
+    color: #d4af37;
+    font-size: 1.3rem;
+    border-bottom: 1px solid rgba(212,175,55,0.2);
+    padding-bottom: 10px;
+    margin: 48px 0 20px;
+}
+
+/* Tables */
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: #0f0f0f;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.dash-table th {
+    background: #1a1a1a;
+    color: #d4af37;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.dash-table td {
+    padding: 12px 14px;
+    border-top: 1px solid #1e1e1e;
+    color: #ccc;
+    vertical-align: middle;
+}
+.dash-table tr:hover td {
+    background: #141414;
+}
+
+/* Badges */
+.badge-verified {
+    background: rgba(46,204,113,0.15);
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+.badge-unverified {
+    background: rgba(231,76,60,0.15);
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+.badge-pending   { background:rgba(212,175,55,0.15); color:#d4af37; border:1px solid #d4af37; padding:2px 8px; border-radius:20px; font-size:0.75rem; }
+.badge-completed { background:rgba(46,204,113,0.15); color:#2ecc71; border:1px solid #2ecc71; padding:2px 8px; border-radius:20px; font-size:0.75rem; }
+.badge-cancelled { background:rgba(231,76,60,0.15);  color:#e74c3c; border:1px solid #e74c3c; padding:2px 8px; border-radius:20px; font-size:0.75rem; }
+
+/* Avatar */
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4af37;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+.avatar-placeholder {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1e1e1e;
+    border: 2px solid #333;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #d4af37;
+    font-weight: bold;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Stars */
+.stars { color: #d4af37; letter-spacing: 2px; }
+
+/* Buttons */
+.btn-delete {
+    background: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+.btn-delete:hover { background: rgba(231,76,60,0.1); }
+
+/* Status select */
+.status-select {
+    background: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+/* User detail expand */
+.user-orders-cell small { display: block; color: #aaa; line-height: 1.6; }
+
+/* Nav tabs */
+.dash-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+.dash-nav a {
+    background: #0f0f0f;
+    border: 1px solid rgba(212,175,55,0.3);
+    color: #d4af37;
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+.dash-nav a:hover { background: rgba(212,175,55,0.1); }
+
+@media (max-width: 768px) {
+    .dash-table { font-size: 0.78rem; }
+    .dash-table th, .dash-table td { padding: 8px; }
+}
+</style>
