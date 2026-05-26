@@ -10,6 +10,12 @@ if (!isset($_SESSION["user_id"])) {
     exit;
 }
 
+// Admini nuk ka profil — ridrejto
+if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
+    header("Location: /PerfumeStore_20/index.php");
+    exit;
+}
+
 $userId   = (int)$_SESSION["user_id"];
 $errors   = [];
 $success  = "";
