@@ -36,14 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["upload_image"])) {
         } else {
             // Fshi foton e vjetër nëse ekziston
             if (!empty($user["profile_image"])) {
-                $oldFile = "../assets/images/" . $user["profile_image"];
+                $oldFile = realpath(__DIR__ . "/../assets/images") . DIRECTORY_SEPARATOR . $user["profile_image"];
                 if (file_exists($oldFile)) {
                     unlink($oldFile);
                 }
             }
 
-            $safeName = uniqid("profile_", true) . "." . $ext;
-            $target   = "../assets/images/" . $safeName;
+            $safeName  = uniqid("profile_", true) . "." . $ext;
+            $uploadDir = realpath(__DIR__ . "/../assets/images") . DIRECTORY_SEPARATOR;
+            $target    = $uploadDir . $safeName;
 
             if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $target)) {
                 $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE id = ?");
@@ -63,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["upload_image"])) {
 // ── FSHI FOTON ────────────────────────────────────────────────────────────────
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete_image"])) {
     if (!empty($user["profile_image"])) {
-        $oldFile = "../assets/images/" . $user["profile_image"];
+        $oldFile = realpath(__DIR__ . "/../assets/images") . DIRECTORY_SEPARATOR . $user["profile_image"];
         if (file_exists($oldFile)) {
             unlink($oldFile);
         }
