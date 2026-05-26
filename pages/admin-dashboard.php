@@ -425,3 +425,61 @@ $totalFeedbacks = $conn->query("SELECT COUNT(*) FROM feedbacks")->fetch_row()[0]
         <?php endif; ?>
         </tbody>
     </table>
+
+    <!-- ── FEEDBACKS ──────────────────────────────────────────────── -->
+    <h2 class="section-title" id="feedbacks">💬 Customer Feedback</h2>
+    <table class="dash-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Message</th>
+                <th>Rating</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php if (empty($feedbacks)): ?>
+            <tr><td colspan="6" style="text-align:center;color:#777;padding:20px;">No feedback yet.</td></tr>
+        <?php else: ?>
+            <?php foreach ($feedbacks as $fb): ?>
+            <tr>
+                <td><?php echo $fb['id']; ?></td>
+                <td>
+                    <?php if (!empty($fb['profile_image'])): ?>
+                        <img class="avatar"
+                             src="../assets/images/<?php echo htmlspecialchars($fb['profile_image']); ?>"
+                             alt="">
+                    <?php else: ?>
+                        <span class="avatar-placeholder">
+                            <?php echo strtoupper(substr($fb['username'], 0, 1)); ?>
+                        </span>
+                    <?php endif; ?>
+                    <?php echo htmlspecialchars($fb['username']); ?>
+                </td>
+                <td><?php echo htmlspecialchars($fb['message']); ?></td>
+                <td>
+                    <span class="stars"><?php echo stars((int)$fb['rating']); ?></span>
+                    <small style="color:#777;">(<?php echo $fb['rating']; ?>/5)</small>
+                </td>
+                <td style="white-space:nowrap;">
+                    <?php echo date("d M Y, H:i", strtotime($fb['created_at'])); ?>
+                </td>
+                <td>
+                    <form method="POST"
+                          onsubmit="return confirm('Delete this feedback?')">
+                        <input type="hidden" name="delete_feedback" value="1">
+                        <input type="hidden" name="feedback_id" value="<?php echo $fb['id']; ?>">
+                        <button type="submit" class="btn-delete">✕ Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </tbody>
+    </table>
+
+</main>
+
+<?php include('../includes/footer.php'); ?>
