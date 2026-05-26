@@ -22,6 +22,11 @@ include("../includes/navbar.php");
 echo '<main class="shop">';
 echo '<div class="left-side">';
 
+if (!empty($_SESSION["product_message"])) {
+    echo '<p class="form-message">' . htmlspecialchars($_SESSION["product_message"]) . '</p>';
+    unset($_SESSION["product_message"]);
+}
+
 echo '<div class="filter" style="margin-bottom: 30px;">';
 echo '<strong>Category:</strong> ';
 echo "<a href='?category=all&sort=$order'>All</a> | ";
